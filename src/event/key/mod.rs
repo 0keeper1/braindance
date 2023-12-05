@@ -32,9 +32,7 @@ impl KeyHandler for Editor {
                 code,
                 modifiers: KeyModifiers::NONE | KeyModifiers::SHIFT,
                 ..
-            } => {
-                Ok(())
-            }
+            } => Ok(()),
             _ => {
                 self.exit = true;
                 Err(InternalError::KeyDoesNotSupported)

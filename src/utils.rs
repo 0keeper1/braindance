@@ -1,5 +1,9 @@
+use crate::{
+    constants::{clear, cursors},
+    lines::Lines,
+    row::Row,
+};
 use std::ffi::OsStr;
-use crate::{lines::Lines, row::Row, constants::{clear, cursors}};
 
 pub trait ReadLines {
     fn lines(self) -> Lines;

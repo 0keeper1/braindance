@@ -19,9 +19,9 @@ impl ArrowHandler for Editor {
                 modifiers: KeyModifiers::NONE,
                 ..
             } => {
-                let terminal_col_size = self.terminal.get_col_size();
-                let row_len = self.buffer.get_row_len(self.render.row_position);
-                self.render.move_right(terminal_col_size, row_len as u16);
+                info!("before move right event {:?}", self.render);
+                self.render.move_right();
+                info!("after move right event {:?}", self.render);
 
                 Ok(())
             }
@@ -30,8 +30,10 @@ impl ArrowHandler for Editor {
                 modifiers: KeyModifiers::NONE,
                 ..
             } => {
-                let perv_row_len = self.buffer.get_row_len(self.render.row_position - 1) as u16;
-                self.render.move_left(perv_row_len);
+                info!("before move left event {:?}", self.render);
+                self.render.move_left();
+                info!("after move left event {:?}", self.render);
+
                 Ok(())
             }
             KeyEvent {
@@ -39,7 +41,9 @@ impl ArrowHandler for Editor {
                 modifiers: KeyModifiers::NONE,
                 ..
             } => {
+                info!("before move up event {:?}", self.render);
                 self.render.move_up();
+                info!("after move up event {:?}", self.render);
                 Ok(())
             }
             KeyEvent {
@@ -47,7 +51,10 @@ impl ArrowHandler for Editor {
                 modifiers: KeyModifiers::NONE,
                 ..
             } => {
+                info!("before move down event {:?}", self.render);
                 self.render.move_down();
+                info!("after move down event {:?}", self.render);
+
                 Ok(())
             }
             _ => Err(InternalError::NoError),

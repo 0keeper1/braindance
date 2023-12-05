@@ -33,8 +33,21 @@ impl Buffer {
         }
     }
 
-    fn update_info(&mut self) -> IoResult<()> {
-        todo!()
+    /// return perv / current / next row len
+    fn get_row_info(&mut self, index: usize) -> (usize, usize, usize) {
+        let perv = match self.get_row(index - 1) {
+            Some(row) => row.len(),
+            None => 0,
+        };
+        let current = match self.get_row(index) {
+            Some(row) => row.len(),
+            None => 0,
+        };
+        let next = match self.get_row(index + 1) {
+            Some(row) => row.len(),
+            None => 0,
+        };
+        (perv, current, next)
     }
 
     pub fn set_path(&mut self, path: PathBuf) {
@@ -58,10 +71,22 @@ impl Buffer {
         self.content.get_mut(index)
     }
 
-    pub fn set_path_and_read(&mut self, path: PathBuf) -> IoResult<()> {
+    /// return (buffer_len, perv_row_len, current_row_len, next_row_len)
+    pub fn set_path_and_read(&mut self, path: PathBuf) -> IoResult<(usize, usize, usize, usize)> {
         self.path = path;
         self.read()?;
-        Ok(())
+        let buffer_len = self.content.len();
+
+        let first_row_len = match self.content.first() {
+            Some(row) => row.len(),
+            None => 0,
+        };
+
+        let second_row_len = match self.get_row(1) {
+            Some(row) => row.len(),
+            None => 0,
+        };
+        Ok((buffer_len, 0, first_row_len, second_row_len))
     }
 
     pub fn read_file(&mut self) -> IoResult<()> {

@@ -65,7 +65,10 @@ impl Editor {
         if path.is_dir() {
             self.change_workspace(path);
         } else if path.is_file() {
-            self.buffer.set_path_and_read(path)?;
+            let (buffer_len, perv_row_len, current_row_len, next_row_len) =
+                self.buffer.set_path_and_read(path)?;
+            self.render
+                .update_buffer_info(buffer_len, perv_row_len, current_row_len, next_row_len);
         };
         Ok(())
     }

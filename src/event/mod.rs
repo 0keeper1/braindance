@@ -20,8 +20,12 @@ impl EventHandler for Editor {
         if poll(Duration::from_millis(1500))? {
             let ret = match read()? {
                 Event::Resize(col, row) => {
-                    self.render.set_end_editor_position(row - 2);
-                    self.terminal.update_size(col, row)
+                    match self.terminal.update_size(col, row) {
+                        Ok(_) => (),
+                        Err(err) => self.internal_error = err,
+                    }
+                    self.render.set_end_editor_position(row);
+                    Ok(())
                 }
                 Event::FocusGained => {
                     println!("GAIN");

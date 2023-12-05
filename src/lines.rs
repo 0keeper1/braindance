@@ -13,7 +13,9 @@ pub struct Lines {
 
 impl Lines {
     pub fn new() -> Self {
-        Self { inner: Vec::new() }
+        Self {
+            inner: vec![Row::new()],
+        }
     }
 
     #[inline]

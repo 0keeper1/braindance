@@ -2,7 +2,10 @@ use std::time::{Duration, Instant};
 
 use crossterm::event::{KeyCode, KeyModifiers};
 
-use crate::{settings::{MAXIMUM_KEY_DURATION_TIME, MAXIMUM_KEY_REPEAT_LIMIT}, prelude::*};
+use crate::{
+    prelude::*,
+    settings::{MAXIMUM_KEY_DURATION_TIME, MAXIMUM_KEY_REPEAT_LIMIT},
+};
 
 // -- config --
 const MAXIMUM_REPEAT: u8 = MAXIMUM_KEY_REPEAT_LIMIT;

@@ -31,7 +31,7 @@ impl RowRenderer for Editor {
         let file_position = self.render.get_position();
 
         let mut buf_iter = self.buffer.content.inner[file_position.start..file_position.end].iter();
-        for _ in 0..(row_size - 2) {
+        for _ in 1..(self.render.get_end_editor_position()) {
             print!("{}", clear::CLEAR_CURRENT_LINE);
             match buf_iter.next() {
                 Some(row) => print!("{}", row),
