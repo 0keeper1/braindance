@@ -1,0 +1,19 @@
+name: format
+
+on:
+  push:
+    branches:
+      - master
+      - devel
+
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: cargo fmt --check
