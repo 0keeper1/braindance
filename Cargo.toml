@@ -1,0 +1,24 @@
+[package]
+name = "braindance"
+authors = ["0xkeeper"]
+version = "0.0.0"
+edition = "2021"
+description = "next-generation, non-user-friendly text editor that is fast and lightweight"
+readme = "README.md"
+repository = "https://github.com/0keeper1/braindance"
+license = "Apache-2.0"
+keywords = ["tui", "text-editor"]
+categories = ["tui", "text-editor"]
+
+[dependencies]
+crossterm = "0.27"
+log = "0.4"
+simple-logging = "2.0"
+
+[profile.release]
+lto = true
+panic = "abort"
+opt-level = "z"
+
+[build]
+rustflags = ["-Z", "threads=8"]
