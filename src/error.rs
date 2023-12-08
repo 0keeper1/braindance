@@ -6,7 +6,7 @@ pub type InternalResult<T> = result::Result<T, InternalError>;
 
 pub type Result<T> = IoResult<InternalResult<T>>;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum InternalError {
     /// when path is directory not a file
     PathIsNotAFile,
