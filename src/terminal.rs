@@ -42,6 +42,7 @@ impl Terminal {
         Ok(self.update_size(col, row))
     }
 
+    #[inline]
     pub fn is_raw_mode(&self) -> bool {
         self.is_raw_mode
     }
@@ -75,6 +76,7 @@ impl Terminal {
         }
     }
 
+    #[inline]
     pub fn get_mut_size(&mut self) -> &mut Size {
         &mut self.size
     }
@@ -88,5 +90,43 @@ impl Size {
     pub fn update_size(&mut self, col: u16, row: u16) {
         self.col = col;
         self.row = row;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crossterm::terminal::is_raw_mode_enabled;
+
+    use crate::prelude::InternalError;
+
+    use super::{Terminal, MINIMUM_COL_SIZE, MINIMUM_ROW_SIZE};
+
+    #[test]
+    fn enable_raw_mode() {
+        let mut terminal = Terminal::new();
+        terminal.enable_raw_mode();
+
+        assert!(terminal.is_raw_mode());
+        assert!(is_raw_mode_enabled().unwrap())
+    }
+
+    #[test]
+    fn disable_raw_mode() {
+        let mut terminal = Terminal::new();
+        terminal.enable_raw_mode();
+        terminal.disable_raw_mode();
+
+        assert_eq!(terminal.is_raw_mode(), is_raw_mode_enabled().unwrap());
+    }
+
+    #[test]
+    fn reach_minimum_terminal_size() {
+        let mut terminal = Terminal::new();
+
+        let result = terminal.update_size(MINIMUM_COL_SIZE - 2, MINIMUM_ROW_SIZE - 2);
+        match result {
+            Ok(..) => panic!("must be panic"),
+            Err(err) => assert_eq!(err, InternalError::MinimumTerminalSizeReached),
+        }
     }
 }
