@@ -117,3 +117,70 @@ impl FileFunctionalities for Buffer {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::{fs::File, io::Write};
+
+    use super::{Buffer, FileFunctionalities, LinesModifier};
+
+    fn create_file() -> File {
+        let mut file = File::options()
+            .read(true)
+            .write(true)
+            .create(true)
+            .open("test.rs")
+            .expect("failed to open file");
+        file.write_all(
+            br#"#[derive(Debug)]
+        pub struct Content {
+            inner: Vec<u8>,
+        }
+        
+        impl Content {
+            pub fn new(data: &[u8]) -> Self {
+                let vec = data.to_vec();
+                Self { inner: vec }
+            }
+        }
+        "#,
+        );
+        file
+    }
+
+    #[test]
+    fn open_file() {}
+
+    #[test]
+    fn read_file() {}
+
+    #[test]
+    fn get_row() {}
+
+    #[test]
+    fn remove_file_content() {}
+
+    #[test]
+    fn write_to_file() {}
+
+    #[test]
+    fn edit_single_row_then_write_to_file() {}
+
+    #[test]
+    fn add_new_row() {}
+
+    #[test]
+    fn delete_file() {}
+
+    #[test]
+    fn get_file_information() {}
+
+    #[test]
+    fn change_filename() {}
+
+    #[test]
+    fn change_file_prefix() {}
+
+    #[test]
+    fn move_file_location() {}
+}
