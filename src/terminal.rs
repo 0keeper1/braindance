@@ -106,8 +106,7 @@ mod tests {
         let mut terminal = Terminal::new();
         terminal.enable_raw_mode();
 
-        assert!(terminal.is_raw_mode());
-        assert!(is_raw_mode_enabled().unwrap())
+        assert_eq!(terminal.is_raw_mode(), is_raw_mode_enabled().unwrap());
     }
 
     #[test]
