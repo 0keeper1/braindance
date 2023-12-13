@@ -1,4 +1,4 @@
-use crate::{editor::Editor, utils::clean_screen};
+use crate::editor::Editor;
 
 use super::{frame::FrameDrawer, row::RowRenderer};
 

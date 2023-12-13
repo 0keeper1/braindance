@@ -1,4 +1,4 @@
-use crate::{cursor::free_goto, editor::Editor, error::Result, prompt::Prompt, render::Render};
+use crate::{cursor::free_goto, editor::Editor, prompt::Prompt, render::Render};
 
 pub trait PromptRenderer {
     fn render_prompt(&self, row_size: u16);

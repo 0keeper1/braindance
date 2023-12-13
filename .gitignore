@@ -1,5 +1,4 @@
 target
 .vscode
 *.log
-tests
 Cargo.lock

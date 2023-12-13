@@ -1,8 +1,15 @@
 use std::path::PathBuf;
 
 use crate::{
-    buffer::Buffer, counter::Counter, event::EventHandler, prelude::*, prompt::Prompt,
-    render::Render, terminal::Terminal, update::Update, utils::clean_screen,
+    buffer::{Buffer, Mode},
+    counter::Counter,
+    event::EventHandler,
+    prelude::*,
+    prompt::Prompt,
+    render::Render,
+    terminal::Terminal,
+    update::Update,
+    utils::clean_screen,
 };
 
 use log::{info, LevelFilter};
@@ -65,10 +72,10 @@ impl Editor {
         if path.is_dir() {
             self.change_workspace(path);
         } else if path.is_file() {
-            let (buffer_len, perv_row_len, current_row_len, next_row_len) =
-                self.buffer.set_path_and_read(path)?;
-            self.render
-                .update_buffer_info(buffer_len, perv_row_len, current_row_len, next_row_len);
+            match self.buffer.open(path, Mode::ReadWrite)? {
+                Ok(..) => todo!(),
+                Err(err) => self.set_error(err),
+            };
         };
         Ok(())
     }

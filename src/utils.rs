@@ -1,25 +1,5 @@
-use crate::{
-    constants::{clear, cursors},
-    lines::Lines,
-    row::Row,
-};
+use crate::constants::{clear, cursors};
 use std::ffi::OsStr;
-
-pub trait ReadLines {
-    fn lines(self) -> Lines;
-}
-
-impl ReadLines for Vec<u8> {
-    #[inline]
-    fn lines(self) -> Lines {
-        Lines {
-            inner: self
-                .split(|char| char == &b'\n')
-                .map(Row::from)
-                .collect::<Vec<Row>>(),
-        }
-    }
-}
 
 #[inline]
 pub fn clean_screen() {

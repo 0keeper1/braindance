@@ -1,1 +1,1 @@
-pub use crate::error::{InternalError, InternalResult, IoResult, Result};
+pub use crate::error::{AppResult, InternalError, InternalResult, IoResult};

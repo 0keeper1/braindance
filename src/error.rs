@@ -1,39 +1,78 @@
-use std::{io, result, str::FromStr};
+use std::{io, ops::FromResidual};
 
 pub type IoResult<T> = io::Result<T>;
 
-pub type InternalResult<T> = result::Result<T, InternalError>;
+pub type InternalResult<T> = Result<T, InternalError>;
 
-pub type Result<T> = IoResult<InternalResult<T>>;
+pub type AppResult<T> = IoResult<InternalResult<T>>;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum InternalError {
-    /// when path is directory not a file
-    PathIsNotAFile,
-    /// reach minimum size of terminal
-    MinimumTerminalSizeReached,
-    /// maximum size of terminal
-    MaximumTerminalSizeReached,
-    /// maximum key repeat
-    MaximumKeyRepeatReached,
-    /// duration time reached
-    DurationTimeReached,
-    /// key does not supported
+    // Key Errors
     KeyDoesNotSupported,
-    /// No Error
+    DurationTimeReached,
+    MaximumKeyRepeatReached,
+
+    // Terminal Errors
+    MaximumTerminalSizeReached,
+    MinimumTerminalSizeReached,
+
+    // File Errors
+    FileNotFound,
+    PathIsNotAFile,
+    PermissionDenied,
+    AlreadyExists,
+    ReadOnlyFilesystem,
+    FileTooLarge,
+    ResourceBusy,
+    ExecutableFileBusy,
+    ReadOnlyBuffer,
+    FailedToWrite,
+    OsError,
+
+    // No Error
     NoError,
 }
 
 impl<'a> InternalError {
     pub fn to_str(self) -> &'a str {
         match self {
-            InternalError::PathIsNotAFile => "Path is not a file.",
-            InternalError::MinimumTerminalSizeReached => "Minimum terminal size reached",
-            InternalError::MaximumTerminalSizeReached => "Maximum terminal size reached",
+            // Key Error
             InternalError::MaximumKeyRepeatReached => "Maximum key repeat reached",
             InternalError::DurationTimeReached => "Duration time reached",
+            InternalError::KeyDoesNotSupported => "Key Not Supported",
+
+            // Terminal Error
+            InternalError::MaximumTerminalSizeReached => "Maximum terminal size reached",
+            InternalError::MinimumTerminalSizeReached => "Minimum terminal size reached",
+
+            // File Errors
+            InternalError::PathIsNotAFile => "Path is not a file",
+            InternalError::PermissionDenied => "Permission denied",
+            InternalError::ReadOnlyFilesystem => "File system is read only",
+            InternalError::ExecutableFileBusy => "Executable file is busy",
+            InternalError::FileNotFound => "File not found",
+            InternalError::AlreadyExists => "File already exists",
+            InternalError::FileTooLarge => "File is too large",
+            InternalError::ResourceBusy => "File is busy",
+            InternalError::ReadOnlyBuffer => "Buffer is read-only",
+            InternalError::FailedToWrite => "Failed to write",
+            InternalError::OsError => "Operation System error",
+
+            // No Error
             InternalError::NoError => "",
-            InternalError::KeyDoesNotSupported => "Kek Not Supported",
         }
+    }
+}
+
+impl<T> From<InternalError> for AppResult<T> {
+    fn from(value: InternalError) -> Self {
+        Self::Ok(Err(value))
+    }
+}
+
+impl<T> FromResidual<InternalError> for AppResult<T> {
+    fn from_residual(residual: InternalError) -> Self {
+        Self::Ok(Err(residual))
     }
 }

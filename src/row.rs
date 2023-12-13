@@ -4,7 +4,9 @@ use std::{
     str,
 };
 
-#[derive(Debug)]
+use crate::lines::Lines;
+
+#[derive(Debug, PartialEq, Eq)]
 pub struct Row {
     pub inner: Vec<u8>,
 }
@@ -14,7 +16,8 @@ impl Row {
         Self { inner: Vec::new() }
     }
 
-    fn set_innder(vec: Vec<u8>) -> Self {
+    #[inline]
+    fn set_inner(vec: Vec<u8>) -> Self {
         Self { inner: vec }
     }
 
@@ -34,7 +37,39 @@ impl fmt::Display for Row {
 impl From<&[u8]> for Row {
     #[inline]
     fn from(value: &[u8]) -> Self {
-        Row::set_innder(Vec::from(value))
+        Row::set_inner(Vec::from(value))
+    }
+}
+
+impl From<&str> for Row {
+    fn from(value: &str) -> Self {
+        Self {
+            inner: value.into(),
+        }
+    }
+}
+
+impl From<Vec<u8>> for Row {
+    #[inline]
+    fn from(value: Vec<u8>) -> Self {
+        Row::set_inner(value)
+    }
+}
+
+impl From<String> for Row {
+    #[inline]
+    fn from(value: String) -> Self {
+        Row::from(value.as_bytes())
+    }
+}
+
+impl FromIterator<String> for Lines {
+    fn from_iter<T: IntoIterator<Item = String>>(iter: T) -> Self {
+        let mut vec = Vec::new();
+        for line in iter {
+            vec.push(Row::from(line))
+        }
+        Lines { inner: vec }
     }
 }
 

@@ -1,10 +1,10 @@
-use std::ops::{self, Deref, DerefMut};
-use std::{fs::File, io::Read};
+use std::{
+    fs::File,
+    io::{BufRead, BufReader},
+    ops::{self, Deref, DerefMut},
+};
 
-use crate::error::Result;
-use crate::prelude::IoResult;
-use crate::row::Row;
-use crate::utils::ReadLines;
+use crate::{prelude::*, row::Row};
 
 #[derive(Debug)]
 pub struct Lines {
@@ -23,20 +23,19 @@ impl Lines {
         self.inner.len()
     }
 
-    pub fn read_file(file: &mut File) -> IoResult<Self> {
-        let mut buf = Vec::new();
-        file.read_to_end(&mut buf)?;
-        Ok(buf.lines())
+    #[inline]
+    pub fn push_empty_row(&mut self) {
+        self.inner.push(Row::new())
     }
 
-    pub fn export(&self) -> Vec<u8> {
-        let mut vec: Vec<u8> = Vec::new();
-        for row in &self.inner {
-            for char in row.export() {
-                vec.push(*char)
-            }
-        }
-        vec
+    #[inline]
+    pub fn push_row_with_content(&mut self, content: String) {
+        self.inner.push(Row::from(content))
+    }
+
+    #[inline]
+    pub fn read(file: &mut File) -> IoResult<Self> {
+        BufReader::new(file).lines().try_collect::<Lines>()
     }
 }
 
@@ -75,5 +74,55 @@ impl IntoIterator for Lines {
 
     fn into_iter(self) -> Self::IntoIter {
         self.inner.into_iter()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::{
+        env,
+        fs::{remove_file, File},
+        io::Write,
+        path::PathBuf,
+    };
+
+    use crate::lines::Lines;
+
+    fn create() -> PathBuf {
+        let mut tmp = env::temp_dir();
+        tmp.push("test.rs");
+
+        let mut file = File::create(tmp.clone()).expect("failed to create file");
+
+        file.write_all(
+            br#"#[derive(Debug)]
+struct User {
+    name: String,
+    age: i32,
+}
+
+impl User {
+    fn new(name: String, age: i32) -> Self {
+        Self {
+            name,
+            age
+        }
+    }
+}
+"#,
+        )
+        .expect("failed to write");
+
+        tmp
+    }
+
+    #[test]
+    fn file_to_line() {
+        let path = create();
+
+        let mut file = File::open(path.clone()).unwrap();
+
+        assert_eq!(Lines::read(&mut file).unwrap().len(), 14);
+        remove_file(path);
     }
 }

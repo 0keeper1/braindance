@@ -1,5 +1,3 @@
-use log::info;
-
 use crate::{cursor::Cursor, range::Range, update::BAR_ROW_POSITION};
 
 pub const EDITOR_FIRST_ROW_POSITION: u16 = BAR_ROW_POSITION + 1;

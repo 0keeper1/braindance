@@ -4,7 +4,7 @@ use std::{
     str,
 };
 
-use crate::error::Result;
+use crate::prelude::*;
 
 /// store prompt command and execute the command
 #[derive(Debug)]

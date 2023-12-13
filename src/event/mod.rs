@@ -7,7 +7,7 @@ use std::time::Duration;
 use crossterm::event::{poll, read, Event};
 use log::info;
 
-use crate::{editor::Editor, prelude::*, row, settings::MAXIMUM_KEY_DURATION_TIME};
+use crate::{editor::Editor, prelude::*, settings::MAXIMUM_KEY_DURATION_TIME};
 
 use self::{key::KeyHandler, mouse::MouseHandler, paste::PasteHandler};
 
@@ -17,7 +17,7 @@ pub trait EventHandler: PasteHandler + MouseHandler + KeyHandler {
 
 impl EventHandler for Editor {
     fn event(&mut self) -> IoResult<()> {
-        if poll(Duration::from_millis(1500))? {
+        if poll(Duration::from_millis(MAXIMUM_KEY_DURATION_TIME))? {
             let ret = match read()? {
                 Event::Resize(col, row) => {
                     match self.terminal.update_size(col, row) {

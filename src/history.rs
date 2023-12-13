@@ -1,6 +1,8 @@
+use crate::row::Row;
+
 #[derive(Debug)]
 pub struct History {
-    inner: Vec<u8>,
+    inner: Vec<Row>,
 }
 
 impl History {

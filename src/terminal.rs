@@ -37,7 +37,7 @@ impl Terminal {
         Ok(())
     }
 
-    pub fn initialize_size(&mut self) -> Result<()> {
+    pub fn initialize_size(&mut self) -> AppResult<()> {
         let (col, row) = terminal_size()?;
         Ok(self.update_size(col, row))
     }
@@ -104,16 +104,18 @@ mod tests {
     #[test]
     fn enable_raw_mode() {
         let mut terminal = Terminal::new();
-        terminal.enable_raw_mode();
+        terminal.enable_raw_mode().unwrap();
 
         assert_eq!(terminal.is_raw_mode(), is_raw_mode_enabled().unwrap());
+
+        crossterm::terminal::disable_raw_mode().unwrap();
     }
 
     #[test]
     fn disable_raw_mode() {
         let mut terminal = Terminal::new();
-        terminal.enable_raw_mode();
-        terminal.disable_raw_mode();
+        terminal.enable_raw_mode().unwrap();
+        terminal.disable_raw_mode().unwrap();
 
         assert_eq!(terminal.is_raw_mode(), is_raw_mode_enabled().unwrap());
     }
