@@ -5,7 +5,7 @@
 
 ## About Braindance
 
-The name "Braindance" comes from [Cyberpunnk 2077](https://cyberpunk.fandom.com/wiki/Braindance#Braindance), its written in *Rust*, I created this project for myself, so don't expect it to be more user-friendly than it currently is. And If you've ever needed something, feel free to ask.
+The name "Braindance" comes from [Cyberpunnk 2077](https://cyberpunk.fandom.com/wiki/Braindance#Braindance), its written in *C*, I created this project for myself, so don't expect it to be more user-friendly than it currently is. And If you've ever needed something, feel free to ask.
 <br>
 If you've ever needed to customize the editor, you have to recompile the editor to do so.
 <br>
