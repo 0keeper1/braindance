@@ -22,7 +22,7 @@ pub enum Mode {
 #[derive(Debug)]
 /// store File data and more information
 pub struct Buffer {
-    path: PathBuf,
+    pub path: PathBuf,
     pub format: String,
     pub file_name: String,
     mode: Mode,
@@ -42,17 +42,15 @@ impl Buffer {
         }
     }
 
-    pub fn open(&mut self, path: PathBuf, mode: Mode) -> AppResult<()> {
+    pub fn open(&mut self, path: &Path, mode: Mode) -> AppResult<()> {
         match self.update_content(&path)? {
             Ok(..) => (),
             Err(err) => return Ok(Err(err)),
         };
 
-        println!("{:?}", self.content);
-
         self.update_info(&path);
 
-        self.path = path;
+        self.path = path.to_path_buf();
 
         self.mode = mode;
 
@@ -239,7 +237,7 @@ mod tests {
         env,
         fs::{remove_file, File},
         io::{Read, Write},
-        path::PathBuf,
+        path::{PathBuf, Path},
     };
 
     use crate::{prelude::InternalError, row::Row};
@@ -280,8 +278,8 @@ impl User {
 
         let mut buf = Buffer::new();
 
-        buf.open(path.clone(), Mode::ReadWrite)
-            .expect("failed to open file")
+        buf.open(&path, Mode::ReadWrite)
+            .expect("failewd to open file")
             .expect("internal error");
 
         remove_file(path).expect("failed to remove file");
@@ -297,7 +295,7 @@ impl User {
         let mut buf = Buffer::new();
 
         let result = buf
-            .open(PathBuf::from("x.rs"), Mode::ReadWrite)
+            .open(&Path::new("x.rs"), Mode::ReadWrite)
             .expect("failed to open file");
         match result {
             Ok(..) => panic!("must be panic"),
@@ -311,7 +309,7 @@ impl User {
 
         let mut buf = Buffer::new();
 
-        buf.open(path.clone(), Mode::ReadOnly)
+        buf.open(&path, Mode::ReadOnly)
             .expect("failed to open")
             .expect("failed to read");
         remove_file(path).expect("failed to remove file");
@@ -330,7 +328,7 @@ impl User {
 
         let mut buf = Buffer::new();
 
-        buf.open(path.clone(), Mode::ReadWrite)
+        buf.open(&path, Mode::ReadWrite)
             .expect("failed to open")
             .expect("failed tp read");
         buf.push_row_with_content(r#"fn new_user() {}"#.to_string());

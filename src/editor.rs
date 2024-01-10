@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{PathBuf, Path};
 
 use crate::{
     buffer::{Buffer, Mode},
@@ -60,20 +60,22 @@ impl Editor {
         self.internal_error = InternalError::NoError;
     }
 
-    fn change_workspace(&mut self, path: PathBuf) {
-        self.dir = path;
+    fn change_workspace(&mut self, path: &Path) {
+        println!("change workspace");
+        self.dir = path.to_path_buf();
     }
 
+    #[inline]
     fn remove_workspace(&mut self) {
         self.dir.clear()
     }
 
-    pub fn init_path(&mut self, path: PathBuf) -> IoResult<()> {
+    pub fn init_path(&mut self, path: &Path) -> IoResult<()> {
         if path.is_dir() {
-            self.change_workspace(path);
+            self.dir.push(path)
         } else if path.is_file() {
             match self.buffer.open(path, Mode::ReadWrite)? {
-                Ok(..) => todo!(),
+                Ok(..) => (),
                 Err(err) => self.set_error(err),
             };
         };
@@ -121,5 +123,41 @@ impl Editor {
 
         self.shutdown();
         Ok(())
+    }
+}
+
+
+#[cfg(test)]
+mod tests {
+    use std::path::PathBuf;
+
+    use super::Editor;
+
+    #[test]
+    fn set_folder_path() {
+        let path = PathBuf::from("./src/");
+
+        let mut editor = Editor::new();
+
+        match editor.init_path(&path) {
+            Ok(()) => (),
+            Err(err) => todo!("{err}"),
+        };
+
+        assert_eq!(editor.dir, path)
+    }
+
+    #[test]
+    fn set_file_path() {
+        let path = PathBuf::from("./src/buffer.rs");
+
+        let mut editor = Editor::new();
+
+        match editor.init_path(&path) {
+            Ok(()) => (),
+            Err(err) => todo!("{err}"),
+        };
+
+        assert_eq!(editor.buffer.path, path)
     }
 }

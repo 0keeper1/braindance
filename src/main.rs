@@ -28,7 +28,7 @@ mod terminal;
 mod update;
 mod utils;
 
-use std::{env, path::PathBuf};
+use std::{env, path::Path};
 
 use editor::Editor;
 use prelude::*;
@@ -41,7 +41,7 @@ fn main() -> IoResult<()> {
     let mut editor = Editor::new();
 
     if let Some(path) = args.nth(1) {
-        let location = PathBuf::from(path);
+        let location = Path::new(&path);
         editor.init_path(location)?;
     }
 
