@@ -2,11 +2,10 @@
     io_error_more,
     try_trait_v2,
     path_file_prefix,
-    file_create_new,
     iterator_try_collect,
     write_all_vectored
 )]
-// #![allow(unused)]
+#![allow(unused)]
 
 mod buffer;
 mod constants;
