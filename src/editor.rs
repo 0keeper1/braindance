@@ -1,4 +1,4 @@
-use std::path::{PathBuf, Path};
+use std::path::{Path, PathBuf};
 
 use crate::{
     buffer::{Buffer, Mode},
@@ -60,8 +60,8 @@ impl Editor {
         self.internal_error = InternalError::NoError;
     }
 
+    #[inline]
     fn change_workspace(&mut self, path: &Path) {
-        println!("change workspace");
         self.dir = path.to_path_buf();
     }
 
@@ -82,25 +82,15 @@ impl Editor {
         Ok(())
     }
 
+    fn setup_terminal_settings(&mut self) -> IoResult<()> {
+        self.terminal.enable_raw_mode()?;
+        self.terminal.update_size()?;
+        Ok(())
+    }
+
     fn init(&mut self) -> IoResult<()> {
         simple_logging::log_to_file("test.log", LevelFilter::Info)?;
-
-        self.terminal.enable_raw_mode()?;
-
-        match self.terminal.initialize_size()? {
-            Ok(..) => info!("Initialize the size of terminal."),
-            Err(err) => self.internal_error = err,
-        };
-        let terminal_row_size = self.terminal.get_row_size();
-
-        self.render.set_end_editor_position(terminal_row_size);
-
-        self.render.update(self.buffer.len());
-
-        info!("initialized.");
-
-        info!("{:?}", self.render);
-
+        self.setup_terminal_settings()?;
         Ok(())
     }
 
@@ -110,11 +100,12 @@ impl Editor {
         info!("shutdown")
     }
 
-    pub fn run(&mut self) -> IoResult<()> {
+    #[tokio::main]
+    pub async fn run(&mut self) -> IoResult<()> {
         self.init()?;
 
         loop {
-            self.update()?;
+            self.update().await?;
             self.event()?;
             if self.exit {
                 break;
@@ -125,7 +116,6 @@ impl Editor {
         Ok(())
     }
 }
-
 
 #[cfg(test)]
 mod tests {

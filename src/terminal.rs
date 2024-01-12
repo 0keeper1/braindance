@@ -65,7 +65,6 @@ impl Terminal {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crossterm::terminal::is_raw_mode_enabled;

@@ -43,12 +43,12 @@ impl Buffer {
     }
 
     pub fn open(&mut self, path: &Path, mode: Mode) -> AppResult<()> {
-        match self.update_content(&path)? {
+        match self.update_content(path)? {
             Ok(..) => (),
             Err(err) => return Ok(Err(err)),
         };
 
-        self.update_info(&path);
+        self.update_info(path);
 
         self.path = path.to_path_buf();
 
@@ -237,7 +237,7 @@ mod tests {
         env,
         fs::{remove_file, File},
         io::{Read, Write},
-        path::{PathBuf, Path},
+        path::{Path, PathBuf},
     };
 
     use crate::{prelude::InternalError, row::Row};
@@ -295,7 +295,7 @@ impl User {
         let mut buf = Buffer::new();
 
         let result = buf
-            .open(&Path::new("x.rs"), Mode::ReadWrite)
+            .open(Path::new("x.rs"), Mode::ReadWrite)
             .expect("failed to open file");
         match result {
             Ok(..) => panic!("must be panic"),

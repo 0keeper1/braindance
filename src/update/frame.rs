@@ -3,12 +3,12 @@ use crate::{cursor::free_goto, editor::Editor, VERSION};
 pub const BAR_ROW_POSITION: u16 = 1;
 
 pub trait FrameDrawer {
-    fn draw_bar(&self, col_size: u16);
-    fn draw_footer(&self, row_size: u16, col_size: u16);
+    async fn draw_bar(&self, col_size: u16);
+    async fn draw_footer(&self, row_size: u16, col_size: u16);
 }
 
 impl FrameDrawer for Editor {
-    fn draw_bar(&self, col_size: u16) {
+    async fn draw_bar(&self, col_size: u16) {
         free_goto(0, 0);
 
         for _ in 0..col_size {
@@ -19,7 +19,7 @@ impl FrameDrawer for Editor {
         print!("\x1b[7mBRAINDANCE {}\x1b[0m", VERSION);
     }
 
-    fn draw_footer(&self, row_size: u16, col_size: u16) {
+    async fn draw_footer(&self, row_size: u16, col_size: u16) {
         let footer_position = row_size - 1;
 
         free_goto(footer_position, 0);
