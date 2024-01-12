@@ -2,6 +2,8 @@ use crossterm::event::KeyCode;
 
 // -- Core Section--
 
+pub const TITLE_BAR: &str = concat!("\x1b[7mBRAINDANCE ", env!("CARGO_PKG_VERSION"), "\x1b[0m");
+
 pub const MAXIMUM_KEY_REPEAT_LIMIT: u8 = 3;
 /// best choice between 200 .. 400
 pub const MAXIMUM_KEY_DURATION_TIME: u64 = 200;

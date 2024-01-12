@@ -1,32 +1,39 @@
-use crate::{cursor::free_goto, editor::Editor, VERSION};
+use tokio::io::{stdout, AsyncWriteExt};
+
+use crate::{cursor::{free_goto, free_goto_fmt}, editor::Editor, VERSION, settings::TITLE_BAR};
 
 pub const BAR_ROW_POSITION: u16 = 1;
 
 pub trait FrameDrawer {
-    async fn draw_bar(&self, col_size: u16);
-    async fn draw_footer(&self, row_size: u16, col_size: u16);
+    fn draw_bar(&self, col_size: u16);
+    fn draw_footer(&self, row_size: u16, col_size: u16);
 }
 
 impl FrameDrawer for Editor {
-    async fn draw_bar(&self, col_size: u16) {
-        free_goto(0, 0);
+    fn draw_bar(&self, col_size: u16) {
 
+        let mut bar_line = String::from("\x1B[0;0H");
+        
         for _ in 0..col_size {
-            print!("█");
+            bar_line.push('█');
         }
 
-        free_goto(0, 2);
-        print!("\x1b[7mBRAINDANCE {}\x1b[0m", VERSION);
+        bar_line.push_str("\x1B[0;2H");
+        bar_line.push_str(TITLE_BAR);
+
+        print!("{}", bar_line);        
     }
 
-    async fn draw_footer(&self, row_size: u16, col_size: u16) {
+    fn draw_footer(&self, row_size: u16, col_size: u16) {
         let footer_position = row_size - 1;
 
         free_goto(footer_position, 0);
+        let mut footer_line = String::new();
         for _ in 0..col_size {
-            print!("█")
+            footer_line.push('█');
         }
-
+        print!("{}", footer_line);
+    
         free_goto(footer_position, 2);
         print!("\x1b[7m{}\x1b[0m", self.buffer.file_name);
 

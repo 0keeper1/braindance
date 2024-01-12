@@ -60,3 +60,7 @@ impl Cursor {
 pub fn free_goto(row: u16, col: u16) {
     print!("\x1B[{};{}H", row, col);
 }
+
+pub fn free_goto_fmt(row: u16, col: u16) -> String {
+    format!("\x1B[{};{}H", row, col)
+}

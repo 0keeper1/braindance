@@ -100,12 +100,11 @@ impl Editor {
         info!("shutdown")
     }
 
-    #[tokio::main]
-    pub async fn run(&mut self) -> IoResult<()> {
+    pub fn run(&mut self) -> IoResult<()> {
         self.init()?;
 
         loop {
-            self.update().await?;
+            self.update()?;
             self.event()?;
             if self.exit {
                 break;
