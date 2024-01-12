@@ -5,22 +5,18 @@ use crossterm::terminal::{disable_raw_mode, enable_raw_mode, size as terminal_si
 const MINIMUM_ROW_SIZE: u16 = 10;
 const MINIMUM_COL_SIZE: u16 = 10;
 
-#[derive(Debug, Clone, Copy)]
-pub struct Size {
-    pub col: u16,
-    pub row: u16,
-}
-
 #[derive(Debug)]
 pub struct Terminal {
-    size: Size,
+    col: u16,
+    row: u16,
     is_raw_mode: bool,
 }
 
 impl Terminal {
     pub fn new() -> Self {
         Self {
-            size: Size::new(0, 0),
+            col: 0,
+            row: 0,
             is_raw_mode: false,
         }
     }
@@ -37,11 +33,6 @@ impl Terminal {
         Ok(())
     }
 
-    pub fn initialize_size(&mut self) -> AppResult<()> {
-        let (col, row) = terminal_size()?;
-        Ok(self.update_size(col, row))
-    }
-
     #[inline]
     pub fn is_raw_mode(&self) -> bool {
         self.is_raw_mode
@@ -49,49 +40,31 @@ impl Terminal {
 
     #[inline]
     pub fn get_col_size(&self) -> u16 {
-        self.size.col
+        self.col
     }
 
     #[inline]
     pub fn get_row_size(&self) -> u16 {
-        self.size.row
+        self.row
     }
 
     /// return size of the terminal (col, row)
     pub fn get_terminal_size(&self) -> (u16, u16) {
-        (self.size.col, self.size.row)
+        (self.col, self.row)
     }
 
-    #[inline]
-    pub fn get_size(&self) -> &Size {
-        &self.size
-    }
-
-    pub fn update_size(&mut self, col: u16, row: u16) -> InternalResult<()> {
+    pub fn update_size(&mut self) -> AppResult<()> {
+        let (col, row) = terminal_size()?;
         if col < MINIMUM_COL_SIZE || row < MINIMUM_ROW_SIZE {
-            Err(InternalError::MinimumTerminalSizeReached)
+            Ok(Err(InternalError::MinimumTerminalSizeReached))
         } else {
-            self.size.update_size(col, row);
-            Ok(())
+            self.col = col;
+            self.row = row;
+            Ok(Ok(()))
         }
     }
-
-    #[inline]
-    pub fn get_mut_size(&mut self) -> &mut Size {
-        &mut self.size
-    }
 }
 
-impl Size {
-    pub fn new(col: u16, row: u16) -> Self {
-        Self { col, row }
-    }
-
-    pub fn update_size(&mut self, col: u16, row: u16) {
-        self.col = col;
-        self.row = row;
-    }
-}
 
 #[cfg(test)]
 mod tests {
@@ -99,7 +72,7 @@ mod tests {
 
     use crate::prelude::InternalError;
 
-    use super::{Terminal, MINIMUM_COL_SIZE, MINIMUM_ROW_SIZE};
+    use super::Terminal;
 
     #[test]
     #[ignore = "not working on github workflow"]
@@ -123,10 +96,11 @@ mod tests {
     }
 
     #[test]
+    #[ignore = "not working on github workflow"]
     fn reach_minimum_terminal_size() {
         let mut terminal = Terminal::new();
 
-        let result = terminal.update_size(MINIMUM_COL_SIZE - 2, MINIMUM_ROW_SIZE - 2);
+        let result = terminal.update_size().expect("IO error");
         match result {
             Ok(..) => panic!("must be panic"),
             Err(err) => assert_eq!(err, InternalError::MinimumTerminalSizeReached),
