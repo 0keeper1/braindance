@@ -1,4 +1,8 @@
-use crate::{range::Range, update::BAR_ROW_POSITION, size::{RowCol, Cursor}};
+use crate::{
+    range::Range,
+    size::{Cursor, RowCol},
+    update::BAR_ROW_POSITION,
+};
 
 pub const EDITOR_FIRST_ROW_POSITION: u16 = BAR_ROW_POSITION + 1;
 

@@ -7,9 +7,9 @@ use crate::{
     prelude::*,
     prompt::Prompt,
     render::Render,
+    size::{RowCol, TerminalSize},
     update::Update,
     utils::{clean_screen, TerminalMode},
-    size::{TerminalSize, RowCol}
 };
 
 use log::{info, LevelFilter};
@@ -30,7 +30,7 @@ pub struct Editor {
     /// focus on Editor or Prompt
     pub layout: Layouts,
     pub terminal_size: RowCol, // store terminal size and raw Stdout
-    pub render: Render,     // rendering the display
+    pub render: Render,        // rendering the display
     pub internal_error: InternalError,
     pub exit: bool, // exit signal
 }
@@ -125,7 +125,7 @@ mod tests {
     use crossterm::terminal::is_raw_mode_enabled;
 
     use super::Editor;
-    use crate::{utils::TerminalMode, InternalError, size::TerminalSize};
+    use crate::{size::TerminalSize, utils::TerminalMode, InternalError};
 
     #[test]
     fn set_folder_path() {
@@ -187,5 +187,4 @@ mod tests {
             Err(err) => assert_eq!(err, InternalError::MinimumTerminalSizeReached),
         }
     }
-
 }

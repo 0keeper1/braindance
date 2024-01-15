@@ -25,7 +25,7 @@ pub struct Buffer {
     pub path: PathBuf,
     pub format: String,
     pub file_name: String,
-    mode: Mode,
+    pub mode: Mode,
     pub content: Lines,
     history: History,
 }

@@ -1,6 +1,11 @@
-use crate::{constants::{clear, cursors}, IoResult};
 use std::ffi::OsStr;
+
 use crossterm::terminal::{disable_raw_mode, enable_raw_mode};
+
+use crate::{
+    constants::{clear, cursors},
+    IoResult,
+};
 
 #[inline]
 pub fn clean_screen() {
@@ -23,7 +28,6 @@ pub trait TerminalMode {
         Ok(())
     }
 }
-
 
 pub fn file_prefix_to_language_name(file_prefix: Option<&OsStr>) -> &str {
     match file_prefix {
@@ -56,12 +60,4 @@ pub fn file_prefix_to_language_name(file_prefix: Option<&OsStr>) -> &str {
         },
         None => "NONE",
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use crossterm::terminal::is_raw_mode_enabled;
-
-    use crate::prelude::InternalError;
-
 }

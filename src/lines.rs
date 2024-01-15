@@ -6,7 +6,7 @@ use std::{
 
 use crate::{prelude::*, row::Row};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Lines {
     pub inner: Vec<Row>,
 }

@@ -2,7 +2,6 @@ use crossterm::terminal::{disable_raw_mode, enable_raw_mode, size as terminal_si
 
 use crate::prelude::*;
 
-
 pub trait TerminalSize {
     const MINIMUM_ROW_SIZE: u16 = 10;
     const MINIMUM_COL_SIZE: u16 = 10;
@@ -12,7 +11,7 @@ pub trait TerminalSize {
 
 pub trait Cursor {
     const FIRST_ROW: u16 = 1;
-    
+
     fn new() -> Self;
 
     fn increase_col(&mut self);
@@ -72,8 +71,11 @@ impl RowCol {
 }
 
 impl Cursor for RowCol {
-    fn new() -> Self{
-        Self { row: Self::FIRST_ROW, col: 0 }
+    fn new() -> Self {
+        Self {
+            row: Self::FIRST_ROW,
+            col: 0,
+        }
     }
 
     #[inline]

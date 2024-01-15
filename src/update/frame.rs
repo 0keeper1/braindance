@@ -1,10 +1,6 @@
 use tokio::io::{stdout, AsyncWriteExt};
 
-use crate::{
-    editor::Editor,
-    settings::TITLE_BAR,
-    VERSION,
-};
+use crate::{editor::Editor, settings::TITLE_BAR, VERSION};
 
 pub const BAR_ROW_POSITION: u16 = 1;
 
@@ -47,7 +43,8 @@ impl FrameDrawer for Editor {
         // free_goto(footer_position, col_size - 18);
         print!(
             "\x1b[7mline: {} column: {}\x1b[0m",
-            self.render.cursor.get_row(), self.render.cursor.get_col()
+            self.render.cursor.get_row(),
+            self.render.cursor.get_col()
         );
 
         // free_goto(footer_position, col_size - 40);

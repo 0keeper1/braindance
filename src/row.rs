@@ -6,7 +6,7 @@ use std::{
 
 use crate::lines::Lines;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Row {
     pub inner: Vec<u8>,
 }
