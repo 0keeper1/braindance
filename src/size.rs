@@ -1,6 +1,6 @@
 use crossterm::terminal::{disable_raw_mode, enable_raw_mode, size as terminal_size};
 
-use crate::{AppResult, InternalError};
+use crate::prelude::*;
 
 
 pub trait TerminalSize {
@@ -11,12 +11,12 @@ pub trait TerminalSize {
 }
 
 #[derive(Debug, Default)]
-pub struct Size {
+pub struct RowCol {
     row: u16,
     col: u16,
 }
 
-impl Size {
+impl RowCol {
     pub fn new(row: u16, col: u16) -> Self {
         Self { row, col }
     }
@@ -42,7 +42,7 @@ impl Size {
     }
 }
 
-impl TerminalSize for Size {
+impl TerminalSize for RowCol {
     fn update_size(&mut self) -> AppResult<()> {
         let (col, row) = terminal_size()?;
         if col < Self::MINIMUM_COL_SIZE || row < Self::MINIMUM_ROW_SIZE {

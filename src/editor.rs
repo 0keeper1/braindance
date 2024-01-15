@@ -9,7 +9,7 @@ use crate::{
     render::Render,
     update::Update,
     utils::{clean_screen, TerminalMode},
-    size::{TerminalSize, Size}
+    size::{TerminalSize, RowCol}
 };
 
 use log::{info, LevelFilter};
@@ -29,7 +29,7 @@ pub struct Editor {
     pub counter: Counter,
     /// focus on Editor or Prompt
     pub layout: Layouts,
-    pub terminal_size: Size, // store terminal size and raw Stdout
+    pub terminal_size: RowCol, // store terminal size and raw Stdout
     pub render: Render,     // rendering the display
     pub internal_error: InternalError,
     pub exit: bool, // exit signal
@@ -43,7 +43,7 @@ impl Editor {
             prompt: Prompt::new(),
             counter: Counter::new(),
             layout: Layouts::Editor,
-            terminal_size: Size::default(),
+            terminal_size: RowCol::default(),
             render: Render::new(),
             internal_error: InternalError::NoError,
             exit: false,
