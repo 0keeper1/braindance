@@ -1,6 +1,5 @@
 use crate::{
     constants::clear,
-    cursor::free_goto,
     editor::Editor,
     render::EDITOR_FIRST_ROW_POSITION,
     settings::{EMPTY_LINE_CHARACTER, LINE_SEPARATOR},
@@ -26,7 +25,7 @@ impl RowRenderer for Editor {
 
     #[allow(clippy::print_with_newline)]
     fn render_rows(&self, row_size: u16) {
-        free_goto(EDITOR_FIRST_ROW_POSITION, 0);
+        // free_goto(EDITOR_FIRST_ROW_POSITION, 0);
 
         let file_position = self.render.get_position();
 

@@ -1,4 +1,4 @@
-use crate::{cursor::Cursor, range::Range, update::BAR_ROW_POSITION};
+use crate::{range::Range, update::BAR_ROW_POSITION, size::{RowCol, Cursor}};
 
 pub const EDITOR_FIRST_ROW_POSITION: u16 = BAR_ROW_POSITION + 1;
 
@@ -12,7 +12,7 @@ pub trait ArrowMoves {
 #[derive(Debug)]
 /// store data we need it many and many times.
 pub struct Render {
-    pub cursor: Cursor,
+    pub cursor: RowCol,
     /// this range provide first row and last row to display
     /// end of range can increase or decreased
     end_editor_position: u16,
@@ -108,16 +108,16 @@ impl Render {
 
 impl ArrowMoves for Render {
     fn move_right(&mut self) {
-        if (self.cursor.col as usize) == self.current_row_len {
+        if (self.cursor.get_row() as usize) == self.current_row_len {
             return;
         }
-        self.cursor.col += 1;
+        self.cursor.increase_col();
     }
 
     fn move_left(&mut self) {}
 
     fn move_up(&mut self) {
-        if self.cursor.row == 2 {
+        if self.cursor.get_row() == 2 {
             self.decrease_position();
             return;
         }
@@ -126,15 +126,15 @@ impl ArrowMoves for Render {
             self.row_position -= 1;
         }
 
-        self.cursor.row -= 1;
+        self.cursor.decrease_row();
     }
 
     fn move_down(&mut self) {
-        if ((self.cursor.row + 1) as usize) > self.buffer_len {
+        if ((self.cursor.get_row() + 1) as usize) > self.buffer_len {
             return;
         }
 
-        if self.cursor.row == self.end_editor_position {
+        if self.cursor.get_row() == self.end_editor_position {
             self.increase_position();
             return;
         }
@@ -143,6 +143,6 @@ impl ArrowMoves for Render {
             self.row_position += 1;
         }
 
-        self.cursor.row += 1
+        self.cursor.decrease_row();
     }
 }

@@ -7,6 +7,7 @@ mod row;
 use std::io::{stdout, Write};
 
 use crate::prelude::*;
+use crate::size::Cursor as _;
 use crate::{
     editor::{Editor, Layouts},
     utils::{clean_screen, hide_cursor},
@@ -21,7 +22,7 @@ pub trait Update: EditorRenderer + PromptRenderer {
 
 impl Update for Editor {
     fn update(&self) -> IoResult<()> {
-        let (terminal_row_size, terminal_col_size) = self.terminal_size.get_sizes();
+        let (terminal_row_size, terminal_col_size) = self.terminal_size.get_row_col();
 
         hide_cursor();
         clean_screen();

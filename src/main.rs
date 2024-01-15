@@ -10,7 +10,6 @@
 mod buffer;
 mod constants;
 mod counter;
-mod cursor;
 mod editor;
 mod error;
 mod event;
