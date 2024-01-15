@@ -21,7 +21,7 @@ pub trait Update: EditorRenderer + PromptRenderer {
 
 impl Update for Editor {
     fn update(&self) -> IoResult<()> {
-        let (terminal_col_size, terminal_row_size) = self.terminal.get_terminal_size();
+        let (terminal_row_size, terminal_col_size) = self.terminal_size.get_sizes();
 
         hide_cursor();
         clean_screen();

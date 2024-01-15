@@ -1,6 +1,11 @@
 use tokio::io::{stdout, AsyncWriteExt};
 
-use crate::{cursor::{free_goto, free_goto_fmt}, editor::Editor, VERSION, settings::TITLE_BAR};
+use crate::{
+    cursor::{free_goto, free_goto_fmt},
+    editor::Editor,
+    settings::TITLE_BAR,
+    VERSION,
+};
 
 pub const BAR_ROW_POSITION: u16 = 1;
 
@@ -11,9 +16,8 @@ pub trait FrameDrawer {
 
 impl FrameDrawer for Editor {
     fn draw_bar(&self, col_size: u16) {
-
         let mut bar_line = String::from("\x1B[0;0H");
-        
+
         for _ in 0..col_size {
             bar_line.push('█');
         }
@@ -21,7 +25,7 @@ impl FrameDrawer for Editor {
         bar_line.push_str("\x1B[0;2H");
         bar_line.push_str(TITLE_BAR);
 
-        print!("{}", bar_line);        
+        print!("{}", bar_line);
     }
 
     fn draw_footer(&self, row_size: u16, col_size: u16) {
@@ -33,7 +37,7 @@ impl FrameDrawer for Editor {
             footer_line.push('█');
         }
         print!("{}", footer_line);
-    
+
         free_goto(footer_position, 2);
         print!("\x1b[7m{}\x1b[0m", self.buffer.file_name);
 

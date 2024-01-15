@@ -7,9 +7,9 @@ use crate::{
     prelude::*,
     prompt::Prompt,
     render::Render,
-    terminal::Terminal,
     update::Update,
-    utils::clean_screen,
+    utils::{clean_screen, TerminalMode},
+    size::{TerminalSize, Size}
 };
 
 use log::{info, LevelFilter};
@@ -29,7 +29,7 @@ pub struct Editor {
     pub counter: Counter,
     /// focus on Editor or Prompt
     pub layout: Layouts,
-    pub terminal: Terminal, // store terminal size and raw Stdout
+    pub terminal_size: Size, // store terminal size and raw Stdout
     pub render: Render,     // rendering the display
     pub internal_error: InternalError,
     pub exit: bool, // exit signal
@@ -43,7 +43,7 @@ impl Editor {
             prompt: Prompt::new(),
             counter: Counter::new(),
             layout: Layouts::Editor,
-            terminal: Terminal::new(),
+            terminal_size: Size::default(),
             render: Render::new(),
             internal_error: InternalError::NoError,
             exit: false,
@@ -83,8 +83,8 @@ impl Editor {
     }
 
     fn setup_terminal_settings(&mut self) -> IoResult<()> {
-        self.terminal.enable_raw_mode()?;
-        self.terminal.update_size()?;
+        self.enable_raw_mode()?;
+        self.terminal_size.update_size()?;
         Ok(())
     }
 
@@ -116,11 +116,16 @@ impl Editor {
     }
 }
 
+impl TerminalMode for Editor {}
+
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
 
+    use crossterm::terminal::is_raw_mode_enabled;
+
     use super::Editor;
+    use crate::{utils::TerminalMode, InternalError, size::TerminalSize};
 
     #[test]
     fn set_folder_path() {
@@ -149,4 +154,38 @@ mod tests {
 
         assert_eq!(editor.buffer.path, path)
     }
+
+    #[test]
+    #[ignore = "not working on github workflow"]
+    fn enable_raw_mode() {
+        let mut editor = Editor::new();
+        editor.enable_raw_mode().unwrap();
+
+        assert!(is_raw_mode_enabled().unwrap());
+
+        crossterm::terminal::disable_raw_mode().unwrap();
+    }
+
+    #[test]
+    #[ignore = "not working on github workflow"]
+    fn disable_raw_mode() {
+        let mut editor = Editor::new();
+        editor.enable_raw_mode().unwrap();
+        editor.disable_raw_mode().unwrap();
+
+        assert!(is_raw_mode_enabled().unwrap());
+    }
+
+    #[test]
+    #[ignore = "not working on github workflow"]
+    fn reach_minimum_terminal_size() {
+        let mut editor = Editor::new();
+
+        let result = editor.terminal_size.update_size().expect("IO error");
+        match result {
+            Ok(..) => panic!("must be panic"),
+            Err(err) => assert_eq!(err, InternalError::MinimumTerminalSizeReached),
+        }
+    }
+
 }

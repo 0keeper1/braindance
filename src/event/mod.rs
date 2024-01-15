@@ -7,7 +7,7 @@ use std::time::Duration;
 use crossterm::event::{poll, read, Event};
 use log::info;
 
-use crate::{editor::Editor, prelude::*, settings::MAXIMUM_KEY_DURATION_TIME};
+use crate::{editor::Editor, prelude::*, settings::MAXIMUM_KEY_DURATION_TIME, size::TerminalSize};
 
 use self::{key::KeyHandler, mouse::MouseHandler, paste::PasteHandler};
 
@@ -20,7 +20,7 @@ impl EventHandler for Editor {
         if poll(Duration::from_millis(MAXIMUM_KEY_DURATION_TIME))? {
             let ret = match read()? {
                 Event::Resize(..) => {
-                    match self.terminal.update_size()? {
+                    match self.terminal_size.update_size()? {
                         Ok(_) => (),
                         Err(err) => self.internal_error = err,
                     }

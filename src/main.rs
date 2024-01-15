@@ -23,7 +23,7 @@ mod range;
 mod render;
 mod row;
 mod settings;
-mod terminal;
+mod size;
 mod update;
 mod utils;
 
