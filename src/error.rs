@@ -17,6 +17,13 @@ pub enum InternalError {
     MaximumTerminalSizeReached,
     MinimumTerminalSizeReached,
 
+    // History Errors
+    HistoryIsEmpty,
+    HistoryFileNotFund,
+
+    // Workspace Errors
+    WorkspaceFolderDoesNotExists,
+
     // File Errors
     FileNotFound,
     PathIsNotAFile,
@@ -45,6 +52,13 @@ impl<'a> InternalError {
             // Terminal Error
             InternalError::MaximumTerminalSizeReached => "Maximum terminal size reached",
             InternalError::MinimumTerminalSizeReached => "Minimum terminal size reached",
+
+            // History Errors
+            InternalError::HistoryIsEmpty => "History is empty",
+            InternalError::HistoryFileNotFund => "History file not found",
+
+            // Workspace Errors
+            InternalError::WorkspaceFolderDoesNotExists => "workspace folder does not exists",
 
             // File Errors
             InternalError::PathIsNotAFile => "Path is not a file",

@@ -39,6 +39,16 @@ impl Lines {
     }
 }
 
+impl ToString for Lines {
+    fn to_string(&self) -> String {
+        let mut str = String::new();
+        for line in &self.inner {
+            str.push_str(line);
+        }
+        str
+    }
+}
+
 impl Deref for Lines {
     type Target = Vec<Row>;
 

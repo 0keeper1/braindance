@@ -13,8 +13,10 @@ categories = ["tui", "text-editor"]
 [dependencies]
 crossterm = "0.27"
 log = "0.4"
-simple-logging = "2.0"
-tokio = { version = "1.35.1", features = ["full"] }
+simple-logging = "2"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
 
 [profile.release]
 lto = true

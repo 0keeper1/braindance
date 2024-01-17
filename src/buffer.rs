@@ -4,6 +4,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
+use serde::{Deserialize, Serialize};
+
 use crate::{error::AppResult, history::History, lines::Lines, prelude::*, row::Row};
 
 pub trait OpenModes {
@@ -12,7 +14,7 @@ pub trait OpenModes {
     fn open_create(path: &Path) -> InternalResult<File>;
 }
 
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
 pub enum Mode {
     ReadOnly,
     ReadWrite,
