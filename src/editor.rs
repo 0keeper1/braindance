@@ -84,7 +84,14 @@ impl Editor {
 
     fn setup_terminal_settings(&mut self) -> IoResult<()> {
         self.enable_raw_mode()?;
+        self.update_size()?;
+        Ok(())
+    }
+
+    fn update_size(&mut self) -> IoResult<()> {
         self.terminal_size.update_size()?;
+        let row = self.terminal_size.get_row();
+        self.render.update_row_positions(row);
         Ok(())
     }
 

@@ -3,10 +3,11 @@ use crate::{
     editor::Editor,
     render::EDITOR_FIRST_ROW_POSITION,
     settings::{EMPTY_LINE_CHARACTER, LINE_SEPARATOR},
+    size::{Cursor, RowCol},
 };
 
 pub trait RowRenderer {
-    fn render_rows(&self, row_size: u16);
+    fn render_rows(&self, screen: &mut String, row_size: u16);
     fn line_number(&self, row: u16, file_end: u16);
 }
 
@@ -23,20 +24,19 @@ impl RowRenderer for Editor {
         }
     }
 
-    #[allow(clippy::print_with_newline)]
-    fn render_rows(&self, row_size: u16) {
-        // free_goto(EDITOR_FIRST_ROW_POSITION, 0);
+    fn render_rows(&self, screen: &mut String, row_size: u16) {
+        screen.push_str(&RowCol::free_goto(EDITOR_FIRST_ROW_POSITION, 0));
 
         let file_position = self.render.get_position();
 
         let mut buf_iter = self.buffer.content.inner[file_position.start..file_position.end].iter();
-        for _ in 1..(self.render.get_end_editor_position()) {
-            print!("{}", clear::CLEAR_CURRENT_LINE);
+        for _ in 1..(self.render.footer_row) {
+            screen.push_str(clear::CLEAR_CURRENT_LINE);
             match buf_iter.next() {
-                Some(row) => print!("{}", row),
-                None => print!("{}", EMPTY_LINE_CHARACTER),
+                Some(row) => screen.push_str(row),
+                None => screen.push(EMPTY_LINE_CHARACTER),
             }
-            print!("\x1BE");
+            screen.push_str("\x1BE")
         }
     }
 }

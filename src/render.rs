@@ -19,7 +19,8 @@ pub struct Render {
     pub cursor: RowCol,
     /// this range provide first row and last row to display
     /// end of range can increase or decreased
-    end_editor_position: u16,
+    pub footer_row: u16,
+    pub prompt_row: u16,
     /// range position of buffer
     position: Range<usize>,
     /// current buffer position
@@ -36,7 +37,8 @@ impl Render {
     pub fn new() -> Self {
         Self {
             cursor: Cursor::new(),
-            end_editor_position: 0,
+            footer_row: 0,
+            prompt_row: 0,
             position: Range::new(0, 0),
             row_position: 0,
             buffer_len: 0,
@@ -60,10 +62,15 @@ impl Render {
         self.next_row_len = next_row_len;
     }
 
+    pub fn update_row_positions(&mut self, row: u16) {
+        self.footer_row = row - 1;
+        self.prompt_row = row;
+    }
+
     /// this function called when buffer changed
     pub fn update(&mut self, buffer_len: usize) {
-        let end_position = if buffer_len > self.end_editor_position as usize {
-            self.end_editor_position as usize
+        let end_position = if buffer_len > self.footer_row as usize {
+            self.footer_row as usize
         } else {
             buffer_len
         };
@@ -96,12 +103,12 @@ impl Render {
     }
 
     pub fn set_end_editor_position(&mut self, end_row: u16) {
-        self.end_editor_position = end_row - 2;
+        self.footer_row = end_row - 2;
     }
 
     #[inline]
     pub fn get_end_editor_position(&self) -> u16 {
-        self.end_editor_position
+        self.footer_row
     }
 
     #[inline]
@@ -138,7 +145,7 @@ impl ArrowMoves for Render {
             return;
         }
 
-        if self.cursor.get_row() == self.end_editor_position {
+        if self.cursor.get_row() == self.footer_row {
             self.increase_position();
             return;
         }

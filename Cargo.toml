@@ -23,5 +23,5 @@ lto = true
 panic = "abort"
 opt-level = "z"
 
-[build]
-rustflags = ["-Z", "threads=8"]
+# [build]
+# rustflags = ["-Z", "threads=8"]
