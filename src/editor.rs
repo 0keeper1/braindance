@@ -101,12 +101,6 @@ impl Editor {
         Ok(())
     }
 
-    fn shutdown(&self) {
-        clean_screen();
-        println!("BD Closed.");
-        info!("shutdown")
-    }
-
     pub fn run(&mut self) -> IoResult<()> {
         self.init()?;
 
@@ -120,6 +114,12 @@ impl Editor {
 
         self.shutdown();
         Ok(())
+    }
+
+    fn shutdown(&self) {
+        clean_screen();
+        println!("BD Closed.");
+        info!("shutdown")
     }
 }
 

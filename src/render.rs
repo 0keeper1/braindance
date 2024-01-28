@@ -19,6 +19,7 @@ pub struct Render {
     pub cursor: RowCol,
     /// this range provide first row and last row to display
     /// end of range can increase or decreased
+    pub editor_row: u16,
     pub footer_row: u16,
     pub prompt_row: u16,
     /// range position of buffer
@@ -37,6 +38,7 @@ impl Render {
     pub fn new() -> Self {
         Self {
             cursor: Cursor::new(),
+            editor_row: 0,
             footer_row: 0,
             prompt_row: 0,
             position: Range::new(0, 0),
@@ -63,6 +65,7 @@ impl Render {
     }
 
     pub fn update_row_positions(&mut self, row: u16) {
+        self.editor_row = row - 2;
         self.footer_row = row - 1;
         self.prompt_row = row;
     }
