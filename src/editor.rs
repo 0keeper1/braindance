@@ -84,7 +84,14 @@ impl Editor {
 
     fn setup_terminal_settings(&mut self) -> IoResult<()> {
         self.enable_raw_mode()?;
+        self.update_size()?;
+        Ok(())
+    }
+
+    fn update_size(&mut self) -> IoResult<()> {
         self.terminal_size.update_size()?;
+        let row = self.terminal_size.get_row();
+        self.render.update_row_positions(row);
         Ok(())
     }
 
@@ -92,12 +99,6 @@ impl Editor {
         simple_logging::log_to_file("test.log", LevelFilter::Info)?;
         self.setup_terminal_settings()?;
         Ok(())
-    }
-
-    fn shutdown(&self) {
-        clean_screen();
-        println!("BD Closed.");
-        info!("shutdown")
     }
 
     pub fn run(&mut self) -> IoResult<()> {
@@ -113,6 +114,12 @@ impl Editor {
 
         self.shutdown();
         Ok(())
+    }
+
+    fn shutdown(&self) {
+        clean_screen();
+        println!("BD Closed.");
+        info!("shutdown")
     }
 }
 

@@ -8,6 +8,8 @@ pub mod clear {
     const_code!("1J", CLEAR_BEFORE_CURSOR);
     const_code!("2K", CLEAR_CURRENT_LINE);
     const_code!("K", CLEAR_NEW_LINE);
+    pub const UPDATE_INITIALIZER: &str = concat!("\u{1b}[2J", "\u{1b}[3J", "\u{1b}[?25l");
+    pub const DOUBLE_CLEAR: &str = concat!("\u{1b}[2J", "\u{1b}[3J");
 }
 
 pub mod colors {
