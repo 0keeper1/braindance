@@ -1,24 +1,34 @@
 CC = gcc
+EXE = bd
 BUILD = ./build
 SRC = ./src
-MAIN = $(SRC)/main.c
-EXE = bd
-CFLAG = -Wall -Wextra -std=c2x -lm
-DEPS = $(SRC)/**.c $(SRC)/*/**.c $(SRC)/*/*/**.c
+LIBS = ./lib
+TESTS = ./test
+CFLAGS = -std=c23 -lm
+WARNS = -Wall -Wextra 
+MAIN = $(SRC)/**.c $(SRC)/*/**.c $(SRC)/*/*/**.c
+MAINTEST = $(TESTS)/**.c $(TESTS)/*/**.c
 
 foldering:
-	mkdir build
-	mkdir build/debug
-	mkdir build/release
+	mkdir ./$(BUILD)
+	mkdir ./$(BUILD)/debug
+	mkdir ./$(BUILD)/release
+	mkdir ./$(BUILD)/test
 
-release:
-	$(CC) $(CFLAG) -o $(BUILD)/release/bd $(MAIN) $(DEPS)
+brelease:
+	$(CC) $(CFLAG) -I$(LIBS) -o $(BUILD)/release/$(EXE) $(MAIN)
 
-debug:
-	$(CC) $(CFLAG) -DDEBUG -o $(BUILD)/debug/bd $(DEPS)
+bdebug:
+	$(CC) $(CFLAG) $(WARNS)  -DDEBUG -I$(LIBS) -o $(BUILD)/debug/$(EXE) $(MAIN)
+
+btest:
+	$(CC) $(CFLAG) $(WARNS) -I$(LIBS) -I$(SRC) -o $(BUILD)/test/$(EXE) $(MAINTEST)
+
+rrelease:
+	$(BUILD)/release/$(EXE)
 
 rdbg:
-	$(BUILD)/debug/$(EXE) -h
+	$(BUILD)/debug/$(EXE)
 
-tests:
-	cd test && make run
+rtest:
+	$(BUILD)/test/$(EXE)
