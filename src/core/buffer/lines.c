@@ -41,11 +41,13 @@ Lines *linesReachEnd( Lines *lineptr )
 Result linesClearAllAndDrop( Lines *firtlineptr )
 {
 	Lines *endoflinesptr;
-	endoflinesptr = linesReachEnd( firtlineptr );
-	for ( ; endoflinesptr->perv != NULL; --endoflinesptr )
+	endoflinesptr = ENDOFLINES;
+	for ( ; endoflinesptr != NULL; endoflinesptr = endoflinesptr->perv )
 	{
+		printf( "%s", endoflinesptr->ptr );
 		linesClear( endoflinesptr );
 	}
+	ENDOFLINES = NULL;
 	return SUCCESSFUL;
 }
 
@@ -76,6 +78,13 @@ Lines *linesCreate( UTF *contentptr, int cap, int len )
 
 	lineptr->next = NULL;
 	return lineptr;
+}
+
+void linesSetContentPtr( Lines *lineptr, UTF *contentptr, int cap, int len )
+{
+	lineptr->cap = cap;
+	lineptr->len = len;
+	lineptr->ptr = contentptr;
 }
 
 void linesDelete( Lines *lineptr )
@@ -138,7 +147,7 @@ Lines *linesFileToLines( FILE *fileptr )
 
 		if ( len > cap )
 		{
-			contentptr = realloc( contentptr, ( cap + 20 ) * sizeof( UTF ) );
+			contentptr = realloc( contentptr, ( cap + REALLOCATE_SIZE_TO_INCREASE_CAP ) * sizeof( UTF ) );
 			cap += 20;
 		}
 
@@ -147,13 +156,9 @@ Lines *linesFileToLines( FILE *fileptr )
 		if ( utfchr == '\n' )
 		{
 
-			// set values to current line
 			{
 				lineptr->perv = pervlineptr;
-				lineptr->cap = cap;
-				lineptr->ptr = contentptr;
-				lineptr->len = len;
-				// save current line as perv
+				linesSetContentPtr( lineptr, contentptr, cap, len );
 				pervlineptr = lineptr;
 			}
 
@@ -168,13 +173,15 @@ Lines *linesFileToLines( FILE *fileptr )
 				return NULL;
 			}
 
-			// set next and perv
 			{
 				lineptr->perv = pervlineptr;
 				pervlineptr->next = lineptr;
 			}
 		}
 	}
+
+	STARTOFLINES = firstlinesptr;
+	ENDOFLINES = lineptr;
 
 	return firstlinesptr;
 }

@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const char *HELP = "usage: bd [OPTIONS] <FILE PATH>";
+const char *HELP = "usage: bd [OPTIONS] <FILE PATH>\n\t-h | --help\tShowed this message.\n\t-m <MODE> | --mode "
+		   "<MODE>\tOpen file mode (default: r+)";
 
-int main( int argc, const char *const argv[] )
+int main( int argc, char *const argv[] )
 {
 	Cmds commands = createCmds();
 
@@ -15,7 +16,6 @@ int main( int argc, const char *const argv[] )
 	{
 		return EXIT_FAILURE;
 	}
-
 	if ( commands.help == true )
 	{
 		puts( HELP );

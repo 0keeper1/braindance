@@ -20,11 +20,11 @@ bool checkFlag( const char *const argument, const char *const small_flag, const 
 
 Cmds createCmds()
 {
-	Cmds commands = { .cwd = NULL, .path = NULL, .help = false };
+	Cmds commands = { .cwd = NULL, .path = NULL, .help = false, .open_mode = NULL };
 	return commands;
 }
 
-Result parseCli( int argc, const char *const argv[], Cmds *const commands )
+Result parseCli( int argc, char *const argv[], Cmds *const commands )
 {
 	commands->cwd = getcwd( NULL, 0 );
 
@@ -35,6 +35,13 @@ Result parseCli( int argc, const char *const argv[], Cmds *const commands )
 			if ( checkFlag( argv[c], "-h", "--help" ) )
 			{
 				commands->help = true;
+			}
+			else if ( checkFlag( argv[c], "-m", "--mode" ) )
+			{
+				if ( c + 1 <= argc )
+				{
+					commands->open_mode = argv[++c];
+				}
 			}
 		}
 		else if ( c == ( argc - 1 ) )

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../settings.h"
+#include <stdlib.h>
 
 struct Window
 {
@@ -11,4 +12,4 @@ struct Window
 
 typedef struct Window Window;
 
-extern Window windowCreate();
+extern Window windowCreate( int terminal_width, int terminal_height );
