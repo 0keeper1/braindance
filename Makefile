@@ -16,13 +16,13 @@ foldering:
 	mkdir ./$(BUILD)/test
 
 brelease:
-	$(CC) $(CFLAG) -I$(LIBS) -o $(BUILD)/release/$(EXE) $(MAIN)
+	$(CC) $(CFLAG) -O3 -march=native -mtune=native -s -DNDEBUG -I$(LIBS) -o $(BUILD)/release/$(EXE) $(MAIN)
 
 bdebug:
-	$(CC) $(CFLAG) $(WARNS)  -DDEBUG -I$(LIBS) -o $(BUILD)/debug/$(EXE) $(MAIN)
+	$(CC) $(CFLAG) $(WARNS) -g3 -ggdb3 -DDEBUG -I$(LIBS) -o $(BUILD)/debug/$(EXE) $(MAIN)
 
 btest:
-	$(CC) $(CFLAG) $(WARNS) -I$(LIBS) -I$(SRC) -o $(BUILD)/test/$(EXE) $(MAINTEST)
+	$(CC) $(CFLAG) $(WARNS) -g3 -ggdb3 -DTEST -I$(LIBS) -o $(BUILD)/test/$(EXE) $(ARGS)
 
 rrelease:
 	$(BUILD)/release/$(EXE)

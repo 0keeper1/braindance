@@ -32,7 +32,7 @@ Result linesDrop( Lines *lineptr )
 
 Lines *linesReachEnd( Lines *lineptr )
 {
-	for ( ; lineptr->next != NULL; lineptr++ )
+	for ( ; lineptr != NULL; lineptr++ )
 	{
 	}
 	return lineptr;
@@ -41,13 +41,12 @@ Lines *linesReachEnd( Lines *lineptr )
 Result linesClearAllAndDrop( Lines *firtlineptr )
 {
 	Lines *endoflinesptr;
-	endoflinesptr = ENDOFLINES;
+	endoflinesptr = linesReachEnd( firtlineptr );
 	for ( ; endoflinesptr != NULL; endoflinesptr = endoflinesptr->perv )
 	{
 		printf( "%s", endoflinesptr->ptr );
 		linesClear( endoflinesptr );
 	}
-	ENDOFLINES = NULL;
 	return SUCCESSFUL;
 }
 
@@ -111,16 +110,12 @@ void linesDelete( Lines *lineptr )
 
 void linesNewLine( Lines *lineptr )
 {
-	Lines *tmpnext;
 	Lines *newlineptr;
 
-	tmpnext = lineptr->next;
 	newlineptr = linesCreate( NULL, 0, 0 );
 
 	lineptr->next = newlineptr;
 	newlineptr->perv = lineptr;
-	newlineptr->next = tmpnext;
-	tmpnext->perv = newlineptr;
 }
 
 Lines *linesFileToLines( FILE *fileptr )
@@ -180,8 +175,53 @@ Lines *linesFileToLines( FILE *fileptr )
 		}
 	}
 
-	STARTOFLINES = firstlinesptr;
-	ENDOFLINES = lineptr;
-
 	return firstlinesptr;
 }
+
+#ifdef TEST
+
+	#include "nanotest/src/lib.h"
+
+void test_linesCreate()
+{
+	Lines *line = linesCreate( NULL, 0, 0 );
+	NANO_ASSERT_EQ_PTR( "eq next", NULL, line->next );
+	NANO_ASSERT_EQ_INT( "eq cap", 0, line->cap );
+	NANO_ASSERT_EQ_PTR( "eq ptr", NULL, line->ptr );
+	NANO_ASSERT_EQ_INT( "eq len", 0, line->len );
+	NANO_ASSERT_EQ_PTR( "eq perv", NULL, line->perv );
+}
+
+void test_lBCLines()
+{
+	Lines *line = linesCreate( NULL, 20, 32 );
+	NANO_ASSERT_EQ_PTR( "eq line", NULL, line );
+}
+
+void test_linesSetContentPtr()
+{
+	UTF *ptr = ( UTF * )calloc( 20, sizeof( UTF ) );
+	Lines *line = linesCreate( NULL, 0, 0 );
+	linesSetContentPtr( line, ptr, 20, 0 );
+	NANO_ASSERT_EQ_PTR( "eq ptr", ptr, line->ptr );
+	NANO_ASSERT_EQ_INT( "eq cap", 20, line->cap );
+}
+
+void test_linesNewLine()
+{
+	Lines *line = linesCreate( NULL, 0, 0 );
+	linesNewLine( line );
+	Lines *pervline = line->next;
+	NANO_ASSERT_NOTEQ_PTR( "not eq next", NULL, line->next );
+	NANO_ASSERT_EQ_PTR( "perv memeber of new line", line, pervline->perv );
+}
+
+int main()
+{
+	NANO_SINGLE_TEST( test_linesCreate );
+	NANO_SINGLE_TEST( test_lBCLines );
+	NANO_SINGLE_TEST( test_linesSetContentPtr );
+	NANO_SINGLE_TEST( test_linesNewLine );
+	return 0;
+}
+#endif

@@ -18,8 +18,6 @@ struct Lines
 
 typedef struct Lines Lines;
 
-static Lines *STARTOFLINES, *ENDOFLINES = NULL;
-
 extern void linesClear( Lines *lineptr );
 
 extern void linesDelete( Lines *lineptr );
