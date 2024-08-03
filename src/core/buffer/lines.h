@@ -20,7 +20,11 @@ typedef struct Lines Lines;
 
 extern void linesClear( Lines *lineptr );
 
+extern void linesClearAndDrop( Lines *lineptr );
+
 extern void linesDelete( Lines *lineptr );
+
+extern inline UTF *linesContentCreate( int cap );
 
 extern void linesSetContentPtr( Lines *lineptr, UTF *contentptr, int cap, int len );
 

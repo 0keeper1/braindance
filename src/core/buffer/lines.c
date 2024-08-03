@@ -86,6 +86,12 @@ void linesSetContentPtr( Lines *lineptr, UTF *contentptr, int cap, int len )
 	lineptr->ptr = contentptr;
 }
 
+void linesClearAndDrop( Lines *lineptr )
+{
+	free( lineptr->ptr );
+	free( lineptr );
+}
+
 void linesDelete( Lines *lineptr )
 {
 	Lines *tmpperv;
@@ -104,9 +110,11 @@ void linesDelete( Lines *lineptr )
 		tmpperv->next = tmpnext;
 	}
 
-	linesClear( lineptr ); // remove line content
-	free( lineptr );       // remove line from heap
+	free( lineptr->ptr ); // remove line content
+	free( lineptr );      // remove line from heap
 }
+
+inline UTF *linesContentCreate( int cap ) { return ( UTF * )calloc( cap, sizeof( UTF ) ); }
 
 void linesNewLine( Lines *lineptr )
 {
@@ -127,7 +135,7 @@ Lines *linesFileToLines( FILE *fileptr )
 	len = 0;
 	cap = DEFAULT_ALLOCATION_SIZE_PER_LINE;
 
-	contentptr = ( UTF * )calloc( cap, sizeof( UTF ) );
+	contentptr = linesContentCreate( cap );
 	firstlinesptr = lineptr = linesCreate( contentptr, cap, len );
 
 	if ( firstlinesptr == NULL )
@@ -159,7 +167,7 @@ Lines *linesFileToLines( FILE *fileptr )
 
 			len = 0;
 			cap = DEFAULT_ALLOCATION_SIZE_PER_LINE;
-			contentptr = ( UTF * )calloc( cap, sizeof( UTF ) );
+			contentptr = linesContentCreate( cap );
 			lineptr = linesCreate( contentptr, cap, len );
 
 			if ( lineptr == NULL )
@@ -216,12 +224,31 @@ void test_linesNewLine()
 	NANO_ASSERT_EQ_PTR( "perv memeber of new line", line, pervline->perv );
 }
 
+void test_linesDelete()
+{
+	Lines *line1 = linesCreate( NULL, 0, 0 );
+	Lines *line2 = linesCreate( NULL, 0, 0 );
+	Lines *line3 = linesCreate( NULL, 0, 0 );
+
+	line1->next = line2;
+	line2->perv = line1;
+	line2->next = line3;
+	line3->perv = line2;
+
+	linesDelete( line2 );
+
+	NANO_ASSERT_EQ_PTR( "check line1 next", line3, line1->next );
+	NANO_ASSERT_EQ_PTR( "check line3 perv", line1, line3->perv );
+}
+
 int main()
 {
 	NANO_SINGLE_TEST( test_linesCreate );
-	NANO_SINGLE_TEST( test_lBCLines );
 	NANO_SINGLE_TEST( test_linesSetContentPtr );
 	NANO_SINGLE_TEST( test_linesNewLine );
+	NANO_SINGLE_TEST( test_linesDelete );
+
+	NANO_SINGLE_TEST( test_lBCLines );
 	return 0;
 }
 #endif
