@@ -129,14 +129,14 @@ void linesNewLine( Lines *lineptr )
 Lines *linesFileToLines( FILE *fileptr )
 {
 	int chr, len, cap;
-	Lines *firstlinesptr, *lineptr, *pervlineptr = NULL;
+	Lines *lineptr, *pervlineptr = NULL;
 	UTF utfchr, *contentptr = NULL;
 
 	len = 0;
 	cap = DEFAULT_ALLOCATION_SIZE_PER_LINE;
 
 	contentptr = linesContentCreate( cap );
-	firstlinesptr = lineptr = linesCreate( contentptr, cap, len );
+	Lines *const firstlinesptr = lineptr = linesCreate( contentptr, cap, len );
 
 	if ( firstlinesptr == NULL )
 	{
