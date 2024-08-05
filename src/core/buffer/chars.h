@@ -16,5 +16,5 @@ struct Chars
 
 typedef struct Chars Chars;
 
-extern Chars *charsConvertStringToChars( const UTF *ptr );
+extern Chars *charsConvertStringToChars( const UTF *ptr, int len );
 extern Chars *charsCreate( UTF chr );

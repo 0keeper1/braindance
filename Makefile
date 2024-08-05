@@ -4,7 +4,7 @@ BUILD = ./build
 SRC = ./src
 LIBS = ./lib
 TESTS = ./test
-CFLAGS = -std=c23 -lm
+CFLAGS = -std=c23 -lm -funsigned-char
 WARNS = -Wall -Wextra 
 MAIN = $(SRC)/**.c $(SRC)/*/**.c $(SRC)/*/*/**.c
 MAINTEST = $(TESTS)/**.c $(TESTS)/*/**.c
