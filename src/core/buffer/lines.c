@@ -2,8 +2,8 @@
 
 void linesClear( Lines *lineptr )
 {
-	free( lineptr->ptr );
-	lineptr->ptr = NULL;
+	free( lineptr->content );
+	lineptr->content = NULL;
 	lineptr->cap = 0;
 	lineptr->len = 0;
 }
@@ -12,7 +12,7 @@ Result linesClearAll( Lines *firstlineptr )
 {
 	for ( ; firstlineptr->next != NULL; ++firstlineptr )
 	{
-		free( firstlineptr->ptr );
+		free( firstlineptr->content );
 		firstlineptr->cap = 0;
 		firstlineptr->len = 0;
 	}
@@ -22,7 +22,7 @@ Result linesClearAll( Lines *firstlineptr )
 
 Result linesDrop( Lines *lineptr )
 {
-	if ( lineptr->ptr != NULL && lineptr->cap != 0 && lineptr->len != 0 )
+	if ( lineptr->content != NULL && lineptr->cap != 0 && lineptr->len != 0 )
 	{
 		return FAILED;
 	}
@@ -44,7 +44,7 @@ Result linesClearAllAndDrop( Lines *firtlineptr )
 	endoflinesptr = linesReachEnd( firtlineptr );
 	for ( ; endoflinesptr != NULL; endoflinesptr = endoflinesptr->perv )
 	{
-		printf( "%s", endoflinesptr->ptr );
+		printf( "%s", endoflinesptr->content );
 		linesClear( endoflinesptr );
 	}
 	return SUCCESSFUL;
@@ -62,7 +62,7 @@ Lines *linesCreate( UTF *contentptr, int cap, int len )
 	lineptr = ( Lines * )calloc( 1, sizeof( Lines ) );
 
 	lineptr->perv = NULL;
-	lineptr->ptr = contentptr;
+	lineptr->content = contentptr;
 
 	if ( contentptr == NULL )
 	{
@@ -83,12 +83,12 @@ void linesSetContentPtr( Lines *lineptr, UTF *contentptr, int cap, int len )
 {
 	lineptr->cap = cap;
 	lineptr->len = len;
-	lineptr->ptr = contentptr;
+	lineptr->content = contentptr;
 }
 
 void linesClearAndDrop( Lines *lineptr )
 {
-	free( lineptr->ptr );
+	free( lineptr->content );
 	free( lineptr );
 }
 
@@ -110,8 +110,8 @@ void linesDelete( Lines *lineptr )
 		tmpperv->next = tmpnext;
 	}
 
-	free( lineptr->ptr ); // remove line content
-	free( lineptr );      // remove line from heap
+	free( lineptr->content ); // remove line content
+	free( lineptr );	  // remove line from heap
 }
 
 inline UTF *linesContentCreate( int cap ) { return ( UTF * )calloc( cap, sizeof( UTF ) ); }
@@ -195,7 +195,7 @@ void test_linesCreate()
 	Lines *line = linesCreate( NULL, 0, 0 );
 	NANO_ASSERT_EQ_PTR( "eq next", NULL, line->next );
 	NANO_ASSERT_EQ_INT( "eq cap", 0, line->cap );
-	NANO_ASSERT_EQ_PTR( "eq ptr", NULL, line->ptr );
+	NANO_ASSERT_EQ_PTR( "eq ptr", NULL, line->content );
 	NANO_ASSERT_EQ_INT( "eq len", 0, line->len );
 	NANO_ASSERT_EQ_PTR( "eq perv", NULL, line->perv );
 }
@@ -211,7 +211,7 @@ void test_linesSetContentPtr()
 	UTF *ptr = ( UTF * )calloc( 20, sizeof( UTF ) );
 	Lines *line = linesCreate( NULL, 0, 0 );
 	linesSetContentPtr( line, ptr, 20, 0 );
-	NANO_ASSERT_EQ_PTR( "eq ptr", ptr, line->ptr );
+	NANO_ASSERT_EQ_PTR( "eq ptr", ptr, line->content );
 	NANO_ASSERT_EQ_INT( "eq cap", 20, line->cap );
 }
 

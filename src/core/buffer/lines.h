@@ -2,6 +2,7 @@
 
 #include "../../errors.h"
 #include "../../settings.h"
+#include "./chars.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +12,11 @@ struct Lines
 {
 	struct Lines *perv; // perv line
 	int len;	    // content size
-	UTF *ptr;	    // line characters convert to chars
+	union
+	{
+		UTF *content;
+		Chars *chars;
+	};
 	int cap;	    // allocated size
 	struct Lines *next; // next line
 };
