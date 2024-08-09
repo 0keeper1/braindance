@@ -3,7 +3,7 @@
 #include "options.h"
 
 // UTF is important because this one handle non english languages.
-#define UTF UTF_8
+#define UTF UTF_CHAR
 
 // Default name for new files
 #define DEFAULT_SCRATCH_FILE_NAME "SCRATCH"

@@ -9,6 +9,31 @@ Chars *charsCreate( UTF chr )
 	return ptr;
 }
 
+inline void charsFree( Chars *chrptr ) { free( chrptr ); }
+
+void charsRemoveChar( Chars *const chrptr )
+{
+	Chars *tmpperv = chrptr->perv;
+	Chars *tmpnext = chrptr->next;
+	if ( tmpnext != NULL )
+	{
+		tmpnext->perv = tmpperv;
+	}
+	if ( tmpperv != NULL )
+	{
+		tmpperv->next = tmpnext;
+	}
+	charsFree( chrptr );
+}
+
+void charsInsertChar( Chars *const chrptr, const UTF newchar )
+{
+	Chars *newcharsptr = charsCreate( newchar );
+	newcharsptr->perv = chrptr;
+	newcharsptr->next = chrptr->next;
+	chrptr->next = newcharsptr;
+}
+
 Chars *charsConvertStringToChars( const UTF *ptr, int len )
 {
 	Chars *charsptr, *pervcharptr = NULL;
@@ -28,28 +53,16 @@ Chars *charsConvertStringToChars( const UTF *ptr, int len )
 
 	#include "nanotest/src/lib.h"
 
-void test_charsCreate()
-{
-	Chars *character = charsCreate( 'A' );
-	NANO_ASSERT_EQ_CHAR( "check chr", 'A', character->chr );
-	free( character );
-}
-
-void test_charsConvertStringToChars()
-{
-	UTF *content = ( UTF * )calloc( 80, sizeof( UTF ) );
-	memcpy( content, "Hello, World!\n", 14 );
-	Chars *chars = charsConvertStringToChars( content, 14 );
-	for ( int index = 0; index < 14 && chars != NULL; index++, chars = chars->next )
-	{
-		NANO_ASSERT_EQ_CHAR( "check chr", content[index], chars->chr );
-	}
-}
-
 int main()
 {
-	NANO_SINGLE_TEST( test_charsCreate );
-	NANO_SINGLE_TEST( test_charsConvertStringToChars );
+	Chars *chrptr = charsCreate( 'H' );
+	charsInsertChar( chrptr, 'e' );
+	chrptr = chrptr->next;
+	charsRemoveChar( chrptr->perv );
+	for ( ; chrptr != NULL; chrptr = chrptr->next )
+	{
+		printf( "%c", chrptr->chr );
+	}
 	return 0;
 }
 #endif

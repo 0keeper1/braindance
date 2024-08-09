@@ -1,48 +1,46 @@
 #include "./core.h"
 
-Core coreCreate( Lines *const lines, Window *const window )
+Result coreInit()
 {
-	Core core = { .exit = false, .lines = lines, .window = window };
-	return core;
+	winsizeUpdate();
+	return SUCCESSFUL;
+}
+
+Result coreRun( const Cmds *const cmds )
+{
+	WindowBuf const winbuf = windowbufCreate();
+	Offset const offset = offsetCreate();
+	FILE *fileptr = fileOpen( cmds->path, cmds->open_mode );
+	Lines *const linesptr = linesFileToLines( fileptr );
+	Core core = { .exit = false, .lines = linesptr, .window = winbuf, .offset = offset };
+
+	return coreLoop( &core );
 }
 
 Result coreLoop( Core *const core )
 {
-	while ( core->exit == false )
+	coreInit();
+
+	do
 	{
-		//update
 		//print
-	}
+		//mod
+		//update
+	} while ( core->exit == false );
+
+	coreExit();
 
 	return SUCCESSFUL;
 }
 
-Result coreRun( Cmds *const cmds )
+void coreExit() {}
+
+FILE *fileOpen( char *const path, const char *const mode )
 {
-	FILE *file;
-	Lines *firstline, *lines;
-	Window *window;
-
-	signal( SIGWINCH, termResizeSignal );
-
-	coreLoop( NULL );
-
-	// file = fileOpen( cmds->path, cmds->open_mode );
-	// lines = linesFileToLines( file );
-	// window = windowCreate();
-	// init
-	// {
-	// 	coreCreate( lines, );
-	// }
-
-#ifdef DEBUG
-	for ( ; lines != NULL; lines = lines->next )
+	FILE *file = NULL;
+	if ( ( file = fopen( path, mode == NULL ? DEFAULT_OPEN_MODE : mode ) ) == NULL )
 	{
-		printf( "[perv: %p next: %p len: %d cap: %d]: %s", lines->perv, lines->next, lines->len, lines->cap,
-			lines->ptr );
+		return NULL;
 	}
-	printf( "\n" );
-#endif
-
-	return SUCCESSFUL;
+	return file;
 }
