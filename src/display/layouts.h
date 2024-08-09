@@ -1,7 +1,8 @@
 #pragma once
 
-void writeHeaderBar();
-void writeSideBars();
-void writeFooterBar();
-void writeCommandBar();
-void writeContent();
+extern void writeHeaderBar();
+extern void writeSideBars();
+extern void writeFooterBar();
+extern void writeCommandBar();
+extern void writeContent();
+extern void writeLineNumber();
