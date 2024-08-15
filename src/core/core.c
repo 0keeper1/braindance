@@ -28,25 +28,33 @@ Result coreLoop( Core *const core )
 		// {
 		// 	core->exit = true;
 		// }
-		const Key *key;
-		key = keyRead();
-		if ( key == NULL || ( key->character == 'q' && key->is_ctrl == true ) )
+		const Key *key = keyRead();
+		if ( key == NULL || ( key->character == 'q' && key->isctrl == true ) )
 		{
 			core->exit = true;
 		}
 
-		printf( "%s\n", ( key->is_ctrl == true && key->button == ENTER ) ? "ENTER" : "NOPE" );
-		// read( STDIN_FILENO, &c, 1 );
-		// if ( iscntrl( c ) )
-		// {
-		// 	printf( "%d\r\n", c );
-		// }
-		// else
-		// {
-		// printf( "%d ('%c')\r\n", key->character, key->character );
-		// }
-		// if ( c == 'q' )
-		// 	core->exit = true;
+		if ( key->isbtn == true )
+		{
+			printf( "button: %s\r\n", arr[key->button] );
+		}
+		else if ( key->isctrl == true )
+		{
+			printf( "ctrl: %c\r\n", key->character );
+		}
+		else if ( key->isalt == true )
+		{
+			printf( "alt: %c\r\n", key->character );
+		}
+		else if ( key->isfn == true )
+		{
+			printf( "fn: %c\r\n", key->character );
+		}
+		else
+		{
+			printf( "char: %c\r\n", key->character );
+		}
+
 	} while ( core->exit == false );
 
 	coreExit();
