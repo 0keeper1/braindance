@@ -29,24 +29,24 @@ Result coreLoop( Core *const core )
 		// 	core->exit = true;
 		// }
 		const Key *key = keyRead();
-		if ( key == NULL || ( key->character == 'q' && key->isctrl == true ) )
+		if ( key == NULL || ( key->character == 'q' && key->mod == CTRL ) )
 		{
 			core->exit = true;
 		}
 
-		if ( key->isbtn == true )
+		if ( key->mod == BTN )
 		{
 			printf( "button: %s\r\n", arr[key->button] );
 		}
-		else if ( key->isctrl == true )
+		else if ( key->mod == CTRL )
 		{
 			printf( "ctrl: %c\r\n", key->character );
 		}
-		else if ( key->isalt == true )
+		else if ( key->mod == ALT )
 		{
 			printf( "alt: %c\r\n", key->character );
 		}
-		else if ( key->isfn == true )
+		else if ( key->mod == FN )
 		{
 			printf( "fn: %c\r\n", key->character );
 		}

@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#define ESC 27
-
 typedef enum
 {
 	ENTER,
+	BACKSPACE,
+	ESC,
 	ARROW_UP,
 	FN_ARROW_UP,
 	CTRL_ARROW_UP,
@@ -43,6 +43,8 @@ typedef enum
 
 static char arr[][30] = {
     "ENTER",
+    "BACKSPACE",
+    "ESC",
     "ARROW_UP",
     "FN_ARROW_UP",
     "CTRL_ARROW_UP",
@@ -74,6 +76,15 @@ static char arr[][30] = {
     "TIMEOUT",
 };
 
+enum Mod
+{
+	NOMOD = 0b00000000,
+	BTN = 0b00000001,
+	CTRL = 0b00000010,
+	ALT = 0b00000100,
+	FN = 0b00001000,
+};
+
 typedef struct
 {
 	union
@@ -81,10 +92,7 @@ typedef struct
 		unsigned char character;
 		Buttons button;
 	};
-	bool isbtn;
-	bool isctrl;
-	bool isalt;
-	bool isfn;
+	unsigned int mod : 8;
 } Key;
 
 extern const Key *const keyRead();

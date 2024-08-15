@@ -6,10 +6,7 @@ const Key *const keyRead()
 
 	{
 		key.character = 0;
-		key.isbtn = false;
-		key.isctrl = false;
-		key.isalt = false;
-		key.isfn = false;
+		key.mod = NOMOD;
 	}
 
 	unsigned char inputs[6] = { 0 };
@@ -23,7 +20,8 @@ const Key *const keyRead()
 	printf( "%d-%d-%d-%d-%d-%d\r\n", inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5] );
 	if ( rbytes == 0 )
 	{
-		key.character = '\0';
+		key.button = TIMEOUT;
+		key.mod |= BTN;
 		return &key;
 	}
 
@@ -32,16 +30,28 @@ const Key *const keyRead()
 		if ( inputs[0] == 13 )
 		{
 			key.button = ENTER;
-			key.isbtn = true;
+			key.mod |= BTN;
+			return &key;
+		}
+		if ( inputs[0] == 127 )
+		{
+			key.button = BACKSPACE;
+			key.mod |= BTN;
+			return &key;
+		}
+		if ( inputs[0] == 27 )
+		{
+			key.button = ESC;
+			key.mod |= BTN;
 			return &key;
 		}
 		if ( iscntrl( inputs[0] ) )
 		{
 			key.character = inputs[0] + 'a' - 1;
-			key.isctrl = true;
+			key.mod |= CTRL;
 			return &key;
 		}
-		if ( inputs[0] <= 127 && inputs[0] >= 32 )
+		if ( inputs[0] <= 126 && inputs[0] >= 32 )
 		{
 			key.character = inputs[0];
 			return &key;
@@ -53,7 +63,7 @@ const Key *const keyRead()
 		if ( inputs[0] == 27 && inputs[1] != 0 )
 		{
 			key.character = inputs[1];
-			key.isalt = true;
+			key.mod |= ALT;
 			return &key;
 		}
 	}
@@ -65,27 +75,27 @@ const Key *const keyRead()
 			{
 			case 'A':
 				key.button = ARROW_UP;
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			case 'B':
 				key.button = ARROW_DOWN;
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			case 'C':
 				key.button = ARROW_RIGHT;
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			case 'D':
 				key.button = ARROW_LEFT;
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			case 72:
 				key.button = FN_ARROW_LEFT;
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			case 70:
 				key.button = FN_ARROW_RIGHT;
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			default:
 				break;
@@ -123,7 +133,7 @@ const Key *const keyRead()
 				{
 					key.button = SHIFT_CTRL_ARROW_UP;
 				}
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			case 'B':
 				if ( inp4 == 50 )
@@ -146,7 +156,7 @@ const Key *const keyRead()
 				{
 					key.button = SHIFT_CTRL_ARROW_DOWN;
 				}
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			case 'C':
 				if ( inp4 == 50 )
@@ -169,7 +179,7 @@ const Key *const keyRead()
 				{
 					key.button = SHIFT_CTRL_ARROW_RIGHT;
 				}
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			case 'D':
 				if ( inp4 == 50 )
@@ -192,7 +202,7 @@ const Key *const keyRead()
 				{
 					key.button = SHIFT_CTRL_ARROW_LEFT;
 				}
-				key.isbtn = true;
+				key.mod |= BTN;
 				return &key;
 			default:
 				break;
