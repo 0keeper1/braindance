@@ -3,6 +3,7 @@
 Result coreInit()
 {
 	winsizeUpdate();
+	enableRawMode();
 	return SUCCESSFUL;
 }
 
@@ -23,9 +24,29 @@ Result coreLoop( Core *const core )
 
 	do
 	{
-		//print
-		//mod
-		//update
+		// if ( display( &core->window, &core->offset, core->lines ) )
+		// {
+		// 	core->exit = true;
+		// }
+		const Key *key;
+		key = keyRead();
+		if ( key == NULL || ( key->character == 'q' && key->is_ctrl == true ) )
+		{
+			core->exit = true;
+		}
+
+		printf( "%s\n", ( key->is_ctrl == true && key->button == ENTER ) ? "ENTER" : "NOPE" );
+		// read( STDIN_FILENO, &c, 1 );
+		// if ( iscntrl( c ) )
+		// {
+		// 	printf( "%d\r\n", c );
+		// }
+		// else
+		// {
+		// printf( "%d ('%c')\r\n", key->character, key->character );
+		// }
+		// if ( c == 'q' )
+		// 	core->exit = true;
 	} while ( core->exit == false );
 
 	coreExit();
@@ -33,7 +54,12 @@ Result coreLoop( Core *const core )
 	return SUCCESSFUL;
 }
 
-void coreExit() {}
+void coreExit()
+{
+	disableRawMode();
+	write( STDOUT_FILENO, SCREEN_CLEAR, 4 );
+	write( STDOUT_FILENO, CURSOR_AT_START, 3 );
+}
 
 FILE *fileOpen( char *const path, const char *const mode )
 {
@@ -43,4 +69,38 @@ FILE *fileOpen( char *const path, const char *const mode )
 		return NULL;
 	}
 	return file;
+}
+
+Result enableRawMode()
+{
+	struct termios rawterm;
+
+	if ( tcgetattr( STDIN_FILENO, &rawterm ) < 0 )
+	{
+		return FAILED;
+	}
+
+	ORGTERMIOS = rawterm;
+
+	rawterm.c_iflag &= ~( BRKINT | ICRNL | INPCK | ISTRIP | IXON );
+	rawterm.c_oflag &= ~( OPOST );
+	rawterm.c_cflag |= ( CS8 );
+	rawterm.c_lflag &= ~( ECHO | ICANON | IEXTEN | ISIG );
+	rawterm.c_cc[VMIN] = 0;
+	rawterm.c_cc[VTIME] = 30;
+
+	if ( tcsetattr( STDIN_FILENO, TCSAFLUSH, &rawterm ) < 0 )
+	{
+		return FAILED;
+	}
+	return SUCCESSFUL;
+}
+
+Result disableRawMode()
+{
+	if ( tcsetattr( STDIN_FILENO, TCSAFLUSH, &ORGTERMIOS ) < 0 )
+	{
+		return FAILED;
+	}
+	return SUCCESSFUL;
 }

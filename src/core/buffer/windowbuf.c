@@ -18,7 +18,7 @@ Result winsizeUpdate()
 
 Result windowbufWrite( WindowBuf *winbufptr )
 {
-	auto writesize = write( STDOUT_FILENO, winbufptr->ptr, winbufptr->len );
+	ssize_t writesize = write( STDOUT_FILENO, winbufptr->ptr, winbufptr->len );
 	if ( writesize > 0 || ( size_t )writesize != winbufptr->len )
 	{
 		return FAILED;

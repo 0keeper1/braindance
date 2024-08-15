@@ -1,8 +1,10 @@
 #pragma once
 
-extern void writeHeaderBar();
-extern void writeSideBars();
-extern void writeFooterBar();
-extern void writeCommandBar();
-extern void writeContent();
-extern void writeLineNumber();
+#include "../core/buffer/windowbuf.h"
+
+extern void writeHeaderBar( WindowBuf *const winbufptr );
+extern void writeSideBars( WindowBuf *const winbufptr );
+extern void writeFooterBar( WindowBuf *const winbufptr );
+extern void writeCommandBar( WindowBuf *const winbufptr );
+extern void writeContent( WindowBuf *const winbufptr );
+extern void writeLineNumber( WindowBuf *const winbufptr );
