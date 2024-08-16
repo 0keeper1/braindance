@@ -4,15 +4,13 @@ Result display( Core *const coreptr )
 {
 	write( STDOUT_FILENO, SCREEN_CLEAR, 4 );
 
-	// WindowBuf *const winbuf = &coreptr->window;
+	writeHeaderBar( coreptr );
+	writeFooterBar( coreptr );
+	writeContent( coreptr );
+	writeSideBars( coreptr );
+	writeCommandBar( coreptr );
 
-	// writeHeaderBar( winbuf );
-	// writeFooterBar( winbuf );
-	// writeContent( winbuf );
-	// writeSideBars( winbuf);
-	// writeCommandBar(winbuf );
-
-	// windowbufWrite( winbuf );
+	windowbufWrite( &coreptr->window );
 
 	return SUCCESSFUL;
 }

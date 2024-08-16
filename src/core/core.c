@@ -24,8 +24,8 @@ Result coreLoop( Core *const coreptr )
 
 	do
 	{
-		display(coreptr);
-		keyProcess(coreptr);
+		// display( coreptr );
+		keyProcess( coreptr );
 	} while ( coreptr->exit == false );
 
 	coreExit();
@@ -66,7 +66,7 @@ Result enableRawMode()
 	rawterm.c_cflag |= ( CS8 );
 	rawterm.c_lflag &= ~( ECHO | ICANON | IEXTEN | ISIG );
 	rawterm.c_cc[VMIN] = 0;
-	rawterm.c_cc[VTIME] = 30;
+	rawterm.c_cc[VTIME] = KEYBINDING_TIMOEOUT;
 
 	if ( tcsetattr( STDIN_FILENO, TCSAFLUSH, &rawterm ) < 0 )
 	{

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "../settings.h"
 #include "../errors.h"
+#include "../settings.h"
 #include "./core.h"
 #include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
+#include <unistd.h>
 
 typedef enum
 {
@@ -52,6 +52,7 @@ enum Mod
 	CTRL = 0b00000010,
 	ALT = 0b00000100,
 	FN = 0b00001000,
+	CHAR = 0b00010000,
 	TIMEOUT = 0b10000000,
 };
 
@@ -63,22 +64,18 @@ typedef struct
 		Buttons button;
 	};
 	unsigned int mod : 8;
-	unsigned int count;
 } Key;
 
 typedef struct
 {
-	Key keys[MAX_KEY_COMBINATION];
-	unsigned int len;
+	Key key;
+	unsigned int keycounter;
+	bool commit;
 } _KeyQueue;
 
 static _KeyQueue KeyQueue;
 
 extern Result keyProcess( Core *const coreptr );
 extern const Key *const keyRead();
-extern void keyQueueAppend(const Key *const keyptr);
-extern const Key *const keyQueuePop();
-extern bool keyQueueIsFull();
-extern void keyQueueEmpty();
-extern void keyQueueShiftElement();
-extern const Key *const keyQueuePopCharacter();
+Result keyQueueHandler();
+void keyQueueZero();

@@ -12,8 +12,10 @@ struct Offset
 		int16_t posrow;
 		int16_t poscol;
 	} cursor;
+	Lines *online;
+	Chars *onchar;
 };
 
 typedef struct Offset Offset;
 
-Offset const offsetCreate();
+Offset offsetCreate();

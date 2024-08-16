@@ -7,7 +7,6 @@ const Key *const keyRead()
 	{
 		key.character = 0;
 		key.mod = NOMOD;
-		key.count = 0;
 	}
 
 	unsigned char inputs[6] = { 0 };
@@ -21,7 +20,7 @@ const Key *const keyRead()
 	if ( rbytes == 0 )
 	{
 		key.button = NONE;
-		key.mod |= (BTN | TIMEOUT);
+		key.mod |= ( BTN | TIMEOUT );
 		return &key;
 	}
 
@@ -54,6 +53,7 @@ const Key *const keyRead()
 		if ( inputs[0] <= 126 && inputs[0] >= 32 )
 		{
 			key.character = inputs[0];
+			key.mod |= CHAR;
 			return &key;
 		}
 	}
@@ -229,81 +229,87 @@ const Key *const keyRead()
 	return &key;
 }
 
-Result keyProcess(Core *const coreptr)
+void keyQueueZero() { memset( &KeyQueue, 0, sizeof( _KeyQueue ) ); }
+
+Result keyQueueHandler()
 {
-	// const Key *key = keyRead();
+	const Key *key = keyRead();
+	if ( ( KeyQueue.key.mod == ( BTN | TIMEOUT ) || KeyQueue.key.mod == NOMOD ) &&
+	     ( KeyQueue.key.button == NONE || KeyQueue.key.button == 0 ) )
+	{
+		if ( key->mod == NOMOD )
+		{
+			return SUCCESSFUL;
+		}
+
+		KeyQueue.key = *key;
+		KeyQueue.keycounter = 1;
+		if ( key->mod == CHAR )
+		{
+			KeyQueue.commit = true;
+			return SUCCESSFUL;
+		}
+		else if ( ( key->mod & CTRL ) || ( key->mod & ALT ) || ( key->mod & FN ) )
+		{
+			KeyQueue.commit = false;
+			return SUCCESSFUL;
+		}
+		else if ( ( key->mod & BTN ) )
+		{
+			KeyQueue.commit = true;
+			return SUCCESSFUL;
+		}
+	}
+	else
+	{
+		if ( key->mod == ( BTN | TIMEOUT ) && key->button == NONE )
+		{
+			KeyQueue.commit = true;
+			return SUCCESSFUL;
+		}
+		if ( ( ( key->mod & CTRL ) || ( key->mod & ALT ) || ( key->mod & FN ) ) &&
+		     key->character == KeyQueue.key.character )
+		{
+			if ( KeyQueue.keycounter + 1 == MAX_KEY_COMBINATION )
+			{
+				KeyQueue.commit = true;
+				KeyQueue.keycounter++;
+				return SUCCESSFUL;
+			}
+			else if ( KeyQueue.keycounter + 1 < MAX_KEY_COMBINATION )
+			{
+				KeyQueue.commit = false;
+				KeyQueue.keycounter++;
+				return SUCCESSFUL;
+			}
+		}
+		else
+		{
+			KeyQueue.key = *key;
+			KeyQueue.keycounter = 1;
+			if ( ( key->mod & CTRL ) || ( key->mod & ALT ) || ( key->mod & FN ) )
+			{
+				KeyQueue.commit = false;
+				return SUCCESSFUL;
+			}
+			KeyQueue.commit = true;
+			return SUCCESSFUL;
+		}
+	}
 
 	return SUCCESSFUL;
 }
 
-void keyQueueAppend(const Key *const keyptr)
+Result keyProcess( Core *const coreptr )
 {
-	if (KeyQueue.len < MAX_KEY_COMBINATION )
+	if ( keyQueueHandler() == FAILED )
 	{
-		KeyQueue.keys[KeyQueue.len - 1] = *keyptr;
-		KeyQueue.len++;
-		return;
-	}
-	else if (KeyQueue.len == MAX_KEY_COMBINATION)
-	{
-		keyQueueEmpty();
-		KeyQueue.keys[KeyQueue.len - 1] = *keyptr;
-		KeyQueue.len++;
-		return;
-	}
-}
-
-const Key *const keyQueuePop()
-{
-	static Key keyptr; 
-
-	if (KeyQueue.len == 0)
-	{
-		return NULL;
-	}
-	keyptr = KeyQueue.keys[0];
-
-	if (KeyQueue.len > 1)
-	{
-		for (int count = KeyQueue.len; count != 0; count--)
-		{
-			KeyQueue.keys[count] = KeyQueue.keys[count -1];
-		}
+		return FAILED;
 	}
 
-	return &keyptr;
-}
-
-bool keyQueueIsFull()
-{
-	if (KeyQueue.len == MAX_KEY_COMBINATION)
+	if ( KeyQueue.commit == true )
 	{
-		return true;
+		keyQueueZero();
 	}
-	return false;
-}
-
-const Key *const keyQueuePopCharacter()
-{
-	static Key keyptr; 
-	if (KeyQueue.len == 0)
-	{
-		return NULL;
-	}
-
-	
-
-}
-
-void keyQueueShiftElement()
-{
-	for (int count = KeyQueue.len; count != 0; count--)
-	{
-		KeyQueue.keys[count] = KeyQueue.keys[count -1];
-	}
-}
-
-void keyQueueEmpty()
-{
-	memset(KeyQueue.keys, 0, MAX_KEY_COMBINATION);
+	return SUCCESSFUL;
 }

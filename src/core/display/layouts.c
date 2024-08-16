@@ -1,8 +1,8 @@
 #include "./layouts.h"
 
-void writeHeaderBar( WindowBuf *const winbufptr ) {}
-void writeSideBars( WindowBuf *const winbufptr ) {}
-void writeFooterBar( WindowBuf *const winbufptr ) {}
-void writeCommandBar( WindowBuf *const winbufptr ) {}
-void writeContent( WindowBuf *const winbufptr ) {}
-void writeLineNumber( WindowBuf *const winbufptr ) {}
+void writeHeaderBar( Core *const coreptr ) {}
+void writeSideBars( Core *const coreptr ) {}
+void writeFooterBar( Core *const coreptr ) {}
+void writeCommandBar( Core *const coreptr ) {}
+void writeContent( Core *const coreptr ) {}
+void writeLineNumber( Core *const coreptr ) {}
