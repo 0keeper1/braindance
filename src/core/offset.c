@@ -8,5 +8,7 @@ Offset const offsetCreate()
 	    .cursor.poscol = 0,
 	    .cursor.posrow = 0,
 	};
+	Lines *online;
+	Chars *onchar;
 	return offset;
 }

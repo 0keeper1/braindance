@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../core/buffer/windowbuf.h"
-#include "../core/offset.h"
-#include "../errors.h"
+#include "../buffer/windowbuf.h"
+#include "../offset.h"
+#include "../core.h"
+#include "../../errors.h"
 #include "./layouts.h"
 #include <stdio.h>
 
@@ -16,4 +17,4 @@
 
 #define SHOW_CURSOR "\x1b[?25h"
 
-extern Result display( WindowBuf *const winbufptr, Offset *const offsetptr, Lines *const lines );
+extern Result display( Core *const coreptr);

@@ -8,7 +8,7 @@
 const char *HELP = "usage: bd [OPTIONS] <FILE PATH>\n\t-h | --help\tShowed this message.\n\t-m <MODE> | --mode "
 		   "<MODE>\tOpen file mode (default: r+)";
 
-int main( int argc, char *const argv[] )
+int main( int argc, char *argv[] )
 {
 	Cmds commands = createCmds();
 
@@ -25,10 +25,10 @@ int main( int argc, char *const argv[] )
 	{
 		commands.path = DEFAULT_SCRATCH_FILE_NAME;
 	}
-	else if ( checkPath( commands.cwd, commands.path ) == P_IS_VALID )
-	{
-		printf( "\nCWD: %s | FILE: %s\n", commands.cwd, commands.path );
-	}
+	// else if ( checkPath( commands.cwd, commands.path ) == P_IS_VALID )
+	// {
+	// 	printf( "\nCWD: %s | FILE: %s\n", commands.cwd, commands.path );
+	// }
 
 	if ( coreRun( &commands ) == SUCCESSFUL )
 	{

@@ -23,5 +23,5 @@ static struct winsize WINSIZE = { 0 };
 extern Result winsizeUpdate();
 extern WindowBuf windowbufCreate();
 extern Result windowbufWrite( WindowBuf *winbufptr );
-extern inline void windowbufFree( WindowBuf *const winbufptr );
+extern void windowbufFree( WindowBuf *const winbufptr );
 extern Result windowbufAppend( WindowBuf *const winbufptr, const UTF *content, size_t len );

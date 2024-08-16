@@ -26,9 +26,9 @@ Cmds createCmds()
 
 Result parseCli( int argc, char *const argv[], Cmds *const commands )
 {
-	commands->cwd = getcwd( NULL, 0 );
+	commands->cwd = NULL;
 
-	for ( int c = 1; c != argc; ++c )
+	for ( int c = 1; c != argc; c++ )
 	{
 		if ( isFlag( argv[c] ) )
 		{

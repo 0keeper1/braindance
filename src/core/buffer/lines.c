@@ -114,7 +114,7 @@ void linesDelete( Lines *lineptr )
 	free( lineptr );	  // remove line from heap
 }
 
-inline UTF *linesContentCreate( int cap ) { return ( UTF * )calloc( cap, sizeof( UTF ) ); }
+UTF *linesContentCreate( int cap ) { return ( UTF * )calloc( cap, sizeof( UTF ) ); }
 
 void linesNewLine( Lines *lineptr )
 {

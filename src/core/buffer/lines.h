@@ -29,7 +29,7 @@ extern void linesClearAndDrop( Lines *lineptr );
 
 extern void linesDelete( Lines *lineptr );
 
-extern inline UTF *linesContentCreate( int cap );
+extern UTF *linesContentCreate( int cap );
 
 extern void linesSetContentPtr( Lines *lineptr, UTF *contentptr, int cap, int len );
 

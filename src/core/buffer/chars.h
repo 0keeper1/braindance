@@ -19,4 +19,4 @@ typedef struct Chars Chars;
 extern Chars *charsConvertStringToChars( const UTF *ptr, int len );
 extern Chars *charsCreate( UTF chr );
 extern void charsRemoveChar( Chars *chrptr );
-extern inline void charsFree( Chars *chrptr );
+extern void charsFree( Chars *chrptr );

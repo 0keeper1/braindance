@@ -7,6 +7,7 @@ const Key *const keyRead()
 	{
 		key.character = 0;
 		key.mod = NOMOD;
+		key.count = 0;
 	}
 
 	unsigned char inputs[6] = { 0 };
@@ -16,12 +17,11 @@ const Key *const keyRead()
 	{
 		return NULL;
 	}
-	printf( "+ %lu +\n", rbytes );
-	printf( "%d-%d-%d-%d-%d-%d\r\n", inputs[0], inputs[1], inputs[2], inputs[3], inputs[4], inputs[5] );
+
 	if ( rbytes == 0 )
 	{
-		key.button = TIMEOUT;
-		key.mod |= BTN;
+		key.button = NONE;
+		key.mod |= (BTN | TIMEOUT);
 		return &key;
 	}
 
@@ -57,7 +57,6 @@ const Key *const keyRead()
 			return &key;
 		}
 	}
-
 	else if ( rbytes == 2 )
 	{
 		if ( inputs[0] == 27 && inputs[1] != 0 )
@@ -104,6 +103,23 @@ const Key *const keyRead()
 	}
 	else if ( rbytes == 4 )
 	{
+		if ( inputs[0] == 27 && inputs[1] == 91 && inputs[3] == 126 )
+		{
+			switch ( inputs[2] )
+			{
+			case 53:
+				key.button = FN_ARROW_UP;
+				key.mod |= BTN;
+				return &key;
+			case 54:
+				key.button = FN_ARROW_DOWN;
+				key.mod |= BTN;
+				return &key;
+				break;
+			default:
+				break;
+			}
+		}
 	}
 	else if ( rbytes == 6 )
 	{
@@ -211,4 +227,83 @@ const Key *const keyRead()
 	}
 
 	return &key;
+}
+
+Result keyProcess(Core *const coreptr)
+{
+	// const Key *key = keyRead();
+
+	return SUCCESSFUL;
+}
+
+void keyQueueAppend(const Key *const keyptr)
+{
+	if (KeyQueue.len < MAX_KEY_COMBINATION )
+	{
+		KeyQueue.keys[KeyQueue.len - 1] = *keyptr;
+		KeyQueue.len++;
+		return;
+	}
+	else if (KeyQueue.len == MAX_KEY_COMBINATION)
+	{
+		keyQueueEmpty();
+		KeyQueue.keys[KeyQueue.len - 1] = *keyptr;
+		KeyQueue.len++;
+		return;
+	}
+}
+
+const Key *const keyQueuePop()
+{
+	static Key keyptr; 
+
+	if (KeyQueue.len == 0)
+	{
+		return NULL;
+	}
+	keyptr = KeyQueue.keys[0];
+
+	if (KeyQueue.len > 1)
+	{
+		for (int count = KeyQueue.len; count != 0; count--)
+		{
+			KeyQueue.keys[count] = KeyQueue.keys[count -1];
+		}
+	}
+
+	return &keyptr;
+}
+
+bool keyQueueIsFull()
+{
+	if (KeyQueue.len == MAX_KEY_COMBINATION)
+	{
+		return true;
+	}
+	return false;
+}
+
+const Key *const keyQueuePopCharacter()
+{
+	static Key keyptr; 
+	if (KeyQueue.len == 0)
+	{
+		return NULL;
+	}
+
+	
+
+}
+
+void keyQueueShiftElement()
+{
+	for (int count = KeyQueue.len; count != 0; count--)
+	{
+		KeyQueue.keys[count] = KeyQueue.keys[count -1];
+	}
+}
+
+void keyQueueEmpty()
+{
+	memset(KeyQueue.keys, 0, MAX_KEY_COMBINATION);
 }

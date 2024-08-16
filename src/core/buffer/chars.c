@@ -9,7 +9,7 @@ Chars *charsCreate( UTF chr )
 	return ptr;
 }
 
-inline void charsFree( Chars *chrptr ) { free( chrptr ); }
+void charsFree( Chars *chrptr ) { free( chrptr ); }
 
 void charsRemoveChar( Chars *const chrptr )
 {

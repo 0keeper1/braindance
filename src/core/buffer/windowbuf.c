@@ -27,7 +27,7 @@ Result windowbufWrite( WindowBuf *winbufptr )
 	return SUCCESSFUL;
 }
 
-inline void windowbufFree( WindowBuf *const winbufptr )
+void windowbufFree( WindowBuf *const winbufptr )
 {
 	free( winbufptr->ptr );
 	winbufptr->len = 0;

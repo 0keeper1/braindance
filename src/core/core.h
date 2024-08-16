@@ -1,11 +1,9 @@
 #pragma once
 
 #include "../cmdline/cli.h"
-#include "../display/update.h"
 #include "../errors.h"
 #include "./buffer/lines.h"
 #include "./buffer/windowbuf.h"
-#include "./input.h"
 #include "./offset.h"
 #include <ctype.h>
 #include <signal.h>
@@ -23,6 +21,9 @@ typedef struct
 	Offset offset;
 	bool exit;
 } Core;
+
+#include "./display/update.h"
+#include "./input.h"
 
 static struct termios ORGTERMIOS;
 
