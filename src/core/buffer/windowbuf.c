@@ -1,10 +1,30 @@
 #include "./windowbuf.h"
 
-WindowBuf windowbufCreate()
+Result windowbufCreate( WindowBuf *const windowbufptr )
 {
-	WindowBuf winbuf = { .cap = ( WINSIZE.ws_col * WINSIZE.ws_row ), .len = 0 };
-	winbuf.ptr = ( UTF * )calloc( winbuf.cap, sizeof( UTF ) );
-	return winbuf;
+	unsigned int buffersize = ( WINSIZE.ws_col * WINSIZE.ws_row );
+	windowbufptr->len = 0;
+	windowbufptr->cap = buffersize;
+	if ( ( windowbufptr->ptr = ( UTF * )calloc( buffersize, sizeof( UTF ) ) ) == NULL )
+	{
+		return OUT_OF_MEMORY;
+	}
+	return SUCCESSFUL;
+}
+
+Result windowbufResize( WindowBuf *const windowbufptr )
+{
+	unsigned int buffersize = ( WINSIZE.ws_col * WINSIZE.ws_row );
+	if ( ( windowbufptr->ptr = ( UTF * )realloc( windowbufptr->ptr, buffersize ) ) == NULL )
+	{
+		return OUT_OF_MEMORY;
+	}
+	windowbufptr->cap = buffersize;
+	if ( windowbufptr->len > buffersize )
+	{
+		windowbufptr->len = buffersize;
+	}
+	return SUCCESSFUL;
 }
 
 Result winsizeUpdate()

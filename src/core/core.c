@@ -1,34 +1,52 @@
 #include "./core.h"
 
-Result coreInit()
+Result coreCreate( Core *const coreptr )
 {
-	winsizeUpdate();
-	enableRawMode();
+	WindowBuf windowbuf;
+	if ( windowbufCreate( &windowbuf ) != SUCCESSFUL )
+	{
+		return OUT_OF_MEMORY;
+	}
+	Info info;
+	if ( infoCreate( &info ) != SUCCESSFUL )
+	{
+		return OUT_OF_MEMORY;
+	}
+	coreptr->offset = offsetCreate();
+	coreptr->lines = NULL;
+
 	return SUCCESSFUL;
 }
 
-Result coreRun( const Cmds *const cmds )
+Result coreInit( Core *const coreptr )
 {
-	WindowBuf const winbuf = windowbufCreate();
-	Offset const offset = offsetCreate();
-	FILE *fileptr = fileOpen( cmds->path, cmds->open_mode );
-	Lines *const linesptr = linesFileToLines( fileptr );
-	Core core = { .exit = false, .lines = linesptr, .window = winbuf, .offset = offset };
+	winsizeUpdate();
 
-	return coreLoop( &core );
+	enableRawMode();
+
+	windowbufResize( &coreptr->window );
+	// FILE *fileptr = fileOpen( cmds->path, "r+" );
+	// Lines *const linesptr = linesFileToLines( fileptr );
+	return SUCCESSFUL;
 }
 
-Result coreLoop( Core *const coreptr )
+Result coreLoop( Cmds *const cmdsptr )
 {
-	coreInit();
+	Core core;
+	if ( coreCreate( &core ) != SUCCESSFUL )
+	{
+		return FAILED;
+	}
+
+	coreInit( &core );
 
 	do
 	{
-		display( coreptr );
-		keyProcess( coreptr );
-	} while ( coreptr->exit == false );
+		display( &core );
+		keyProcess( &core );
+	} while ( core.exit == false );
 
-	coreExit( coreptr );
+	coreExit( &core );
 
 	return SUCCESSFUL;
 }
@@ -36,6 +54,13 @@ Result coreLoop( Core *const coreptr )
 void coreExit( Core *const coreptr )
 {
 	disableRawMode();
+
+	windowbufFree( &coreptr->window );
+
+	infoFree( &coreptr->info );
+
+	linesFree( coreptr->lines );
+
 	write( STDOUT_FILENO, SCREEN_CLEAR, 4 );
 	write( STDOUT_FILENO, CURSOR_AT_START, 3 );
 }

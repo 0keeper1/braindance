@@ -3,6 +3,7 @@
 #include "../../errors.h"
 #include "../../settings.h"
 #include "./chars.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,13 +12,13 @@
 struct Lines
 {
 	struct Lines *perv; // perv line
-	int len;	    // content size
+	unsigned int len;   // content size
 	union
 	{
 		UTF *content;
 		Chars *chars;
 	};
-	int cap;	    // allocated size
+	unsigned int cap;   // allocated size
 	struct Lines *next; // next line
 };
 
@@ -39,10 +40,10 @@ extern Lines *linesCreate( UTF *contentptr, int cap, int len );
 
 extern Lines *linesFileToLines( FILE *file );
 
-extern Result linesClearAll( Lines *firstlineptr );
+extern Result linesClearAll( Lines *lineptr );
 
-extern Result linesClearAllAndDrop( Lines *firtlineptr );
+extern Result linesFree( Lines *lineptr );
 
-Lines *linesReachEnd( Lines *lineptr );
+extern Lines *linesReachEnd( Lines *lineptr );
 
-Result linesDrop( Lines *lineptr );
+extern Result linesDrop( Lines *lineptr );

@@ -1,39 +1,38 @@
 #include "./cmdline/cli.h"
 #include "./core/core.h"
+#include "./errors.h"
 #include "./settings.h"
 #include "./utils/path.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-const char *HELP = "usage: bd [OPTIONS] <FILE PATH>\n\t-h | --help\tShowed this message.\n\t-m <MODE> | --mode "
-		   "<MODE>\tOpen file mode (default: r+)";
+const char *HELP = "usage: bd [OPTIONS] <FILE PATH>\n\t-h | --help\tShowed this message.\n\r";
 
 int main( int argc, char *argv[] )
 {
 	Cmds commands = createCmds();
-	if ( parseCli( argc, argv, &commands ) != 0 )
+	Result err;
+	if ( ( err = parseCli( argc, argv, &commands ) ) != SUCCESSFUL )
 	{
+		printerr( err );
 		return EXIT_FAILURE;
 	}
-	printf( "cwd %s - path %s - open_mode %s", commands.cwd, commands.path, commands.open_mode );
 
-	if ( commands.help == true )
+	if ( commands.flags.help == true )
 	{
 		puts( HELP );
 		return EXIT_SUCCESS;
 	}
 	else if ( commands.path == NULL )
 	{
-		commands.path = DEFAULT_SCRATCH_FILE_NAME;
+		fprintf( stderr, "Enter a Specific file path to edit.\n" );
+		return EXIT_FAILURE;
 	}
 
-	// if ( coreRun( &commands ) == SUCCESSFUL )
-	// {
-	return EXIT_SUCCESS;
-	// }
-	// else
-	// {
-	// 	return EXIT_FAILURE;
-	// }
+	err = coreLoop( &commands );
+	free( commands.path );
+	free( commands.cwd );
+
+	return err;
 }

@@ -18,4 +18,4 @@ struct Offset
 
 typedef struct Offset Offset;
 
-Offset offsetCreate();
+extern Offset offsetCreate();

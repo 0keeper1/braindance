@@ -1,6 +1,10 @@
 #pragma once
 
-#include "../../settings.h"
+#include "../errors.h"
+#include "../settings.h"
+
+#include "limits.h"
+#include "stdlib.h"
 
 struct Info
 {
@@ -11,3 +15,7 @@ struct Info
 };
 
 typedef struct Info Info;
+
+extern Result infoCreate( Info *const infoptr );
+
+extern void infoFree( Info *const infoptr );

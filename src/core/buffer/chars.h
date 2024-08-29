@@ -2,6 +2,7 @@
 
 #include "../../errors.h"
 #include "../../settings.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +18,9 @@ struct Chars
 typedef struct Chars Chars;
 
 extern Chars *charsConvertStringToChars( const UTF *ptr, int len );
+
 extern Chars *charsCreate( UTF chr );
+
 extern void charsRemoveChar( Chars *chrptr );
+
 extern void charsFree( Chars *chrptr );

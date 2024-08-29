@@ -83,8 +83,13 @@ typedef struct
 static _KeyQueue KeyQueue;
 
 extern Result keyProcess( Core *const coreptr );
+
 extern const Key *const keyRead();
-Result keyQueueHandler();
-void keyQueueZero();
-Result keyExec( Core *const coreptr );
-bool checkKeyWithBinding( const struct Keybind *const keybind );
+
+extern Result keyQueueHandler();
+
+extern void keyQueueZero();
+
+extern Result keyExec( Core *const coreptr );
+
+extern bool checkKeyWithBinding( const struct Keybind *const keybind );

@@ -1,18 +1,25 @@
 #include "errors.h"
 
-#ifndef DEBUG
-void printErr( Result err )
+void printerr( Result err )
 {
-	char *message = "";
+	char *message;
 	switch ( err )
 	{
 	case SUCCESSFUL:
 		message = "Successful.";
 		break;
+	case FAILED:
+		message = "Failed.";
+		break;
+	case CLI_INVALID_FALG:
+		message = "Invalid input flag.";
+		break;
+	case OUT_OF_MEMORY:
+		message = "Out of memory.";
+		break;
 	default:
 		break;
 	}
 
-	printf( "%s", message );
+	fprintf( stderr, "%s\n", message );
 }
-#endif

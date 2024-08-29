@@ -5,9 +5,9 @@
 typedef enum Result
 {
 	SUCCESSFUL,
-	IO,
 	FAILED,
+	CLI_INVALID_FALG,
 	OUT_OF_MEMORY,
 } Result;
 
-void printErr( Result err );
+void printerr( Result err );

@@ -8,13 +8,13 @@ void linesClear( Lines *lineptr )
 	lineptr->len = 0;
 }
 
-Result linesClearAll( Lines *firstlineptr )
+Result linesClearAll( Lines *lineptr )
 {
-	for ( ; firstlineptr->next != NULL; ++firstlineptr )
+	for ( ; lineptr->next != NULL; ++lineptr )
 	{
-		free( firstlineptr->content );
-		firstlineptr->cap = 0;
-		firstlineptr->len = 0;
+		free( lineptr->content );
+		lineptr->cap = 0;
+		lineptr->len = 0;
 	}
 
 	return SUCCESSFUL;
@@ -38,16 +38,7 @@ Lines *linesReachEnd( Lines *lineptr )
 	return lineptr;
 }
 
-Result linesClearAllAndDrop( Lines *firtlineptr )
-{
-	Lines *endoflinesptr;
-	endoflinesptr = linesReachEnd( firtlineptr );
-	for ( ; endoflinesptr != NULL; endoflinesptr = endoflinesptr->perv )
-	{
-		linesClear( endoflinesptr );
-	}
-	return SUCCESSFUL;
-}
+Result linesFree( Lines *lineptr ) { return SUCCESSFUL; }
 
 Lines *linesCreate( UTF *contentptr, int cap, int len )
 {

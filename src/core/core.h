@@ -18,10 +18,12 @@
 
 typedef struct
 {
-	Lines *const lines;
+	Lines *lines;
 	WindowBuf window;
 	Offset offset;
 	Info info;
+	// CommandLine commandline;
+	// History history;
 	bool exit;
 } Core;
 
@@ -30,11 +32,16 @@ typedef struct
 
 static struct termios ORGTERMIOS;
 
-Result coreLoop( Core *const core );
-Result coreInit();
-FILE *fileOpen( char *const path, const char *const mode );
-Result enableRawMode();
-Result disableRawMode();
-void coreExit( Core *const coreptr );
+extern Result coreCreate( Core *const coreptr );
 
-extern Result coreRun( const Cmds *const cmds );
+extern Result coreInit( Core *const coreptr );
+
+extern FILE *fileOpen( char *const path, const char *const mode );
+
+extern Result enableRawMode();
+
+extern Result disableRawMode();
+
+extern void coreExit( Core *const coreptr );
+
+extern Result coreLoop( Cmds *const cmdsptr );
