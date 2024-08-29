@@ -300,9 +300,36 @@ Result keyQueueHandler()
 	return SUCCESSFUL;
 }
 
+Result keyExec( Core *const coreptr )
+{
+
+#include "../keybindings.h"
+
+	if ( checkKeyWithBinding( &EXIT ) )
+	{
+		coreptr->exit = true;
+	}
+	return SUCCESSFUL;
+}
+
+bool checkKeyWithBinding( const struct Keybind *const keybindptr )
+{
+	if ( keybindptr->character == KeyQueue.key.character && keybindptr->modifier == KeyQueue.key.mod &&
+	     keybindptr->repeat == KeyQueue.keycounter && KeyQueue.commit == true )
+	{
+		return true;
+	}
+	return false;
+}
+
 Result keyProcess( Core *const coreptr )
 {
 	if ( keyQueueHandler() == FAILED )
+	{
+		return FAILED;
+	}
+
+	if ( keyExec( coreptr ) == FAILED )
 	{
 		return FAILED;
 	}

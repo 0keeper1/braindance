@@ -44,7 +44,6 @@ Result linesClearAllAndDrop( Lines *firtlineptr )
 	endoflinesptr = linesReachEnd( firtlineptr );
 	for ( ; endoflinesptr != NULL; endoflinesptr = endoflinesptr->perv )
 	{
-		printf( "%s", endoflinesptr->content );
 		linesClear( endoflinesptr );
 	}
 	return SUCCESSFUL;

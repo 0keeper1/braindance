@@ -66,6 +66,13 @@ typedef struct
 	unsigned int mod : 8;
 } Key;
 
+struct Keybind
+{
+	unsigned char character;
+	unsigned int modifier : 8;
+	unsigned char repeat;
+};
+
 typedef struct
 {
 	Key key;
@@ -79,3 +86,5 @@ extern Result keyProcess( Core *const coreptr );
 extern const Key *const keyRead();
 Result keyQueueHandler();
 void keyQueueZero();
+Result keyExec( Core *const coreptr );
+bool checkKeyWithBinding( const struct Keybind *const keybind );

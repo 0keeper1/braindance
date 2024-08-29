@@ -24,16 +24,16 @@ Result coreLoop( Core *const coreptr )
 
 	do
 	{
-		// display( coreptr );
+		display( coreptr );
 		keyProcess( coreptr );
 	} while ( coreptr->exit == false );
 
-	coreExit();
+	coreExit( coreptr );
 
 	return SUCCESSFUL;
 }
 
-void coreExit()
+void coreExit( Core *const coreptr )
 {
 	disableRawMode();
 	write( STDOUT_FILENO, SCREEN_CLEAR, 4 );
@@ -43,7 +43,8 @@ void coreExit()
 FILE *fileOpen( char *const path, const char *const mode )
 {
 	FILE *file = NULL;
-	if ( ( file = fopen( path, mode == NULL ? DEFAULT_OPEN_MODE : mode ) ) == NULL )
+	if ( ( file = fopen( path, mode == NULL ? DEFAULT_OPEN_MODE : mode ) ) ==
+	     NULL ) // TOOD: validate open mode in cli parser
 	{
 		return NULL;
 	}

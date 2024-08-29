@@ -26,8 +26,6 @@ Cmds createCmds()
 
 Result parseCli( int argc, char *const argv[], Cmds *const commands )
 {
-	commands->cwd = NULL;
-
 	for ( int c = 1; c != argc; c++ )
 	{
 		if ( isFlag( argv[c] ) )
@@ -46,9 +44,9 @@ Result parseCli( int argc, char *const argv[], Cmds *const commands )
 		}
 		else if ( c == ( argc - 1 ) )
 		{
-			commands->path = argv[c];
+			commands->path = realpath( argv[c], NULL );
 		}
 	}
-
+	commands->cwd = getcwd( NULL, 0 );
 	return SUCCESSFUL;
 }

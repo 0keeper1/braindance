@@ -4,7 +4,9 @@
 #include "../errors.h"
 #include "./buffer/lines.h"
 #include "./buffer/windowbuf.h"
+#include "./info.h"
 #include "./offset.h"
+
 #include <ctype.h>
 #include <signal.h>
 #include <stdbool.h>
@@ -19,6 +21,7 @@ typedef struct
 	Lines *const lines;
 	WindowBuf window;
 	Offset offset;
+	Info info;
 	bool exit;
 } Core;
 
@@ -32,6 +35,6 @@ Result coreInit();
 FILE *fileOpen( char *const path, const char *const mode );
 Result enableRawMode();
 Result disableRawMode();
-void coreExit();
+void coreExit( Core *const coreptr );
 
 extern Result coreRun( const Cmds *const cmds );

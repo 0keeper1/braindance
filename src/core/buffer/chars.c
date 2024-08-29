@@ -48,21 +48,3 @@ Chars *charsConvertStringToChars( const UTF *ptr, int len )
 	}
 	return firstcharptr;
 }
-
-#ifdef TEST
-
-	#include "nanotest/src/lib.h"
-
-int main()
-{
-	Chars *chrptr = charsCreate( 'H' );
-	charsInsertChar( chrptr, 'e' );
-	chrptr = chrptr->next;
-	charsRemoveChar( chrptr->perv );
-	for ( ; chrptr != NULL; chrptr = chrptr->next )
-	{
-		printf( "%c", chrptr->chr );
-	}
-	return 0;
-}
-#endif
