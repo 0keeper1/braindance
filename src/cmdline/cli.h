@@ -12,8 +12,10 @@ typedef struct
 {
 	char *cwd;
 	char *path;
-	bool help;
-	char *open_mode;
+	struct
+	{
+		bool help;
+	} flags;
 } Cmds;
 
 Cmds createCmds();
