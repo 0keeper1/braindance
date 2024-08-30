@@ -38,7 +38,7 @@ extern void linesNewLine( Lines *lineptr );
 
 extern Lines *linesCreate( UTF *contentptr, int cap, int len );
 
-extern Lines *linesFileToLines( FILE *file );
+extern Lines *linesFileToLines( UTF *const pathptr );
 
 extern Result linesClearAll( Lines *lineptr );
 

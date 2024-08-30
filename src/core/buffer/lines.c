@@ -116,9 +116,15 @@ void linesNewLine( Lines *lineptr )
 	newlineptr->perv = lineptr;
 }
 
-Lines *linesFileToLines( FILE *fileptr )
+Lines *linesFileToLines( UTF *const pathptr )
 {
 	int chr, len, cap;
+	FILE *fileptr;
+	if ( ( fileptr = fopen( ( char * )pathptr, "r+" ) ) == NULL )
+	{
+		return NULL;
+	}
+
 	Lines *lineptr, *pervlineptr = NULL;
 	UTF utfchr, *contentptr = NULL;
 

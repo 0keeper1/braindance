@@ -8,6 +8,7 @@
 #include "./offset.h"
 
 #include <ctype.h>
+#include <libgen.h>
 #include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -34,7 +35,7 @@ static struct termios ORGTERMIOS;
 
 extern Result coreCreate( Core *const coreptr );
 
-extern Result coreInit( Core *const coreptr );
+extern Result coreInit( Core *const coreptr, Cmds *const cmdsptr );
 
 extern FILE *fileOpen( char *const path, const char *const mode );
 

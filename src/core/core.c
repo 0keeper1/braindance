@@ -18,15 +18,21 @@ Result coreCreate( Core *const coreptr )
 	return SUCCESSFUL;
 }
 
-Result coreInit( Core *const coreptr )
+Result coreInit( Core *const coreptr, Cmds *const cmdsptr )
 {
 	winsizeUpdate();
 
 	enableRawMode();
 
 	windowbufResize( &coreptr->window );
-	// FILE *fileptr = fileOpen( cmds->path, "r+" );
-	// Lines *const linesptr = linesFileToLines( fileptr );
+
+	coreptr->info.path = cmdsptr->path;
+	coreptr->info.cwd = cmdsptr->cwd;
+	coreptr->info.name = ( UTF * )dirname( ( char * )cmdsptr->path );
+	coreptr->info.ext = NULL;
+
+	coreptr->lines = linesFileToLines( cmdsptr->path );
+
 	return SUCCESSFUL;
 }
 
@@ -38,7 +44,7 @@ Result coreLoop( Cmds *const cmdsptr )
 		return FAILED;
 	}
 
-	coreInit( &core );
+	coreInit( &core, cmdsptr );
 
 	do
 	{

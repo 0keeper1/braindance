@@ -48,3 +48,21 @@ Result parseCli( int argc, char *const argv[], Cmds *const commands )
 	commands->cwd = getcwd( NULL, 0 );
 	return SUCCESSFUL;
 }
+
+Result checkPath( const char *const pathptr )
+{
+	struct stat path_stat;
+	stat( pathptr, &path_stat );
+	if ( S_ISDIR( path_stat.st_mode ) )
+	{
+		return CLI_IS_DIR;
+	}
+	else if ( S_ISREG( path_stat.st_mode ) )
+	{
+		return CLI_IS_FILE;
+	}
+	else
+	{
+		return CLI_INVALID_PATH;
+	}
+}

@@ -2,7 +2,6 @@
 #include "./core/core.h"
 #include "./errors.h"
 #include "./settings.h"
-#include "./utils/path.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +23,7 @@ int main( int argc, char *argv[] )
 		puts( HELP );
 		return EXIT_SUCCESS;
 	}
-	else if ( commands.path == NULL )
+	else if ( commands.path == NULL || checkPath( commands.path ) != CLI_IS_FILE )
 	{
 		fprintf( stderr, "Enter a Specific file path to edit.\n" );
 		return EXIT_FAILURE;
