@@ -22,7 +22,7 @@ bdebug:
 	$(CC) $(CFLAG) $(WARNS) -g3 -ggdb3 -DDEBUG -I$(LIBS) -o $(BUILD)/debug/$(EXE) $(MAIN)
 
 btest:
-	$(CC) $(CFLAG) $(WARNS) -g3 -ggdb3 -DTEST -I$(LIBS) -o $(BUILD)/test/$(EXE) $(ARGS)
+	$(CC) $(CFLAG) $(WARNS) -DTEST -I$(LIBS) -o $(BUILD)/test/$(EXE) $(ARGS)
 
 rrelease:
 	$(BUILD)/release/$(EXE)

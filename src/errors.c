@@ -18,6 +18,7 @@ void printerr( Result err )
 		message = "Out of memory.";
 		break;
 	default:
+		message = "Unknown Error.";
 		break;
 	}
 

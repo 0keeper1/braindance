@@ -37,8 +37,6 @@ extern Result coreCreate( Core *const coreptr );
 
 extern Result coreInit( Core *const coreptr, Cmds *const cmdsptr );
 
-extern FILE *fileOpen( char *const path, const char *const mode );
-
 extern Result enableRawMode();
 
 extern Result disableRawMode();

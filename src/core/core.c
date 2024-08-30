@@ -3,10 +3,7 @@
 Result coreCreate( Core *const coreptr )
 {
 	WindowBuf windowbuf;
-	if ( windowbufCreate( &windowbuf ) != SUCCESSFUL )
-	{
-		return OUT_OF_MEMORY;
-	}
+	windowbufCreate( &windowbuf );
 	Info info;
 	if ( infoCreate( &info ) != SUCCESSFUL )
 	{
@@ -28,10 +25,11 @@ Result coreInit( Core *const coreptr, Cmds *const cmdsptr )
 
 	coreptr->info.path = cmdsptr->path;
 	coreptr->info.cwd = cmdsptr->cwd;
-	coreptr->info.name = ( UTF * )dirname( ( char * )cmdsptr->path );
+	coreptr->info.name = NULL;
 	coreptr->info.ext = NULL;
 
 	coreptr->lines = linesFileToLines( cmdsptr->path );
+	offsetInitialize( &coreptr->offset, coreptr->lines );
 
 	return SUCCESSFUL;
 }
@@ -63,23 +61,12 @@ void coreExit( Core *const coreptr )
 
 	windowbufFree( &coreptr->window );
 
-	infoFree( &coreptr->info );
+	infoFree( &coreptr->info ); // double free detected here.
 
 	linesFree( coreptr->lines );
 
 	write( STDOUT_FILENO, SCREEN_CLEAR, 4 );
 	write( STDOUT_FILENO, CURSOR_AT_START, 3 );
-}
-
-FILE *fileOpen( char *const path, const char *const mode )
-{
-	FILE *file = NULL;
-	if ( ( file = fopen( path, mode == NULL ? DEFAULT_OPEN_MODE : mode ) ) ==
-	     NULL ) // TOOD: validate open mode in cli parser
-	{
-		return NULL;
-	}
-	return file;
 }
 
 Result enableRawMode()

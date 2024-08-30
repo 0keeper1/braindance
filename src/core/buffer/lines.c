@@ -143,10 +143,10 @@ Lines *linesFileToLines( UTF *const pathptr )
 	while ( ( chr = fgetc( fileptr ) ) != EOF )
 	{
 		utfchr = ( UTF )chr;
-
 		if ( len > cap )
 		{
-			contentptr = realloc( contentptr, ( cap + REALLOCATE_SIZE_TO_INCREASE_CAP ) * sizeof( UTF ) );
+			contentptr =
+			    ( UTF * )realloc( contentptr, ( cap + REALLOCATE_SIZE_TO_INCREASE_CAP ) * sizeof( UTF ) );
 			cap += 20;
 		}
 

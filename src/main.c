@@ -23,15 +23,16 @@ int main( int argc, char *argv[] )
 		puts( HELP );
 		return EXIT_SUCCESS;
 	}
-	else if ( commands.path == NULL || checkPath( commands.path ) != CLI_IS_FILE )
+	else if ( commands.path == NULL || checkPath( ( char * )commands.path ) != CLI_IS_FILE )
 	{
 		fprintf( stderr, "Enter a Specific file path to edit.\n" );
 		return EXIT_FAILURE;
 	}
 
-	err = coreLoop( &commands );
-	free( commands.path );
-	free( commands.cwd );
+	if ( coreLoop( &commands ) == SUCCESSFUL )
+	{
+		return EXIT_SUCCESS;
+	}
 
-	return err;
+	return EXIT_FAILURE;
 }

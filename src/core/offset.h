@@ -7,10 +7,8 @@ struct Offset
 {
 	struct Cursor
 	{
-		Chars *cursoronchar;
-		Lines *cursoronline;
-		int16_t posrow;
-		int16_t poscol;
+		u_int16_t posrow;
+		u_int16_t poscol;
 	} cursor;
 	Lines *online;
 	Chars *onchar;
@@ -19,3 +17,5 @@ struct Offset
 typedef struct Offset Offset;
 
 extern Offset offsetCreate();
+
+extern Result offsetInitialize( Offset *const offsetptr, Lines *const linesptr );

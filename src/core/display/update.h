@@ -1,10 +1,11 @@
 #pragma once
 
-#include "../buffer/windowbuf.h"
-#include "../offset.h"
-#include "../core.h"
 #include "../../errors.h"
+#include "../buffer/windowbuf.h"
+#include "../core.h"
+#include "../offset.h"
 #include "./layouts.h"
+
 #include <stdio.h>
 
 #define SCREEN_CLEAR "\x1b[2J"
@@ -17,4 +18,4 @@
 
 #define SHOW_CURSOR "\x1b[?25h"
 
-extern Result display( Core *const coreptr);
+extern Result display( Core *const coreptr );
