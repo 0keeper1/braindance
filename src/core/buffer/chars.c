@@ -1,48 +1,41 @@
 #include "./chars.h"
 
-Chars *charsCreate( UTF chr )
-{
-	Chars *ptr = calloc( 1, sizeof( Chars ) );
+Chars *charsCreate(char chr) {
+	Chars *ptr = calloc(1, sizeof(Chars));
 	ptr->perv = NULL;
 	ptr->chr = chr;
 	ptr->next = NULL;
 	return ptr;
 }
 
-void charsFree( Chars *chrptr ) { free( chrptr ); }
+void charsFree(Chars *chrptr) { free(chrptr); }
 
-void charsRemoveChar( Chars *const chrptr )
-{
+void charsRemoveChar(Chars *const chrptr) {
 	Chars *tmpperv = chrptr->perv;
 	Chars *tmpnext = chrptr->next;
-	if ( tmpnext != NULL )
-	{
+	if (tmpnext != NULL) {
 		tmpnext->perv = tmpperv;
 	}
-	if ( tmpperv != NULL )
-	{
+	if (tmpperv != NULL) {
 		tmpperv->next = tmpnext;
 	}
-	charsFree( chrptr );
+	charsFree(chrptr);
 }
 
-void charsInsertChar( Chars *const chrptr, const UTF newchar )
-{
-	Chars *newcharsptr = charsCreate( newchar );
+void charsInsertChar(Chars *const chrptr, const char newchar) {
+	Chars *newcharsptr = charsCreate(newchar);
 	newcharsptr->perv = chrptr;
 	newcharsptr->next = chrptr->next;
 	chrptr->next = newcharsptr;
 }
 
-Chars *charsConvertStringToChars( const UTF *ptr, int len )
-{
+Chars *charsConvertStringToChars(const char *ptr, int len) {
 	Chars *charsptr, *pervcharptr = NULL;
-	Chars *const firstcharptr = charsptr = charsCreate( '\0' );
-	for ( int i = 0; i < len; ++i )
-	{
+	Chars *const firstcharptr = charsptr = charsCreate('\0');
+	for (int i = 0; i < len; ++i) {
 		charsptr->chr = ptr[i];
 		pervcharptr = charsptr;
-		charsptr = charsCreate( '\0' );
+		charsptr = charsCreate('\0');
 		charsptr->perv = pervcharptr;
 		pervcharptr->next = charsptr;
 	}

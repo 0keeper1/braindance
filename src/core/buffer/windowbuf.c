@@ -1,13 +1,20 @@
 #include "./windowbuf.h"
 
-void windowbufCreate(WindowBuf *const windowbufptr) {
-	windowbufptr->len = 0;
-	windowbufptr->cap = 0;
-	windowbufptr->ptr = NULL;
+#include <termios.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "core.h"
+
+
+WindowBuf windowbufCreate() {
+	const WindowBuf winbuf = {.cap = 0, .ptr = NULL, .len = 0};
+	return winbuf;
 }
 
-Result windowbufResize(WindowBuf *windowbufptr) {
-	unsigned int buffersize = (WINSIZE.ws_col * WINSIZE.ws_row);
+Result windowbufResize(WindowBuf *windowbufptr, const u_int16_t row, const u_int16_t col) {
+	const unsigned int buffersize = (col * row);
 
 	windowbufptr->ptr = realloc(windowbufptr->ptr, buffersize);
 
@@ -22,19 +29,11 @@ Result windowbufResize(WindowBuf *windowbufptr) {
 	return SUCCESSFUL;
 }
 
-Result winsizeUpdate() {
-	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &WINSIZE) > 0) {
-		return FAILED;
-	}
-	return SUCCESSFUL;
-}
-
-Result windowbufWrite(WindowBuf *winbufptr) {
+Result windowbufWrite(const WindowBuf *winbufptr) {
 	const ssize_t writesize = write(STDOUT_FILENO, winbufptr->ptr, winbufptr->len);
 	if (writesize > 0 || (size_t) writesize != winbufptr->len) {
 		return FAILED;
 	}
-	free(winbufptr->ptr);
 	return SUCCESSFUL;
 }
 
@@ -44,9 +43,9 @@ void windowbufFree(WindowBuf *const winbufptr) {
 	winbufptr->cap = 0;
 }
 
-Result windowbufAppend(WindowBuf *winbufptr, UTF *const content, const size_t len) {
+Result windowbufAppend(WindowBuf *winbufptr, char *const content, const size_t len) {
 	if (winbufptr->cap < (winbufptr->len + len)) {
-		if ((winbufptr->ptr = (UTF *) realloc(winbufptr->ptr, winbufptr->cap + len)) == NULL) {
+		if ((winbufptr->ptr = (char *) realloc(winbufptr->ptr, winbufptr->cap + len)) == NULL) {
 			windowbufFree(winbufptr);
 			return FAILED;
 		}

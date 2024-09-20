@@ -1,4 +1,5 @@
 #pragma once
+
 #include "./core/input.h"
 
 #define MOD_CTRL 0b00000010

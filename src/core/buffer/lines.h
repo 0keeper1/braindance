@@ -9,41 +9,40 @@
 #include <string.h>
 #include <strings.h>
 
-struct Lines
-{
+struct Lines {
 	struct Lines *perv; // perv line
-	unsigned int len;   // content size
-	union
-	{
-		UTF *content;
+	unsigned int len; // content size
+	union {
+		char *content;
 		Chars *chars;
 	};
-	unsigned int cap;   // allocated size
+
+	unsigned int cap; // allocated size
 	struct Lines *next; // next line
 };
 
 typedef struct Lines Lines;
 
-extern void linesClear( Lines *lineptr );
+extern void linesClear(Lines *lineptr);
 
-extern void linesClearAndDrop( Lines *lineptr );
+extern void linesClearAndDrop(Lines *lineptr);
 
-extern void linesDelete( Lines *lineptr );
+extern void linesDelete(Lines *lineptr);
 
-extern UTF *linesContentCreate( int cap );
+extern char *linesContentCreate(int cap);
 
-extern void linesSetContentPtr( Lines *lineptr, UTF *contentptr, int cap, int len );
+extern void linesSetContentPtr(Lines *lineptr, char *contentptr, int cap, int len);
 
-extern void linesNewLine( Lines *lineptr );
+extern void linesNewLine(Lines *lineptr);
 
-extern Lines *linesCreate( UTF *contentptr, int cap, int len );
+extern Lines *linesCreate(char *contentptr, int cap, int len);
 
-extern Lines *linesFileToLines( UTF *const pathptr );
+extern Lines *linesFileToLines(char *const pathptr);
 
-extern Result linesClearAll( Lines *lineptr );
+extern Result linesClearAll(Lines *lineptr);
 
-extern Result linesFree( Lines *lineptr );
+extern Result linesFree(Lines *lineptr);
 
-extern Lines *linesReachEnd( Lines *lineptr );
+extern Lines *linesReachEnd(Lines *lineptr);
 
-extern Result linesDrop( Lines *lineptr );
+extern Result linesDrop(Lines *lineptr);

@@ -8,19 +8,18 @@
 #include <string.h>
 #include <strings.h>
 
-struct Chars
-{
+struct Chars {
 	struct Chars *perv;
-	UTF chr;
+	char chr;
 	struct Chars *next;
 };
 
 typedef struct Chars Chars;
 
-extern Chars *charsConvertStringToChars( const UTF *ptr, int len );
+extern Chars *charsConvertStringToChars(const char *ptr, int len);
 
-extern Chars *charsCreate( UTF chr );
+extern Chars *charsCreate(char chr);
 
-extern void charsRemoveChar( Chars *chrptr );
+extern void charsRemoveChar(Chars *chrptr);
 
-extern void charsFree( Chars *chrptr );
+extern void charsFree(Chars *chrptr);

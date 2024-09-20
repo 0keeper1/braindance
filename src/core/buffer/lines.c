@@ -39,7 +39,7 @@ Result linesFree(Lines *lineptr) {
 	return SUCCESSFUL;
 }
 
-Lines *linesCreate(UTF *contentptr, int cap, int len) {
+Lines *linesCreate(char *contentptr, int cap, int len) {
 	Lines *lineptr;
 
 	if (len > cap) {
@@ -63,7 +63,7 @@ Lines *linesCreate(UTF *contentptr, int cap, int len) {
 	return lineptr;
 }
 
-void linesSetContentPtr(Lines *lineptr, UTF *contentptr, int cap, int len) {
+void linesSetContentPtr(Lines *lineptr, char *contentptr, int cap, int len) {
 	lineptr->cap = cap;
 	lineptr->len = len;
 	lineptr->content = contentptr;
@@ -93,7 +93,7 @@ void linesDelete(Lines *lineptr) {
 	free(lineptr); // remove line from heap
 }
 
-UTF *linesContentCreate(int cap) { return (UTF *) calloc(cap, sizeof(UTF)); }
+char *linesContentCreate(int cap) { return (char *) calloc(cap, sizeof(char)); }
 
 void linesNewLine(Lines *lineptr) {
 	Lines *newlineptr;
@@ -104,7 +104,7 @@ void linesNewLine(Lines *lineptr) {
 	newlineptr->perv = lineptr;
 }
 
-Lines *linesFileToLines(UTF *const pathptr) {
+Lines *linesFileToLines(char *const pathptr) {
 	int chr, len, cap;
 	FILE *fileptr;
 	if ((fileptr = fopen((char *) pathptr, "r+")) == NULL) {
@@ -112,7 +112,7 @@ Lines *linesFileToLines(UTF *const pathptr) {
 	}
 
 	Lines *lineptr, *pervlineptr = NULL;
-	UTF utfchr, *contentptr = NULL;
+	char utfchr, *contentptr = NULL;
 
 	len = 0;
 	cap = DEFAULT_ALLOCATION_SIZE_PER_LINE;
@@ -126,10 +126,10 @@ Lines *linesFileToLines(UTF *const pathptr) {
 	}
 
 	while ((chr = fgetc(fileptr)) != EOF) {
-		utfchr = (UTF) chr;
+		utfchr = (char) chr;
 		if (len > cap) {
 			contentptr =
-					(UTF *) realloc(contentptr, (cap + REALLOCATE_SIZE_TO_INCREASE_CAP) * sizeof(UTF));
+					(char *) realloc(contentptr, (cap + REALLOCATE_SIZE_TO_INCREASE_CAP) * sizeof(char));
 			cap += 20;
 		}
 

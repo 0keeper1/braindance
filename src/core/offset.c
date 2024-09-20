@@ -17,10 +17,10 @@ Offset offsetCreate() {
 	return offset;
 }
 
-Result offsetLocationsUpdate(Offset *const offsetptr) {
+Result offsetLocationsUpdate(Offset *const offsetptr, const u_int16_t row, const u_int16_t col) {
 	offsetptr->locations.header = 0;
-	offsetptr->locations.footer = WINSIZE.ws_row - 2;
-	offsetptr->locations.commandprompt = WINSIZE.ws_row - 1;
+	offsetptr->locations.footer = row - 2;
+	offsetptr->locations.commandprompt = col - 1;
 
 	return SUCCESSFUL;
 }

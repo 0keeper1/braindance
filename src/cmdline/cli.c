@@ -1,4 +1,14 @@
 #include "cli.h"
+#include "../errors.h"
+
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
 
 bool isFlag(const char *const arg) {
 	if (arg[0] == '-' || (arg[0] == '-' && arg[1] == '-')) {
@@ -14,7 +24,8 @@ bool checkFlag(const char *const argument, const char *const small_flag, const c
 }
 
 Result createCmds(Cmds *const commands) {
-	UTF *cwdptr = calloc(PATH_MAX, sizeof(UTF));
+	char *cwdptr = calloc(PATH_MAX, sizeof(char));
+
 	if (cwdptr == NULL) {
 		return OUT_OF_MEMORY;
 	}
@@ -33,13 +44,13 @@ Result parseCli(const int argc, char *const argv[], Cmds *const commands) {
 				commands->flags.help = true;
 				return SUCCESSFUL;
 			} else {
-				return CLI_INVALID_FALG;
+				return CLI_INVALID_FLAG;
 			}
 		} else if (c == (argc - 1)) {
-			commands->path = (UTF *) realpath(argv[c], NULL);
+			commands->path = (char *) realpath(argv[c], NULL);
 		}
 	}
-	commands->cwd = (UTF *) getcwd((char *) commands->cwd, PATH_MAX);
+	commands->cwd = getcwd((char *) commands->cwd, PATH_MAX);
 	return SUCCESSFUL;
 }
 

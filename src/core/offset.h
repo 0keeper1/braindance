@@ -26,4 +26,4 @@ extern Offset offsetCreate();
 
 extern Result offsetInitialize(Offset *const offsetptr);
 
-extern Result offsetLocationsUpdate(Offset *const offsetptr);
+extern Result offsetLocationsUpdate(Offset *const offsetptr, u_int16_t row, u_int16_t col);

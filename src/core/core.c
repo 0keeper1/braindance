@@ -1,47 +1,58 @@
 #include "./core.h"
 
-Result coreCreate(Core *const coreptr) {
-	Info info;
-	if (infoCreate(&info) != SUCCESSFUL) {
-		return OUT_OF_MEMORY;
-	}
-	coreptr->offset = offsetCreate();
-	coreptr->lines = NULL;
+#include "../cmdline/cli.h"
+#include "../errors.h"
+#include "./buffer/lines.h"
+#include "./buffer/windowbuf.h"
+#include "./info.h"
+#include "./offset.h"
 
-	return SUCCESSFUL;
+#include <ctype.h>
+#include <libgen.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ioctl.h>
+#include <termios.h>
+#include <unistd.h>
+
+
+Core coreCreate() {
+	const Core core = {
+		.lines = NULL, .offset = offsetCreate(), .info = infoCreate(), .exit = false,
+		.terminal = {.row = 0, .col = 0}
+	};
+	return core;
 }
 
 Result coreInit(Core *const coreptr, const Cmds *const cmdsptr) {
-	winsizeUpdate();
+	if (enableRawMode(coreptr) == FAILED) {
+		return FAILED;
+	}
 
-	enableRawMode();
+	if (coreTermSizeUpdate(coreptr) == FAILED) {
+		return FAILED;
+	}
 
-	offsetLocationsUpdate(&coreptr->offset);
-
-	coreptr->lines = NULL;
+	offsetLocationsUpdate(&coreptr->offset, coreptr->terminal.row, coreptr->terminal.col);
 
 	coreptr->info.path = cmdsptr->path;
 	coreptr->info.cwd = cmdsptr->cwd;
-	coreptr->info.name = NULL;
-	coreptr->info.ext = NULL;
 
 	return SUCCESSFUL;
 }
 
 Result coreLoop(const Cmds *const cmdsptr) {
-	Core core;
-
-	if (coreCreate(&core) != SUCCESSFUL) {
-		return FAILED;
-	}
+	Core core = coreCreate();
 
 	coreInit(&core, cmdsptr);
 
 	do {
-		display(&core);
-		sleep(5);
+		// display(&core);
+		// sleep(5);
 		// keyProcess( &core );
-		// core.exit = true;
+		core.exit = true;
 	} while (core.exit == false);
 
 	coreExit(&core);
@@ -50,24 +61,24 @@ Result coreLoop(const Cmds *const cmdsptr) {
 }
 
 void coreExit(Core *const coreptr) {
-	disableRawMode();
+	disableRawMode(coreptr);
 
 	infoFree(&coreptr->info); // double free detected here.
 
 	linesFree(coreptr->lines);
 
-	write(STDOUT_FILENO, SCREEN_CLEAR, 4);
-	write(STDOUT_FILENO, CURSOR_AT_START, 3);
+	// write(STDOUT_FILENO, SCREEN_CLEAR, 4);
+	// write(STDOUT_FILENO, CURSOR_AT_START, 3);
 }
 
-Result enableRawMode() {
+Result enableRawMode(Core *const coreptr) {
 	struct termios rawterm;
 
 	if (tcgetattr(STDIN_FILENO, &rawterm) < 0) {
 		return FAILED;
 	}
 
-	ORGTERMIOS = rawterm;
+	coreptr->terminal.termio = rawterm;
 
 	rawterm.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
 	rawterm.c_oflag &= ~(OPOST);
@@ -82,9 +93,22 @@ Result enableRawMode() {
 	return SUCCESSFUL;
 }
 
-Result disableRawMode() {
-	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &ORGTERMIOS) < 0) {
+Result disableRawMode(const Core *const coreptr) {
+	if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &coreptr->terminal.termio) < 0) {
 		return FAILED;
 	}
+	return SUCCESSFUL;
+}
+
+Result coreTermSizeUpdate(Core *const coreptr) {
+	struct winsize WINSIZE;
+
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &WINSIZE) > 0) {
+		return FAILED;
+	}
+
+	coreptr->terminal.row = WINSIZE.ws_col;
+	coreptr->terminal.col = WINSIZE.ws_row;
+
 	return SUCCESSFUL;
 }

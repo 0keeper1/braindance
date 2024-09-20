@@ -7,14 +7,14 @@
 #include "stdlib.h"
 
 struct Info {
-	UTF *path;
-	UTF *cwd;
-	UTF *name;
-	UTF *ext;
+	char *path;
+	char *cwd;
+	char *name;
+	char *ext;
 };
 
 typedef struct Info Info;
 
-extern Result infoCreate(Info *const infoptr);
+extern Info infoCreate();
 
 extern void infoFree(Info *const infoptr);

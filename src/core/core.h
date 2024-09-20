@@ -1,43 +1,34 @@
 #pragma once
 
-#include "../cmdline/cli.h"
-#include "../errors.h"
-#include "./buffer/lines.h"
-#include "./buffer/windowbuf.h"
-#include "./info.h"
-#include "./offset.h"
-
-#include <ctype.h>
-#include <libgen.h>
-#include <signal.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/ioctl.h>
-#include <termios.h>
-#include <unistd.h>
+#include "cli.h"
+#include "lines.h"
+#include "info.h"
+#include "offset.h"
+#include "termios.h"
 
 typedef struct {
 	Lines *lines;
 	Offset offset;
 	Info info;
-	// CommandLine commandline;
-	// History history;
+
+	struct Terminal {
+		u_int16_t row;
+		u_int16_t col;
+		struct termios termio;
+	} terminal;
+
 	bool exit;
 } Core;
 
-#include "./display/update.h"
-#include "./input.h"
-
-static struct termios ORGTERMIOS;
-
-extern Result coreCreate(Core *const coreptr);
+extern Core coreCreate();
 
 extern Result coreInit(Core *const coreptr, const Cmds *const cmdsptr);
 
-extern Result enableRawMode();
+extern Result coreTermSizeUpdate(Core *const coreptr);
 
-extern Result disableRawMode();
+extern Result enableRawMode(Core *const coreptr);
+
+extern Result disableRawMode(const Core *const coreptr);
 
 extern void coreExit(Core *const coreptr);
 

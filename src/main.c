@@ -1,7 +1,6 @@
 #include "./cmdline/cli.h"
 #include "./core/core.h"
 #include "./errors.h"
-#include "./settings.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +12,7 @@ int main(const int argc, char *argv[]) {
 	if (createCmds(&commands) == OUT_OF_MEMORY) {
 		return EXIT_FAILURE;
 	}
-	if (parseCli(argc, argv, &commands) == CLI_INVALID_FALG) {
+	if (parseCli(argc, argv, &commands) == CLI_INVALID_FLAG) {
 		puts("Invalid input flag.\n");
 		return EXIT_FAILURE;
 	}
