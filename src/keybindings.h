@@ -9,4 +9,9 @@
 #define BIND( FUNCTIONALITY, CHARACTER, MOD, REPEAT )                                                                  \
 	const struct Keybind FUNCTIONALITY = { .character = CHARACTER, .modifier = MOD, .repeat = REPEAT };
 
+/// DEFAULT KEYBINIDNGS DONT MISS THEM
 BIND( EXIT, 'q', MOD_CTRL, 1 )
+
+BIND(SWITCH_LAYOUT, 'x', MOD_CTRL, 1)
+BIND(SWITCH_LAYOUT_TO_EDITOR, 'e', MOD_CTRL, 2)
+BIND(SWITCH_LAYOUT_TO_PROMPT, 'p', MOD_CTRL, 2)

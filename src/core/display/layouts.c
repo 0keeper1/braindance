@@ -25,7 +25,7 @@ void writeHeaderBar(WindowBuf *winbufptr, const u_int16_t col, const u_int16_t r
 void writeSideBars(WindowBuf *const winbufptr) {
 }
 
-void writeFooterBar(WindowBuf *const winbufptr, const u_int16_t col, const u_int16_t row) {
+void writeFooterBar(WindowBuf *const winbufptr, const u_int16_t col, const u_int16_t row, const enum Layout layout) {
     char movelocation[8] = {'\0'};
     sprintf(movelocation, "\x1b[%d;%dH", row - 1, 0);
 
@@ -40,28 +40,64 @@ void writeFooterBar(WindowBuf *const winbufptr, const u_int16_t col, const u_int
     windowbufAppend(winbufptr, bufptr, col);
     windowbufAppend(winbufptr, "\x1b[0m", 4);
 
+    sprintf(movelocation, "\x1b[%d;%dH", row - 1, col - 4);
+
+    windowbufAppend(winbufptr, movelocation, 8);
+
+    switch (layout) {
+        case EDITOR:
+            windowbufAppend(winbufptr, "\x1b[7mE\x1b[0m", 9);
+            break;
+        case PROMPT:
+            windowbufAppend(winbufptr, "\x1b[7mP\x1b[0m", 9);
+            break;
+        default:
+            break;
+    }
+
     free(bufptr);
 }
 
-void writeCommandBar(WindowBuf *const winbufptr, const u_int16_t col, const u_int16_t row) {
+void writeCommandBar(WindowBuf *const winbufptr, const u_int16_t col, const u_int16_t row, const enum Layout layout) {
     // show commands
     char movelocation[8] = {'\0'};
     sprintf(movelocation, "\x1b[%d;%dH", row, 0);
 
     windowbufAppend(winbufptr, movelocation, 8);
-    windowbufAppend(winbufptr, "> ", 2);
+    switch (layout) {
+        case PROMPT:
+            windowbufAppend(winbufptr, "> ", 2);
+            break;
+        case EDITOR:
+            windowbufAppend(winbufptr, "\x1b[38;5;245m> \x1b[0m", 17);
+            break;
+        default:
+            break;
+    }
 }
 
 void writeContent(WindowBuf *const winbufptr) {
 }
 
-void writeLineNumber(WindowBuf *const winbufptr, const u_int16_t row) {
+void writeLineNumber(WindowBuf *const winbufptr, const u_int16_t row, const enum Layout layout) {
     char movelocation[8] = {'\0'};
-    sprintf(movelocation, "\x1b[%d;%dH", 2, 0);
+    sprintf(movelocation, "\x1b[%d;%dH", layout == EDITOR ? 3 : 2, 0);
 
     windowbufAppend(winbufptr, movelocation, 8);
 
-    for (int i = 0; i < row - 3; i++) {
+    for (int i = 0; i < row - (layout == EDITOR ? 4 : 3); i++) {
         windowbufAppend(winbufptr, "~\n\r", 3);
+    }
+}
+
+void writePrompt(WindowBuf *const winbufptr, const Prompt *const promptptr, const u_int16_t col,
+                 const u_int16_t row) {
+    char movelocation[8] = {'\0'};
+    sprintf(movelocation, "\x1b[%d;%dH", row, 3);
+    windowbufAppend(winbufptr, movelocation, 8);
+    if (promptptr->len > col - 3) {
+        windowbufAppend(winbufptr, "...", 3);
+    } else {
+        windowbufAppend(winbufptr, promptptr->ptr, promptptr->len);
     }
 }

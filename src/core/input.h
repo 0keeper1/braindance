@@ -9,8 +9,7 @@
 #include <string.h>
 #include <unistd.h>
 
-typedef enum
-{
+typedef enum {
 	ENTER,
 	BACKSPACE,
 	ESC,
@@ -45,36 +44,32 @@ typedef enum
 	NONE,
 } Buttons;
 
-enum Mod
-{
-	NOMOD = 0b00000000,
-	BTN = 0b00000001,
-	CTRL = 0b00000010,
-	ALT = 0b00000100,
-	FN = 0b00001000,
-	CHAR = 0b00010000,
-	TIMEOUT = 0b10000000,
+enum Mod {
+	NOMOD = 0b00000000, // 0
+	BTN = 0b00000001, // 1
+	CTRL = 0b00000010, // 2
+	ALT = 0b00000100, // 4
+	FN = 0b00001000, // 8
+	CHAR = 0b00010000, // 16
+	TIMEOUT = 0b10000000, // 32
 };
 
-typedef struct
-{
-	union
-	{
+typedef struct {
+	union {
 		unsigned char character;
 		Buttons button;
 	};
-	unsigned int mod : 8;
+
+	unsigned int mod: 8;
 } Key;
 
-struct Keybind
-{
+struct Keybind {
 	unsigned char character;
-	unsigned int modifier : 8;
+	unsigned int modifier: 8;
 	unsigned char repeat;
 };
 
-typedef struct
-{
+typedef struct {
 	Key key;
 	unsigned int keycounter;
 	bool commit;
@@ -82,7 +77,7 @@ typedef struct
 
 static _KeyQueue KeyQueue;
 
-extern Result keyProcess( Core *const coreptr );
+extern Result keyProcess(Core *const coreptr);
 
 extern const Key *keyRead();
 
@@ -90,6 +85,8 @@ extern Result keyQueueHandler();
 
 extern void keyQueueZero();
 
-extern Result keyExec( Core *const coreptr );
+extern Result keyExec(Core *const coreptr);
 
-extern bool checkKeyWithBinding( const struct Keybind *const keybind );
+extern bool checkKeyWithBinding(const struct Keybind *const keybind);
+
+extern bool checkIsInputKey();

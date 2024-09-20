@@ -1,5 +1,7 @@
 #include "./input.h"
 
+#include <buffer/prompt.h>
+
 const Key *keyRead() {
 	static Key key; {
 		key.character = 0;
@@ -223,10 +225,43 @@ Result keyQueueHandler() {
 Result keyExec(Core *const coreptr) {
 #include "../keybindings.h"
 
-	if (checkKeyWithBinding(&EXIT)) {
+	if (checkIsInputKey()) {
+		switch (coreptr->layout) {
+			case PROMPT:
+				promptAppend(&coreptr->prompt, KeyQueue.key.character);
+				break;
+			case EDITOR:
+				break;
+			default:
+				break;
+		}
+	} else if (checkKeyWithBinding(&EXIT)) {
 		coreptr->exit = true;
+	} else if (checkKeyWithBinding(&SWITCH_LAYOUT)) {
+		switch (coreptr->layout) {
+			case PROMPT:
+				coreptr->layout = EDITOR;
+				break;
+			case EDITOR:
+				coreptr->layout = PROMPT;
+				break;
+			default:
+				break;
+		}
+	} else if (checkKeyWithBinding(&SWITCH_LAYOUT_TO_EDITOR)) {
+		coreptr->layout = EDITOR;
+	} else if (checkKeyWithBinding(&SWITCH_LAYOUT_TO_PROMPT)) {
+		coreptr->layout = PROMPT;
 	}
+
 	return SUCCESSFUL;
+}
+
+bool checkIsInputKey() {
+	if (KeyQueue.key.mod == CHAR && KeyQueue.keycounter == 1 && KeyQueue.commit == true) {
+		return true;
+	}
+	return false;
 }
 
 bool checkKeyWithBinding(const struct Keybind *const keybindptr) {

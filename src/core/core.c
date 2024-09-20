@@ -9,20 +9,20 @@
 #include "./display/update.h"
 
 #include <ctype.h>
-#include <libgen.h>
-#include <signal.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
 
+#include "input.h"
+
 
 Core coreCreate() {
 	const Core core = {
-		.lines = NULL, .offset = offsetCreate(), .info = infoCreate(), .exit = false,
-		.terminal = {.row = 0, .col = 0}
+		.lines = NULL, .offset = offsetCreate(), .info = infoCreate(), .exit = false, .prompt = promptCreate(),
+		.layout = PROMPT,
+		.terminal = {.row = 0, .col = 0, .termio = {0}}
 	};
 	return core;
 }
@@ -36,6 +36,8 @@ Result coreInit(Core *const coreptr, const Cmds *const cmdsptr) {
 		return FAILED;
 	}
 
+	coreptr->offset.cursor.poscol = 1;
+	coreptr->offset.cursor.posrow = 2;
 	coreptr->info.path = cmdsptr->path;
 	coreptr->info.cwd = cmdsptr->cwd;
 
@@ -49,9 +51,7 @@ Result coreLoop(const Cmds *const cmdsptr) {
 
 	do {
 		display(&core);
-		// sleep(5);
-		// keyProcess( &core );
-		core.exit = true;
+		keyProcess(&core);
 	} while (core.exit == false);
 
 	coreExit(&core);
@@ -66,8 +66,8 @@ void coreExit(const Core *const coreptr) {
 
 	linesFree(coreptr->lines);
 
-	// write(STDOUT_FILENO, SCREEN_CLEAR, 4);
-	// write(STDOUT_FILENO, CURSOR_AT_START, 3);
+	write(STDOUT_FILENO, SCREEN_CLEAR, 4);
+	write(STDOUT_FILENO, CURSOR_AT_START, 3);
 }
 
 Result enableRawMode(Core *const coreptr) {

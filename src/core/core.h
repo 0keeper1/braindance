@@ -4,10 +4,17 @@
 #include "lines.h"
 #include "info.h"
 #include "offset.h"
+#include "prompt.h"
 #include "termios.h"
+
+enum Layout {
+	PROMPT,
+	EDITOR,
+};
 
 typedef struct {
 	Lines *lines;
+	Prompt prompt;
 	Offset offset;
 	Info info;
 
@@ -16,6 +23,8 @@ typedef struct {
 		u_int16_t col;
 		struct termios termio;
 	} terminal;
+
+	enum Layout layout;
 
 	bool exit;
 } Core;
