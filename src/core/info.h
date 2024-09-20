@@ -6,8 +6,7 @@
 #include "limits.h"
 #include "stdlib.h"
 
-struct Info
-{
+struct Info {
 	UTF *path;
 	UTF *cwd;
 	UTF *name;
@@ -16,6 +15,6 @@ struct Info
 
 typedef struct Info Info;
 
-extern Result infoCreate( Info *const infoptr );
+extern Result infoCreate(Info *const infoptr);
 
-extern void infoFree( Info *const infoptr );
+extern void infoFree(Info *const infoptr);

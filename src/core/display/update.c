@@ -1,16 +1,20 @@
 #include "./update.h"
 
-Result display( Core *const coreptr )
-{
-	write( STDOUT_FILENO, SCREEN_CLEAR, 4 );
+Result display(Core *const coreptr) {
+	// TODO add window buf allocation here
+	WindowBuf winbuf;
+	windowbufCreate(&winbuf);
+	windowbufResize(&winbuf);
 
-	writeHeaderBar( coreptr );
-	writeFooterBar( coreptr );
-	writeContent( coreptr );
-	writeSideBars( coreptr );
-	writeCommandBar( coreptr );
+	windowbufAppend(&winbuf, SCREEN_CLEAR, 4);
 
-	windowbufWrite( &coreptr->window );
+	writeHeaderBar(&winbuf);
+	// writeFooterBar( coreptr );
+	// writeContent( coreptr );
+	// writeSideBars( coreptr );
+	// writeCommandBar( coreptr );
+
+	windowbufWrite(&winbuf);
 
 	return SUCCESSFUL;
 }

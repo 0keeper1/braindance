@@ -10,8 +10,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-struct WindowBuf
-{
+struct WindowBuf {
 	// The size of the capacity is equal to multiply width and height of the terminal
 	unsigned int cap;
 	UTF *ptr;
@@ -20,16 +19,16 @@ struct WindowBuf
 
 typedef struct WindowBuf WindowBuf;
 
-static struct winsize WINSIZE = { 0 };
+static struct winsize WINSIZE = {0};
 
 extern Result winsizeUpdate();
 
-extern void windowbufCreate( WindowBuf *const windowbufptr );
+extern void windowbufCreate(WindowBuf *const windowbufptr);
 
-extern Result windowbufResize( WindowBuf *const windowbufptr );
+extern Result windowbufResize(WindowBuf *const windowbufptr);
 
-extern Result windowbufWrite( WindowBuf *winbufptr );
+extern Result windowbufWrite(WindowBuf *winbufptr);
 
-extern void windowbufFree( WindowBuf *const winbufptr );
+extern void windowbufFree(WindowBuf *const winbufptr);
 
-extern Result windowbufAppend( WindowBuf *winbufptr, const UTF *content, size_t len );
+extern Result windowbufAppend(WindowBuf *winbufptr, UTF *const content, size_t len);

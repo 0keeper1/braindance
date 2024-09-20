@@ -17,10 +17,8 @@
 #include <termios.h>
 #include <unistd.h>
 
-typedef struct
-{
+typedef struct {
 	Lines *lines;
-	WindowBuf window;
 	Offset offset;
 	Info info;
 	// CommandLine commandline;
@@ -33,14 +31,14 @@ typedef struct
 
 static struct termios ORGTERMIOS;
 
-extern Result coreCreate( Core *const coreptr );
+extern Result coreCreate(Core *const coreptr);
 
-extern Result coreInit( Core *const coreptr, Cmds *const cmdsptr );
+extern Result coreInit(Core *const coreptr, const Cmds *const cmdsptr);
 
 extern Result enableRawMode();
 
 extern Result disableRawMode();
 
-extern void coreExit( Core *const coreptr );
+extern void coreExit(Core *const coreptr);
 
-extern Result coreLoop( Cmds *const cmdsptr );
+extern Result coreLoop(const Cmds *const cmdsptr);

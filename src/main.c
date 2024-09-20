@@ -8,31 +8,28 @@
 
 const char *HELP = "usage: bd [OPTIONS] <FILE PATH>\n\t-h | --help\tShowed this message.\n\r";
 
-int main( int argc, char *argv[] )
-{
-	Cmds commands = createCmds();
-	Result err;
-	if ( ( err = parseCli( argc, argv, &commands ) ) != SUCCESSFUL )
-	{
-		printerr( err );
+int main(const int argc, char *argv[]) {
+	Cmds commands;
+	if (createCmds(&commands) == OUT_OF_MEMORY) {
+		return EXIT_FAILURE;
+	}
+	if (parseCli(argc, argv, &commands) == CLI_INVALID_FALG) {
+		puts("Invalid input flag.\n");
 		return EXIT_FAILURE;
 	}
 
-	if ( commands.flags.help == true )
-	{
-		puts( HELP );
+	if (commands.flags.help == true) {
+		puts(HELP);
 		return EXIT_SUCCESS;
-	}
-	else if ( commands.path == NULL || checkPath( ( char * )commands.path ) != CLI_IS_FILE )
-	{
-		fprintf( stderr, "Enter a Specific file path to edit.\n" );
+	} else if (commands.path == NULL) {
+		fprintf(stderr, "Enter a specific file path to edit.\n");
 		return EXIT_FAILURE;
 	}
 
-	if ( coreLoop( &commands ) == SUCCESSFUL )
-	{
+	if (coreLoop(&commands) == SUCCESSFUL) {
 		return EXIT_SUCCESS;
 	}
 
+	freeCmds(&commands);
 	return EXIT_FAILURE;
 }

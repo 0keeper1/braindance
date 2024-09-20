@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.29)
-project(braindance C)
+project(braindance
+        DESCRIPTION "BD (a.k.a. Braindance) is a next-generation, non-user-friendly text editor that is fast and lightweight"
+        VERSION 0.0.0
+        HOMEPAGE_URL "https://github.com/0keeper1/braindance"
+        LANGUAGES C)
 
 set(CMAKE_C_STANDARD 23)
 

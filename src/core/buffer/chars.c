@@ -2,7 +2,7 @@
 
 Chars *charsCreate( UTF chr )
 {
-	Chars *ptr = ( Chars * )calloc( 1, sizeof( Chars ) );
+	Chars *ptr = calloc( 1, sizeof( Chars ) );
 	ptr->perv = NULL;
 	ptr->chr = chr;
 	ptr->next = NULL;

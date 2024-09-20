@@ -18,3 +18,5 @@
 #define KEYBINDING_TIMOEOUT 5
 
 #define MAX_KEY_COMBINATION 3
+
+UTF const static HEADER_SYMBOL = '1';

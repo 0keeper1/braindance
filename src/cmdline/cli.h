@@ -12,18 +12,19 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-typedef struct
-{
+typedef struct {
 	UTF *cwd;
 	UTF *path;
-	struct
-	{
+
+	struct {
 		bool help;
 	} flags;
 } Cmds;
 
-extern Cmds createCmds();
+extern Result createCmds(Cmds *const commands);
 
-extern Result parseCli( int argc, char *const argv[], Cmds *const commands );
+extern Result parseCli(const int argc, char *const argv[], Cmds *const commands);
 
-extern Result checkPath( const char *const pathptr );
+extern Result checkPath(const char *const pathptr);
+
+void freeCmds(const Cmds *const commands);
