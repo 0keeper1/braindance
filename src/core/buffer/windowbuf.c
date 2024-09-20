@@ -43,7 +43,7 @@ void windowbufFree(WindowBuf *const winbufptr) {
 	winbufptr->cap = 0;
 }
 
-Result windowbufAppend(WindowBuf *winbufptr, char *const content, const size_t len) {
+Result windowbufAppend(WindowBuf *winbufptr, const char *const content, const size_t len) {
 	if (winbufptr->cap < (winbufptr->len + len)) {
 		if ((winbufptr->ptr = (char *) realloc(winbufptr->ptr, winbufptr->cap + len)) == NULL) {
 			windowbufFree(winbufptr);

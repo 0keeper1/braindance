@@ -2,14 +2,14 @@
 
 #include "../core.h"
 
-extern void writeHeaderBar(WindowBuf *winbufptr);
+extern void writeHeaderBar(WindowBuf *const winbufptr, const u_int16_t col, const u_int16_t row);
 
-extern void writeSideBars(Core *const coreptr);
+extern void writeSideBars(WindowBuf *const winbufptr);
 
-extern void writeFooterBar(Core *const coreptr);
+extern void writeFooterBar(WindowBuf *const winbufptr, const u_int16_t col, const u_int16_t row);
 
-extern void writeCommandBar(Core *const coreptr);
+extern void writeCommandBar(WindowBuf *const winbufptr, const u_int16_t col, const u_int16_t row);
 
-extern void writeContent(Core *const coreptr);
+extern void writeContent(WindowBuf *const winbufptr);
 
-extern void writeLineNumber(Core *const coreptr);
+extern void writeLineNumber(WindowBuf *const winbufptr, const u_int16_t row);

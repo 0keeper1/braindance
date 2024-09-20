@@ -18,4 +18,4 @@
 
 #define SHOW_CURSOR "\x1b[?25h"
 
-extern Result display( Core *const coreptr );
+extern Result display(const Core *const coreptr );

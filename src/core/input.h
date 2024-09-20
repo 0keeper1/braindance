@@ -84,7 +84,7 @@ static _KeyQueue KeyQueue;
 
 extern Result keyProcess( Core *const coreptr );
 
-extern const Key *const keyRead();
+extern const Key *keyRead();
 
 extern Result keyQueueHandler();
 

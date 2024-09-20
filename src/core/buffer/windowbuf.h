@@ -23,4 +23,4 @@ extern Result windowbufWrite(const WindowBuf *winbufptr);
 
 extern void windowbufFree(WindowBuf *const winbufptr);
 
-extern Result windowbufAppend(WindowBuf *winbufptr, char *const content, size_t len);
+extern Result windowbufAppend(WindowBuf *winbufptr, const char *const content, size_t len);

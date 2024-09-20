@@ -5,7 +5,7 @@ Info infoCreate() {
 	return info;
 }
 
-void infoFree(Info *const infoptr) {
+void infoFree(const Info *const infoptr) {
 	free(infoptr->cwd);
 	free(infoptr->ext);
 	free(infoptr->name);

@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-void printerr(Result err) {
+void printerr(const Result err) {
 	char *message;
 	switch (err) {
 		case SUCCESSFUL:

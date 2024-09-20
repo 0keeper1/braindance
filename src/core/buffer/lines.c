@@ -31,7 +31,7 @@ Lines *linesReachEnd(Lines *lineptr) {
 	return lineptr;
 }
 
-Result linesFree(Lines *lineptr) {
+Result linesFree(const Lines *lineptr) {
 	if (lineptr == NULL) {
 		return SUCCESSFUL;
 	};
@@ -39,14 +39,12 @@ Result linesFree(Lines *lineptr) {
 	return SUCCESSFUL;
 }
 
-Lines *linesCreate(char *contentptr, int cap, int len) {
-	Lines *lineptr;
-
+Lines *linesCreate(char *contentptr, const int cap, const int len) {
 	if (len > cap) {
 		return NULL;
 	}
 
-	lineptr = (Lines *) calloc(1, sizeof(Lines));
+	Lines *lineptr = calloc(1, sizeof(Lines));
 
 	lineptr->perv = NULL;
 	lineptr->content = contentptr;
@@ -63,7 +61,7 @@ Lines *linesCreate(char *contentptr, int cap, int len) {
 	return lineptr;
 }
 
-void linesSetContentPtr(Lines *lineptr, char *contentptr, int cap, int len) {
+void linesSetContentPtr(Lines *lineptr, char *contentptr, const int cap, const int len) {
 	lineptr->cap = cap;
 	lineptr->len = len;
 	lineptr->content = contentptr;
@@ -75,11 +73,8 @@ void linesClearAndDrop(Lines *lineptr) {
 }
 
 void linesDelete(Lines *lineptr) {
-	Lines *tmpperv;
-	Lines *tmpnext;
-
-	tmpnext = lineptr->next;
-	tmpperv = lineptr->perv;
+	Lines *tmpnext = lineptr->next;
+	Lines *tmpperv = lineptr->perv;
 
 	if (tmpnext != NULL) {
 		tmpnext->perv = tmpperv;
@@ -96,16 +91,14 @@ void linesDelete(Lines *lineptr) {
 char *linesContentCreate(int cap) { return (char *) calloc(cap, sizeof(char)); }
 
 void linesNewLine(Lines *lineptr) {
-	Lines *newlineptr;
-
-	newlineptr = linesCreate(NULL, 0, 0);
+	Lines *newlineptr = linesCreate(NULL, 0, 0);
 
 	lineptr->next = newlineptr;
 	newlineptr->perv = lineptr;
 }
 
 Lines *linesFileToLines(char *const pathptr) {
-	int chr, len, cap;
+	int chr;
 	FILE *fileptr;
 	if ((fileptr = fopen((char *) pathptr, "r+")) == NULL) {
 		return NULL;
@@ -114,8 +107,8 @@ Lines *linesFileToLines(char *const pathptr) {
 	Lines *lineptr, *pervlineptr = NULL;
 	char utfchr, *contentptr = NULL;
 
-	len = 0;
-	cap = DEFAULT_ALLOCATION_SIZE_PER_LINE;
+	int len = 0;
+	int cap = DEFAULT_ALLOCATION_SIZE_PER_LINE;
 
 	contentptr = linesContentCreate(cap);
 	Lines *const firstlinesptr = lineptr = linesCreate(contentptr, cap, len);

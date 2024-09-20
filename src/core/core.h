@@ -30,6 +30,6 @@ extern Result enableRawMode(Core *const coreptr);
 
 extern Result disableRawMode(const Core *const coreptr);
 
-extern void coreExit(Core *const coreptr);
+extern void coreExit(const Core *const coreptr);
 
 extern Result coreLoop(const Cmds *const cmdsptr);

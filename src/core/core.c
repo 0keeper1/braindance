@@ -6,6 +6,7 @@
 #include "./buffer/windowbuf.h"
 #include "./info.h"
 #include "./offset.h"
+#include "./display/update.h"
 
 #include <ctype.h>
 #include <libgen.h>
@@ -35,8 +36,6 @@ Result coreInit(Core *const coreptr, const Cmds *const cmdsptr) {
 		return FAILED;
 	}
 
-	offsetLocationsUpdate(&coreptr->offset, coreptr->terminal.row, coreptr->terminal.col);
-
 	coreptr->info.path = cmdsptr->path;
 	coreptr->info.cwd = cmdsptr->cwd;
 
@@ -49,7 +48,7 @@ Result coreLoop(const Cmds *const cmdsptr) {
 	coreInit(&core, cmdsptr);
 
 	do {
-		// display(&core);
+		display(&core);
 		// sleep(5);
 		// keyProcess( &core );
 		core.exit = true;
@@ -60,10 +59,10 @@ Result coreLoop(const Cmds *const cmdsptr) {
 	return SUCCESSFUL;
 }
 
-void coreExit(Core *const coreptr) {
+void coreExit(const Core *const coreptr) {
 	disableRawMode(coreptr);
 
-	infoFree(&coreptr->info); // double free detected here.
+	infoFree(&coreptr->info);
 
 	linesFree(coreptr->lines);
 
@@ -107,8 +106,8 @@ Result coreTermSizeUpdate(Core *const coreptr) {
 		return FAILED;
 	}
 
-	coreptr->terminal.row = WINSIZE.ws_col;
-	coreptr->terminal.col = WINSIZE.ws_row;
+	coreptr->terminal.col = WINSIZE.ws_col;
+	coreptr->terminal.row = WINSIZE.ws_row;
 
 	return SUCCESSFUL;
 }

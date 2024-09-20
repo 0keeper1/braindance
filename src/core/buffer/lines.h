@@ -41,7 +41,7 @@ extern Lines *linesFileToLines(char *const pathptr);
 
 extern Result linesClearAll(Lines *lineptr);
 
-extern Result linesFree(Lines *lineptr);
+extern Result linesFree(const Lines *lineptr);
 
 extern Lines *linesReachEnd(Lines *lineptr);
 

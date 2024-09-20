@@ -1,6 +1,6 @@
 #include "./chars.h"
 
-Chars *charsCreate(char chr) {
+Chars *charsCreate(const char chr) {
 	Chars *ptr = calloc(1, sizeof(Chars));
 	ptr->perv = NULL;
 	ptr->chr = chr;

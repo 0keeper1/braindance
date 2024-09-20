@@ -10,12 +10,6 @@ struct Offset {
 		u_int16_t poscol;
 	} cursor;
 
-	struct Locations {
-		u_int16_t header;
-		u_int16_t footer;
-		u_int16_t commandprompt;
-	} locations;
-
 	Lines *online;
 	Chars *onchar;
 };
@@ -26,4 +20,3 @@ extern Offset offsetCreate();
 
 extern Result offsetInitialize(Offset *const offsetptr);
 
-extern Result offsetLocationsUpdate(Offset *const offsetptr, u_int16_t row, u_int16_t col);

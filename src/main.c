@@ -1,9 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "./cmdline/cli.h"
 #include "./core/core.h"
 #include "./errors.h"
 
-#include <stdio.h>
-#include <stdlib.h>
 
 const char *HELP = "usage: bd [OPTIONS] <FILE PATH>\n\t-h | --help\tShowed this message.\n\r";
 
