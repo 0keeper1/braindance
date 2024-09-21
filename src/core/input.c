@@ -224,6 +224,24 @@ Result keyQueueHandler() {
 
 Result keyExec(Core *const coreptr) {
 #include "../keybindings.h"
+#include "../defaults/keybindigs.h"
+
+	switch (KeyQueue.key.mod) {
+		case (BTN | TIMEOUT):
+			// TODO skip display refresh
+			break;
+		case (ALT):
+
+			break;
+		case (BTN):
+
+			break;
+		case (CTRL):
+
+			break;
+		default:
+			break;
+	}
 
 	if (checkIsInputKey()) {
 		switch (coreptr->layout) {

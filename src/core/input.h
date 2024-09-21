@@ -90,3 +90,4 @@ extern Result keyExec(Core *const coreptr);
 extern bool checkKeyWithBinding(const struct Keybind *const keybind);
 
 extern bool checkIsInputKey();
+

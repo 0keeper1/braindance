@@ -1,10 +1,22 @@
 #pragma once
 
 #include "errors.h"
+#include "./buffer/chars.h"
+
+enum UnionType {
+    UM_Chars,
+    UM_String,
+};
 
 typedef struct Prompt {
     unsigned int len;
-    char *ptr;
+
+    union {
+        Chars *chars;
+        char *ptr;
+    };
+
+    enum UnionType mode;
     unsigned int cap;
 } Prompt;
 

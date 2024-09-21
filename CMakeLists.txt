@@ -46,4 +46,9 @@ add_executable(braindance
         src/options.h
         src/settings.h
         src/core/buffer/prompt.c
-        src/core/buffer/prompt.h)
+        src/core/buffer/prompt.h
+        src/defaults/keybindigs.c
+        src/defaults/keybindigs.h
+        src/defaults/actions.c
+        src/defaults/actions.h
+        src/macros.h)

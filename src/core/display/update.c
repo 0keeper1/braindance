@@ -7,6 +7,7 @@ Result display(const Core *const coreptr) {
 
 	windowbufAppend(&winbuf, SCREEN_CLEAR, 4);
 	windowbufAppend(&winbuf, CURSOR_AT_START, 3);
+	windowbufAppend(&winbuf, HIDE_CURSOR, 6);
 
 	writeHeaderBar(&winbuf, coreptr->terminal.col, coreptr->terminal.row);
 	writeFooterBar(&winbuf, coreptr->terminal.col, coreptr->terminal.row, coreptr->layout);
@@ -17,6 +18,7 @@ Result display(const Core *const coreptr) {
 	restoreCursor(&winbuf, &coreptr->prompt, coreptr->terminal.col, coreptr->terminal.row,
 	              coreptr->offset.cursor.poscol, coreptr->offset.cursor.posrow,
 	              coreptr->layout);
+	windowbufAppend(&winbuf, SHOW_CURSOR, 6);
 
 	windowbufWrite(&winbuf);
 

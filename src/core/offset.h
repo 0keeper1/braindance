@@ -8,7 +8,7 @@ struct Offset {
 	struct Cursor {
 		u_int16_t posrow;
 		u_int16_t poscol;
-	} cursor;
+	} cursor, promptcursor;
 
 	Lines *online;
 	Chars *onchar;

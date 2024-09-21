@@ -6,6 +6,10 @@ Offset offsetCreate() {
 			.poscol = 0,
 			.posrow = 0,
 		},
+		.promptcursor = {
+			.poscol = 0,
+			.posrow = 0,
+		},
 		.online = NULL,
 		.onchar = NULL,
 	};
