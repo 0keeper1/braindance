@@ -92,9 +92,9 @@ void writeLineNumber(WindowBuf *const winbufptr, const u_int16_t row, const enum
 
 void writePrompt(WindowBuf *const winbufptr, const Prompt *const promptptr, const u_int16_t col,
                  const u_int16_t row) {
-    char movelocation[8] = {'\0'};
+    char movelocation[20] = {'\0'};
     sprintf(movelocation, "\x1b[%d;%dH", row, 3);
-    windowbufAppend(winbufptr, movelocation, 8);
+    windowbufAppend(winbufptr, movelocation, strlen(movel ocation));
     if (promptptr->len > col - 3) {
         windowbufAppend(winbufptr, "...", 3);
     } else {

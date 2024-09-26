@@ -1,8 +1,8 @@
 #include "prompt.h"
+#include "../errors.h"
+#include "./buffer/chars.h"
 
 #include <stdio.h>
-
-#include "../errors.h"
 #include <stdlib.h>
 
 Prompt promptCreate() {
@@ -27,6 +27,17 @@ Result promptAppend(Prompt *const promptptr, const char character) {
 
     return SUCCESSFUL;
 }
+
+Result promptDeleteEnd(Prompt *const promptptr) {
+    if (promptptr->len == 0) {
+        return SUCCESSFUL;
+    }
+
+    promptptr->ptr[promptptr->len] = '\0';
+    promptptr->len -= 1;
+    return SUCCESSFUL;
+}
+
 
 Result promptExecute() {
 }

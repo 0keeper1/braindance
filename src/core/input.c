@@ -1,6 +1,5 @@
 #include "./input.h"
-
-#include <buffer/prompt.h>
+#include "./buffer/prompt.h"
 
 const Key *keyRead() {
 	static Key key; {
@@ -226,50 +225,32 @@ Result keyExec(Core *const coreptr) {
 #include "../keybindings.h"
 #include "../defaults/keybindigs.h"
 
-	switch (KeyQueue.key.mod) {
-		case (BTN | TIMEOUT):
-			// TODO skip display refresh
-			break;
-		case (ALT):
-
-			break;
-		case (BTN):
-
-			break;
-		case (CTRL):
-
-			break;
-		default:
-			break;
-	}
-
 	if (checkIsInputKey()) {
 		switch (coreptr->layout) {
 			case PROMPT:
-				promptAppend(&coreptr->prompt, KeyQueue.key.character);
+				return promptAppend(&coreptr->prompt, KeyQueue.key.character);
+			case EDITOR:
 				break;
+			default:
+				break;
+		}
+	} else if (checkKeyIsBackSpace()) {
+		switch (coreptr->layout) {
+			case PROMPT:
+				return promptDeleteEnd(&coreptr->prompt);
 			case EDITOR:
 				break;
 			default:
 				break;
 		}
 	} else if (checkKeyWithBinding(&EXIT)) {
-		coreptr->exit = true;
+		return keyactionEXIT(coreptr);
 	} else if (checkKeyWithBinding(&SWITCH_LAYOUT)) {
-		switch (coreptr->layout) {
-			case PROMPT:
-				coreptr->layout = EDITOR;
-				break;
-			case EDITOR:
-				coreptr->layout = PROMPT;
-				break;
-			default:
-				break;
-		}
+		return keyactionSWITCH_LAYOUT(coreptr);
 	} else if (checkKeyWithBinding(&SWITCH_LAYOUT_TO_EDITOR)) {
-		coreptr->layout = EDITOR;
+		return keyactionSWITCH_LAYOUT_TO_EDITOR(coreptr);
 	} else if (checkKeyWithBinding(&SWITCH_LAYOUT_TO_PROMPT)) {
-		coreptr->layout = PROMPT;
+		return keyactionSWITCH_LAYOUT_TO_PROMPT(coreptr);
 	}
 
 	return SUCCESSFUL;
@@ -277,6 +258,13 @@ Result keyExec(Core *const coreptr) {
 
 bool checkIsInputKey() {
 	if (KeyQueue.key.mod == CHAR && KeyQueue.keycounter == 1 && KeyQueue.commit == true) {
+		return true;
+	}
+	return false;
+}
+
+bool checkKeyIsBackSpace() {
+	if (KeyQueue.key.button == BACKSPACE && KeyQueue.key.mod == BTN && KeyQueue.commit == true) {
 		return true;
 	}
 	return false;

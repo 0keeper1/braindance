@@ -22,7 +22,9 @@ typedef struct Prompt {
 
 Prompt promptCreate();
 
-Result promptAppend(Prompt *const promptptr, const char character);
+extern Result promptAppend(Prompt *const promptptr, const char character);
+
+extern Result promptDeleteEnd(Prompt *const promptptr);
 
 void promptFree(const Prompt *const promptptr);
 

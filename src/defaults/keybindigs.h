@@ -13,6 +13,7 @@ BIND(SWITCH_LAYOUT, 'x', MOD_CTRL, 1)
 BIND(SWITCH_LAYOUT_TO_EDITOR, 'e', MOD_CTRL, 2)
 BIND(SWITCH_LAYOUT_TO_PROMPT, 'p', MOD_CTRL, 2)
 
-extern Result keyactionSWITCH_LAYOUT();
-extern Result keyactionSWITCH_LAYOUT_TO_PROMPT();
-extern Result keyactionSWITCH_LAYOUT_TO_EDITOR();
+extern Result keyactionSWITCH_LAYOUT(Core *const coreptr);
+extern Result keyactionSWITCH_LAYOUT_TO_PROMPT(Core *const coreptr);
+extern Result keyactionSWITCH_LAYOUT_TO_EDITOR(Core *const coreptr);
+extern Result keyactionEXIT(Core *const coreptr);
