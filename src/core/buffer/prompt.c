@@ -34,22 +34,33 @@ Result promptAppend(Prompt *const prompt_ptr, const char character) {
     return SUCCESSFUL;
 }
 
-Result promptDeleteEnd(Prompt *const promptptr) {
-    if (promptptr == nullptr) {
+Result promptDeleteEnd(Prompt *const prompt_ptr) {
+    if (prompt_ptr == nullptr) {
         return FAILED;
     }
 
-    if (promptptr->end_ptr == nullptr) {
-        if (promptptr->start_ptr == nullptr) {
+    if (prompt_ptr->end_ptr == nullptr) {
+        if (prompt_ptr->start_ptr == nullptr) {
             return FAILED;
         }
 
-        promptptr->end_ptr = charsGetEndPtr(promptptr->start_ptr);
+        prompt_ptr->end_ptr = charsGetEndPtr(prompt_ptr->start_ptr);
     }
 
-    Chars *tmp_chars_ptr = promptptr->end_ptr->perv;
-    charsRemoveAt(promptptr->end_ptr);
-    promptptr->end_ptr = tmp_chars_ptr;
+    if (prompt_ptr->len - 1 == 0) {
+        charsFree(prompt_ptr->end_ptr);
+        prompt_ptr->len = 0;
+        prompt_ptr->start_ptr = nullptr;
+        prompt_ptr->end_ptr = nullptr;
+        prompt_ptr->cap = 0;
+        return SUCCESSFUL;
+    }
+
+    Chars *tmp_chars_ptr = prompt_ptr->end_ptr->perv;
+    charsRemoveAt(prompt_ptr->end_ptr);
+    prompt_ptr->end_ptr = tmp_chars_ptr;
+    prompt_ptr->len -= 1;
+    prompt_ptr->cap -= 1;
 
     return SUCCESSFUL;
 }
@@ -69,9 +80,6 @@ char *promptAsString(const Prompt *const prompt_ptr) {
     stringFree(string_ptr);
 
     return char_ptr;
-}
-
-Result promptExecute() {
 }
 
 [[gnu::always_inline]]

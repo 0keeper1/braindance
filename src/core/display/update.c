@@ -40,7 +40,7 @@ void restoreCursor(WindowBuf *const winbufptr, const Prompt *const promptptr,
 
 	switch (layout) {
 		case PROMPT:
-			sprintf(movelocation, "\x1b[%d;%luH", row, promptptr->len == 0 ? 3 : promptptr->len + 2);
+			sprintf(movelocation, "\x1b[%d;%luH", row, promptptr->len > 0 ? (promptptr->len - 1) + 4 : 4);
 			windowbufAppend(winbufptr, movelocation, strlen(movelocation));
 			break;
 		case EDITOR:

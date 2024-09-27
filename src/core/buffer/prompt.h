@@ -10,12 +10,12 @@ typedef struct Prompt {
     size_t cap;
 } Prompt;
 
-extern inline Prompt promptCreate();
+extern Prompt promptCreate();
 
 extern Result promptAppend(Prompt *const prompt_ptr, const char character);
 
-extern Result promptDeleteEnd(Prompt *const promptptr);
+extern Result promptDeleteEnd(Prompt *const prompt_ptr);
 
-extern void promptFree(Prompt *const promptptr);
+extern void promptFree(Prompt *const prompt_ptr);
 
 extern char *promptAsString(const Prompt *const prompt_ptr);
