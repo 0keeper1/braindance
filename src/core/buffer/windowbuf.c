@@ -3,6 +3,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <str.h>
 #include <string.h>
 
 #include "core.h"

@@ -1,83 +1,86 @@
 #include "prompt.h"
 #include "../errors.h"
+#include "./str.h"
 #include "./buffer/chars.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 
 [[gnu::always_inline]]
 inline Prompt promptCreate() {
-    const Prompt prompt = {.len = 0, .string = nullptr, .cap = 0, .mode = UT_String};
+    const Prompt prompt = {.len = 0, .start_ptr = nullptr, .end_ptr = nullptr, .cap = 0};
     return prompt;
 }
 
-Result promptAppend(Prompt *const promptptr, const char character) {
-    // TODO check if Chars append to chars if String append to string.
-    if (promptptr->cap == 0 || promptptr->len + 1 >= promptptr->cap) {
-        promptptr->string = realloc(promptptr->string, promptptr->cap + 5);
-        if (promptptr->string == nullptr) {
-            return FAILED;
-        }
-        promptptr->cap += 5;
+Result promptAppend(Prompt *const prompt_ptr, const char character) {
+    if (prompt_ptr == nullptr) {
+        return FAILED;
     }
 
-    if (promptptr->len == 0) {
-        promptptr->string[0] = character;
-    } else {
-        promptptr->string[promptptr->len + 1] = character;
+    if (prompt_ptr->start_ptr == nullptr && prompt_ptr->end_ptr == nullptr) {
+        prompt_ptr->start_ptr = charsCreate(character);
+        prompt_ptr->end_ptr = prompt_ptr->start_ptr;
+        prompt_ptr->len += 1;
+        prompt_ptr->cap += 1;
+        return SUCCESSFUL;
     }
 
-    promptptr->len += 1;
+    if (charsAppend(prompt_ptr->end_ptr, character) != SUCCESSFUL) {
+        return FAILED;
+    }
+    prompt_ptr->end_ptr = prompt_ptr->end_ptr->next;
+    prompt_ptr->len += 1;
+    prompt_ptr->cap += 1;
 
     return SUCCESSFUL;
 }
 
 Result promptDeleteEnd(Prompt *const promptptr) {
-    if (promptptr->len == 0) {
-        return SUCCESSFUL;
-    }
-
-    if (promptptr->mode == UT_String) {
-        promptptr->string[promptptr->len] = '\0';
-        promptptr->len -= 1;
-        return SUCCESSFUL;
-    }
-
-    // TODO: add chars delete
-    return SUCCESSFUL;
-}
-
-Result promptToChars(Prompt *const promptptr) {
-    if (promptptr->mode == UT_Chars) {
-        return SUCCESSFUL;
-    }
-
-    if ((promptptr->chars = charsConvertStringToChars(promptptr->string, promptptr->len)) == nullptr) {
+    if (promptptr == nullptr) {
         return FAILED;
     }
-    promptptr->mode = UT_Chars;
+
+    if (promptptr->end_ptr == nullptr) {
+        if (promptptr->start_ptr == nullptr) {
+            return FAILED;
+        }
+
+        promptptr->end_ptr = charsGetEndPtr(promptptr->start_ptr);
+    }
+
+    Chars *tmp_chars_ptr = promptptr->end_ptr->perv;
+    charsRemoveAt(promptptr->end_ptr);
+    promptptr->end_ptr = tmp_chars_ptr;
 
     return SUCCESSFUL;
 }
 
-Result prmptToString(Prompt *const promptptr) {
-    if (promptptr->mode == UT_String) {
-        return SUCCESSFUL;
+char *promptAsString(const Prompt *const prompt_ptr) {
+    if (prompt_ptr == nullptr) {
+        return nullptr;
     }
+    String *string_ptr = charsConvertCharsToString(prompt_ptr->start_ptr);
 
-    // TODO: charsConvertCharsToString(promptptr->string, promptptr->len)
-    promptptr->mode = UT_String;
-    return SUCCESSFUL;
+
+    if (string_ptr == nullptr) {
+        return nullptr;
+    }
+    char *char_ptr = string_ptr->ptr;
+
+    stringFree(string_ptr);
+
+    return char_ptr;
 }
 
 Result promptExecute() {
 }
 
 [[gnu::always_inline]]
-inline void promptFree(const Prompt *const promptptr) {
-    if (promptptr->mode == UT_String) {
-        return;
-    }
-    free(promptptr->string);
+inline void promptFree(Prompt *const promptptr) {
+    // TODO
+    // charsFree(promptptr->start_ptr);
+    // promptptr->cap = 0;
+    // promptptr->start_ptr = nullptr;
+    // promptptr->end_ptr = nullptr;
+    // promptptr->len = 0;
 }
 

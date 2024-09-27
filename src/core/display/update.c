@@ -1,5 +1,10 @@
 #include "./update.h"
 
+#include "./layouts.h"
+#include "../offset.h"
+
+#include <string.h>
+
 Result display(const Core *const coreptr) {
 	WindowBuf winbuf = windowbufCreate();
 

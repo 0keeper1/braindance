@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.29)
+
 project(braindance
         VERSION 0.0.0
         DESCRIPTION "BD (a.k.a. Braindance) is a next-generation, non-user-friendly text editor that is fast and lightweight"
@@ -6,8 +7,6 @@ project(braindance
         LANGUAGES C)
 
 set(CMAKE_C_STANDARD 23)
-
-set(CMAKE_C_FLAGS "-funsigned-char")
 
 include_directories(src)
 include_directories(src/cmdline)
@@ -50,4 +49,7 @@ add_executable(braindance
         src/defaults/keybindigs.h
         src/defaults/actions.c
         src/defaults/actions.h
-        src/macros.h)
+        src/macros.h
+        src/core/buffer/str.c
+        src/core/buffer/str.h
+)

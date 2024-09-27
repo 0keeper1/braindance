@@ -3,10 +3,6 @@
 #include "../../errors.h"
 #include "../buffer/windowbuf.h"
 #include "../core.h"
-#include "../offset.h"
-#include "./layouts.h"
-
-#include <stdio.h>
 
 #define SCREEN_CLEAR "\x1b[2J"
 

@@ -6,18 +6,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <str.h>
 #include <strings.h>
 
 struct Lines {
 	struct Lines *perv; // perv line
-	unsigned int len; // content size
+	size_t len; // content size
 	union {
 		char *content;
 		Chars *chars;
 	};
 
-	unsigned int cap; // allocated size
+	size_t cap; // allocated size
 	struct Lines *next; // next line
 };
 
@@ -31,11 +31,11 @@ extern void linesDelete(Lines *lineptr);
 
 extern char *linesContentCreate(int cap);
 
-extern void linesSetContentPtr(Lines *lineptr, char *contentptr, int cap, int len);
+extern void linesSetContentPtr(Lines *lineptr, char *contentptr, const size_t cap, const size_t len);
 
 extern void linesNewLine(Lines *lineptr);
 
-extern Lines *linesCreate(char *contentptr, int cap, int len);
+extern Lines *linesCreate(char *contentptr, const size_t cap, const size_t len);
 
 extern Lines *linesFileToLines(char *const pathptr);
 

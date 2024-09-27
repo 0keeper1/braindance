@@ -1,4 +1,7 @@
 #include "./input.h"
+
+#include <string.h>
+
 #include "./buffer/prompt.h"
 
 const Key *keyRead() {

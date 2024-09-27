@@ -39,7 +39,7 @@ Result linesFree(const Lines *lineptr) {
 	return SUCCESSFUL;
 }
 
-Lines *linesCreate(char *contentptr, const int cap, const int len) {
+Lines *linesCreate(char *contentptr, const size_t cap, const size_t len) {
 	if (len > cap) {
 		return nullptr;
 	}
@@ -61,7 +61,7 @@ Lines *linesCreate(char *contentptr, const int cap, const int len) {
 	return lineptr;
 }
 
-void linesSetContentPtr(Lines *lineptr, char *contentptr, const int cap, const int len) {
+void linesSetContentPtr(Lines *lineptr, char *contentptr, const size_t cap, const size_t len) {
 	lineptr->cap = cap;
 	lineptr->len = len;
 	lineptr->content = contentptr;

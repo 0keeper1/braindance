@@ -1,5 +1,8 @@
 #include "./layouts.h"
 
+#include "../buffer/prompt.h"
+
+#include <string.h>
 #include <stdio.h>
 
 void writeHeaderBar(WindowBuf *winbufptr, const u_int16_t col, const u_int16_t row) {
@@ -98,6 +101,6 @@ void writePrompt(WindowBuf *const winbufptr, const Prompt *const promptptr, cons
     if (promptptr->len > col - 3) {
         windowbufAppend(winbufptr, "...", 3);
     } else {
-        windowbufAppend(winbufptr, promptptr->string, promptptr->len);
+        windowbufAppend(winbufptr, promptAsString(promptptr), promptptr->len);
     }
 }

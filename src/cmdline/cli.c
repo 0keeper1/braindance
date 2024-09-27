@@ -2,20 +2,16 @@
 #include "../errors.h"
 
 #include <limits.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <unistd.h>
 
 
 bool isFlag(const char *const arg) {
 	if (arg[0] == '-' || (arg[0] == '-' && arg[1] == '-')) {
 		return true;
-	} else {
-		return false;
 	}
+	return false;
 }
 
 bool checkFlag(const char *const argument, const char *const small_flag, const char *const large_flag) {
@@ -54,6 +50,7 @@ Result parseCli(const int argc, char *const argv[], Cmds *const commands) {
 	return SUCCESSFUL;
 }
 
-void freeCmds(const Cmds *const commands) {
+[[gnu::always_inline]]
+inline void freeCmds(const Cmds *const commands) {
 	free(commands->cwd);
 }
