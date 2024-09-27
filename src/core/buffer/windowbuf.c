@@ -19,7 +19,7 @@ Result windowbufResize(WindowBuf *windowbufptr, const u_int16_t row, const u_int
 	windowbufptr->ptr = realloc(windowbufptr->ptr, buffersize);
 
 	if (windowbufptr->ptr == NULL) {
-		return OUT_OF_MEMORY;
+		return FAILED;
 	}
 
 	windowbufptr->cap = buffersize;

@@ -31,16 +31,16 @@ void restoreCursor(WindowBuf *const winbufptr, const Prompt *const promptptr,
                    const u_int16_t col, const u_int16_t row,
                    const u_int16_t cursorcolpos, const u_int16_t cursorrowpos,
                    const enum Layout layout) {
-	char movelocation[8] = {'\0'};
+	char movelocation[20] = {'\0'};
 
 	switch (layout) {
 		case PROMPT:
-			sprintf(movelocation, "\x1b[%d;%dH", row, promptptr->len == 0 ? 3 : promptptr->len + 2);
-			windowbufAppend(winbufptr, movelocation, 8);
+			sprintf(movelocation, "\x1b[%d;%luH", row, promptptr->len == 0 ? 3 : promptptr->len + 2);
+			windowbufAppend(winbufptr, movelocation, strlen(movelocation));
 			break;
 		case EDITOR:
 			sprintf(movelocation, "\x1b[%d;%dH", cursorrowpos, cursorcolpos);
-			windowbufAppend(winbufptr, movelocation, 8);
+			windowbufAppend(winbufptr, movelocation, strlen(movelocation));
 			break;
 		default:
 			break;

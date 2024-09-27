@@ -1,6 +1,7 @@
 #include "./chars.h"
 
-Chars *charsCreate(const char chr) {
+[[gnu::always_inline]]
+inline Chars *charsCreate(const char chr) {
 	Chars *ptr = calloc(1, sizeof(Chars));
 	ptr->perv = NULL;
 	ptr->chr = chr;
@@ -8,7 +9,8 @@ Chars *charsCreate(const char chr) {
 	return ptr;
 }
 
-void charsFree(Chars *chrptr) { free(chrptr); }
+[[gnu::always_inline]]
+inline void charsFree(Chars *chrptr) { free(chrptr); }
 
 void charsRemoveChar(Chars *const chrptr) {
 	Chars *tmpperv = chrptr->perv;
@@ -29,7 +31,7 @@ void charsInsertChar(Chars *const chrptr, const char newchar) {
 	chrptr->next = newcharsptr;
 }
 
-Chars *charsConvertStringToChars(const char *ptr, int len) {
+Chars *charsConvertStringToChars(const char *ptr, const unsigned int len) {
 	Chars *charsptr, *pervcharptr = NULL;
 	Chars *const firstcharptr = charsptr = charsCreate('\0');
 	for (int i = 0; i < len; ++i) {

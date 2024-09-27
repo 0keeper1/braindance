@@ -16,7 +16,7 @@ struct Chars {
 
 typedef struct Chars Chars;
 
-extern Chars *charsConvertStringToChars(const char *ptr, int len);
+extern Chars *charsConvertStringToChars(const char *ptr, const unsigned int len);
 
 extern Chars *charsCreate(char chr);
 

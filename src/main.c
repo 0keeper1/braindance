@@ -10,10 +10,10 @@ const char *HELP = "usage: bd [OPTIONS] <FILE PATH>\n\t-h | --help\tShowed this 
 
 int main(const int argc, char *argv[]) {
 	Cmds commands;
-	if (createCmds(&commands) == OUT_OF_MEMORY) {
+	if (createCmds(&commands) == FAILED) {
 		return EXIT_FAILURE;
 	}
-	if (parseCli(argc, argv, &commands) == CLI_INVALID_FLAG) {
+	if (parseCli(argc, argv, &commands) == FAILED) {
 		puts("Invalid input flag.\n");
 		return EXIT_FAILURE;
 	}

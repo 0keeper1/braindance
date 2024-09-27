@@ -27,7 +27,7 @@ Result createCmds(Cmds *const commands) {
 	char *cwdptr = calloc(PATH_MAX, sizeof(char));
 
 	if (cwdptr == NULL) {
-		return OUT_OF_MEMORY;
+		return FAILED;
 	}
 
 	commands->cwd = cwdptr;
@@ -44,7 +44,7 @@ Result parseCli(const int argc, char *const argv[], Cmds *const commands) {
 				commands->flags.help = true;
 				return SUCCESSFUL;
 			} else {
-				return CLI_INVALID_FLAG;
+				return FAILED;
 			}
 		} else if (c == (argc - 1)) {
 			commands->path = (char *) realpath(argv[c], NULL);

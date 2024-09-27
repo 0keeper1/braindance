@@ -4,27 +4,29 @@
 #include "./buffer/chars.h"
 
 enum UnionType {
-    UM_Chars,
-    UM_String,
+    UT_Chars,
+    UT_String,
 };
 
 typedef struct Prompt {
-    unsigned int len;
+    size_t len;
 
     union {
         Chars *chars;
-        char *ptr;
+        char *string;
     };
 
     enum UnionType mode;
-    unsigned int cap;
+    size_t cap;
 } Prompt;
 
-Prompt promptCreate();
+extern Prompt promptCreate();
 
 extern Result promptAppend(Prompt *const promptptr, const char character);
 
 extern Result promptDeleteEnd(Prompt *const promptptr);
 
-void promptFree(const Prompt *const promptptr);
+extern Result promptToChars(Prompt *const promptptr);
+
+extern void promptFree(const Prompt *const promptptr);
 

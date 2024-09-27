@@ -94,10 +94,10 @@ void writePrompt(WindowBuf *const winbufptr, const Prompt *const promptptr, cons
                  const u_int16_t row) {
     char movelocation[20] = {'\0'};
     sprintf(movelocation, "\x1b[%d;%dH", row, 3);
-    windowbufAppend(winbufptr, movelocation, strlen(movel ocation));
+    windowbufAppend(winbufptr, movelocation, strlen(movelocation));
     if (promptptr->len > col - 3) {
         windowbufAppend(winbufptr, "...", 3);
     } else {
-        windowbufAppend(winbufptr, promptptr->ptr, promptptr->len);
+        windowbufAppend(winbufptr, promptptr->string, promptptr->len);
     }
 }

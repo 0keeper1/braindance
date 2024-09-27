@@ -39,7 +39,6 @@ add_executable(braindance
         src/core/input.h
         src/core/offset.c
         src/core/offset.h
-        src/errors.c
         src/errors.h
         src/keybindings.h
         src/main.c
