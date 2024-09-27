@@ -11,7 +11,7 @@ const Key *keyRead() {
 
 	ssize_t rbytes;
 	if ((rbytes = read(STDIN_FILENO, inputs, 6)) == -1) {
-		return NULL;
+		return nullptr;
 	}
 
 	if (rbytes == 0) {

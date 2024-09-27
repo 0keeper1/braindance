@@ -52,7 +52,7 @@ Result promptToChars(Prompt *const promptptr) {
         return SUCCESSFUL;
     }
 
-    if ((promptptr->chars = charsConvertStringToChars(promptptr->string, promptptr->len)) == NULL) {
+    if ((promptptr->chars = charsConvertStringToChars(promptptr->string, promptptr->len)) == nullptr) {
         return FAILED;
     }
     promptptr->mode = UT_Chars;

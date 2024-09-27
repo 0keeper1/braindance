@@ -9,7 +9,7 @@
 
 
 WindowBuf windowbufCreate() {
-	const WindowBuf winbuf = {.cap = 0, .ptr = NULL, .len = 0};
+	const WindowBuf winbuf = {.cap = 0, .ptr = nullptr, .len = 0};
 	return winbuf;
 }
 
@@ -18,7 +18,7 @@ Result windowbufResize(WindowBuf *windowbufptr, const u_int16_t row, const u_int
 
 	windowbufptr->ptr = realloc(windowbufptr->ptr, buffersize);
 
-	if (windowbufptr->ptr == NULL) {
+	if (windowbufptr->ptr == nullptr) {
 		return FAILED;
 	}
 
@@ -45,7 +45,7 @@ void windowbufFree(WindowBuf *const winbufptr) {
 
 Result windowbufAppend(WindowBuf *winbufptr, const char *const content, const size_t len) {
 	if (winbufptr->cap < (winbufptr->len + len)) {
-		if ((winbufptr->ptr = (char *) realloc(winbufptr->ptr, winbufptr->cap + len)) == NULL) {
+		if ((winbufptr->ptr = (char *) realloc(winbufptr->ptr, winbufptr->cap + len)) == nullptr) {
 			windowbufFree(winbufptr);
 			return FAILED;
 		}

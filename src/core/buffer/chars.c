@@ -3,9 +3,9 @@
 [[gnu::always_inline]]
 inline Chars *charsCreate(const char chr) {
 	Chars *ptr = calloc(1, sizeof(Chars));
-	ptr->perv = NULL;
+	ptr->perv = nullptr;
 	ptr->chr = chr;
-	ptr->next = NULL;
+	ptr->next = nullptr;
 	return ptr;
 }
 
@@ -15,10 +15,10 @@ inline void charsFree(Chars *chrptr) { free(chrptr); }
 void charsRemoveChar(Chars *const chrptr) {
 	Chars *tmpperv = chrptr->perv;
 	Chars *tmpnext = chrptr->next;
-	if (tmpnext != NULL) {
+	if (tmpnext != nullptr) {
 		tmpnext->perv = tmpperv;
 	}
-	if (tmpperv != NULL) {
+	if (tmpperv != nullptr) {
 		tmpperv->next = tmpnext;
 	}
 	charsFree(chrptr);
@@ -32,7 +32,7 @@ void charsInsertChar(Chars *const chrptr, const char newchar) {
 }
 
 Chars *charsConvertStringToChars(const char *ptr, const unsigned int len) {
-	Chars *charsptr, *pervcharptr = NULL;
+	Chars *charsptr, *pervcharptr = nullptr;
 	Chars *const firstcharptr = charsptr = charsCreate('\0');
 	for (int i = 0; i < len; ++i) {
 		charsptr->chr = ptr[i];

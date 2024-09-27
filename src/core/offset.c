@@ -10,8 +10,8 @@ Offset offsetCreate() {
 			.poscol = 0,
 			.posrow = 0,
 		},
-		.online = NULL,
-		.onchar = NULL,
+		.online = nullptr,
+		.onchar = nullptr,
 	};
 	return offset;
 }

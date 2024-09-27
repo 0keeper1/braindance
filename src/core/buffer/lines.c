@@ -2,13 +2,13 @@
 
 void linesClear(Lines *lineptr) {
 	free(lineptr->content);
-	lineptr->content = NULL;
+	lineptr->content = nullptr;
 	lineptr->cap = 0;
 	lineptr->len = 0;
 }
 
 Result linesClearAll(Lines *lineptr) {
-	for (; lineptr->next != NULL; ++lineptr) {
+	for (; lineptr->next != nullptr; ++lineptr) {
 		free(lineptr->content);
 		lineptr->cap = 0;
 		lineptr->len = 0;
@@ -18,7 +18,7 @@ Result linesClearAll(Lines *lineptr) {
 }
 
 Result linesDrop(Lines *lineptr) {
-	if (lineptr->content != NULL && lineptr->cap != 0 && lineptr->len != 0) {
+	if (lineptr->content != nullptr && lineptr->cap != 0 && lineptr->len != 0) {
 		return FAILED;
 	}
 	free(lineptr);
@@ -26,13 +26,13 @@ Result linesDrop(Lines *lineptr) {
 }
 
 Lines *linesReachEnd(Lines *lineptr) {
-	for (; lineptr != NULL; lineptr++) {
+	for (; lineptr != nullptr; lineptr++) {
 	}
 	return lineptr;
 }
 
 Result linesFree(const Lines *lineptr) {
-	if (lineptr == NULL) {
+	if (lineptr == nullptr) {
 		return SUCCESSFUL;
 	};
 	// TODO recursive free the lines
@@ -41,15 +41,15 @@ Result linesFree(const Lines *lineptr) {
 
 Lines *linesCreate(char *contentptr, const int cap, const int len) {
 	if (len > cap) {
-		return NULL;
+		return nullptr;
 	}
 
 	Lines *lineptr = calloc(1, sizeof(Lines));
 
-	lineptr->perv = NULL;
+	lineptr->perv = nullptr;
 	lineptr->content = contentptr;
 
-	if (contentptr == NULL) {
+	if (contentptr == nullptr) {
 		lineptr->cap = 0;
 		lineptr->len = 0;
 	} else {
@@ -57,7 +57,7 @@ Lines *linesCreate(char *contentptr, const int cap, const int len) {
 		lineptr->len = len;
 	}
 
-	lineptr->next = NULL;
+	lineptr->next = nullptr;
 	return lineptr;
 }
 
@@ -76,11 +76,11 @@ void linesDelete(Lines *lineptr) {
 	Lines *tmpnext = lineptr->next;
 	Lines *tmpperv = lineptr->perv;
 
-	if (tmpnext != NULL) {
+	if (tmpnext != nullptr) {
 		tmpnext->perv = tmpperv;
 	}
 
-	if (tmpperv != NULL) {
+	if (tmpperv != nullptr) {
 		tmpperv->next = tmpnext;
 	}
 
@@ -91,7 +91,7 @@ void linesDelete(Lines *lineptr) {
 char *linesContentCreate(int cap) { return (char *) calloc(cap, sizeof(char)); }
 
 void linesNewLine(Lines *lineptr) {
-	Lines *newlineptr = linesCreate(NULL, 0, 0);
+	Lines *newlineptr = linesCreate(nullptr, 0, 0);
 
 	lineptr->next = newlineptr;
 	newlineptr->perv = lineptr;
@@ -100,12 +100,12 @@ void linesNewLine(Lines *lineptr) {
 Lines *linesFileToLines(char *const pathptr) {
 	int chr;
 	FILE *fileptr;
-	if ((fileptr = fopen((char *) pathptr, "r+")) == NULL) {
-		return NULL;
+	if ((fileptr = fopen((char *) pathptr, "r+")) == nullptr) {
+		return nullptr;
 	}
 
-	Lines *lineptr, *pervlineptr = NULL;
-	char utfchr, *contentptr = NULL;
+	Lines *lineptr, *pervlineptr = nullptr;
+	char utfchr, *contentptr = nullptr;
 
 	int len = 0;
 	int cap = DEFAULT_ALLOCATION_SIZE_PER_LINE;
@@ -113,9 +113,9 @@ Lines *linesFileToLines(char *const pathptr) {
 	contentptr = linesContentCreate(cap);
 	Lines *const firstlinesptr = lineptr = linesCreate(contentptr, cap, len);
 
-	if (firstlinesptr == NULL) {
+	if (firstlinesptr == nullptr) {
 		free(contentptr);
-		return NULL;
+		return nullptr;
 	}
 
 	while ((chr = fgetc(fileptr)) != EOF) {
@@ -140,9 +140,9 @@ Lines *linesFileToLines(char *const pathptr) {
 			contentptr = linesContentCreate(cap);
 			lineptr = linesCreate(contentptr, cap, len);
 
-			if (lineptr == NULL) {
+			if (lineptr == nullptr) {
 				free(contentptr);
-				return NULL;
+				return nullptr;
 			} {
 				lineptr->perv = pervlineptr;
 				pervlineptr->next = lineptr;

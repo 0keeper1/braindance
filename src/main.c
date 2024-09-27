@@ -21,7 +21,7 @@ int main(const int argc, char *argv[]) {
 	if (commands.flags.help == true) {
 		puts(HELP);
 		return EXIT_SUCCESS;
-	} else if (commands.path == NULL) {
+	} else if (commands.path == nullptr) {
 		fprintf(stderr, "Enter a specific file path to edit.\n");
 		return EXIT_FAILURE;
 	}

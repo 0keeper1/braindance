@@ -1,7 +1,7 @@
 #include "./info.h"
 
 Info infoCreate() {
-	const Info info = {.path = NULL, .cwd = NULL, .name = NULL, .ext = NULL};
+	const Info info = {.path = nullptr, .cwd = nullptr, .name = nullptr, .ext = nullptr};
 	return info;
 }
 

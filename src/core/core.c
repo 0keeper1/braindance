@@ -20,7 +20,7 @@
 
 Core coreCreate() {
 	const Core core = {
-		.lines = NULL, .offset = offsetCreate(), .info = infoCreate(), .exit = false, .prompt = promptCreate(),
+		.lines = nullptr, .offset = offsetCreate(), .info = infoCreate(), .exit = false, .prompt = promptCreate(),
 		.layout = PROMPT,
 		.terminal = {.row = 0, .col = 0, .termio = {0}}
 	};

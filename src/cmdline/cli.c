@@ -26,12 +26,12 @@ bool checkFlag(const char *const argument, const char *const small_flag, const c
 Result createCmds(Cmds *const commands) {
 	char *cwdptr = calloc(PATH_MAX, sizeof(char));
 
-	if (cwdptr == NULL) {
+	if (cwdptr == nullptr) {
 		return FAILED;
 	}
 
 	commands->cwd = cwdptr;
-	commands->path = NULL;
+	commands->path = nullptr;
 	commands->flags.help = false;
 
 	return SUCCESSFUL;
@@ -43,11 +43,11 @@ Result parseCli(const int argc, char *const argv[], Cmds *const commands) {
 			if (checkFlag(argv[c], "-h", "--help")) {
 				commands->flags.help = true;
 				return SUCCESSFUL;
-			} else {
-				return FAILED;
 			}
-		} else if (c == (argc - 1)) {
-			commands->path = (char *) realpath(argv[c], NULL);
+			return FAILED;
+		}
+		if (c == (argc - 1)) {
+			commands->path = (char *) realpath(argv[c], nullptr);
 		}
 	}
 	commands->cwd = getcwd((char *) commands->cwd, PATH_MAX);
