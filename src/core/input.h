@@ -56,7 +56,7 @@ enum Mod {
 
 typedef struct {
 	union {
-		unsigned char character;
+		char character;
 		Buttons button;
 	};
 
@@ -64,7 +64,7 @@ typedef struct {
 } Key;
 
 struct Keybind {
-	unsigned char character;
+	char character;
 	unsigned int modifier: 8;
 	unsigned char repeat;
 };

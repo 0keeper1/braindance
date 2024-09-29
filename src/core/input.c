@@ -166,6 +166,8 @@ const Key *keyRead() {
 					break;
 			}
 		}
+	} else {
+		return nullptr;
 	}
 
 	return &key;
@@ -175,6 +177,11 @@ void keyQueueZero() { memset(&KeyQueue, 0, sizeof(_KeyQueue)); }
 
 Result keyQueueHandler() {
 	const Key *key = keyRead();
+
+	if (key == nullptr) {
+		return FAILED;
+	}
+
 	if ((KeyQueue.key.mod == (BTN | TIMEOUT) || KeyQueue.key.mod == NOMOD) &&
 	    (KeyQueue.key.button == NONE || KeyQueue.key.button == 0)) {
 		if (key->mod == NOMOD) {
