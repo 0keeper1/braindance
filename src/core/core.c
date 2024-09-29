@@ -21,6 +21,7 @@
 Core coreCreate() {
 	const Core core = {
 		.lines = nullptr, .offset = offsetCreate(), .info = infoCreate(), .exit = false, .prompt = promptCreate(),
+		.skip = false,
 		.layout = PROMPT,
 		.terminal = {.row = 0, .col = 0, .termio = {0}}
 	};
@@ -49,9 +50,14 @@ Result coreLoop(const Cmds *const cmdsptr) {
 
 	coreInit(&core, cmdsptr);
 
+	display(&core); // init display // TODO move this in loop
 	do {
-		display(&core);
 		keyProcess(&core);
+		if (core.skip == true) {
+			core.skip = false;
+			continue;
+		}
+		display(&core);
 	} while (core.exit == false);
 
 	coreExit(&core);

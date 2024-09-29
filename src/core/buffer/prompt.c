@@ -69,8 +69,8 @@ char *promptAsString(const Prompt *const prompt_ptr) {
     if (prompt_ptr == nullptr) {
         return nullptr;
     }
-    String *string_ptr = charsConvertCharsToString(prompt_ptr->start_ptr);
 
+    String *string_ptr = charsConvertCharsToString(prompt_ptr->start_ptr);
 
     if (string_ptr == nullptr) {
         return nullptr;
@@ -83,7 +83,7 @@ char *promptAsString(const Prompt *const prompt_ptr) {
 }
 
 [[gnu::always_inline]]
-inline void promptFree(Prompt *const promptptr) {
+inline void promptFree(Prompt *const prompt_ptr) {
     // TODO
     // charsFree(promptptr->start_ptr);
     // promptptr->cap = 0;

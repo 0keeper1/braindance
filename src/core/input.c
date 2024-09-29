@@ -228,6 +228,11 @@ Result keyExec(Core *const coreptr) {
 #include "../keybindings.h"
 #include "../defaults/keybindigs.h"
 
+	if (checkIsTimeOut()) {
+		coreptr->skip = true;
+		return SUCCESSFUL;
+	}
+
 	if (checkIsInputKey()) {
 		switch (coreptr->layout) {
 			case PROMPT:
@@ -261,6 +266,13 @@ Result keyExec(Core *const coreptr) {
 
 bool checkIsInputKey() {
 	if (KeyQueue.key.mod == CHAR && KeyQueue.keycounter == 1 && KeyQueue.commit == true) {
+		return true;
+	}
+	return false;
+}
+
+bool checkIsTimeOut() {
+	if (KeyQueue.key.button == NONE && KeyQueue.key.mod == (BTN | TIMEOUT)) {
 		return true;
 	}
 	return false;

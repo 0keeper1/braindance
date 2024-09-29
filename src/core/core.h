@@ -18,6 +18,8 @@ typedef struct {
 	Offset offset;
 	Info info;
 
+	bool skip;
+
 	struct Terminal {
 		u_int16_t row;
 		u_int16_t col;

@@ -87,6 +87,8 @@ extern void keyQueueZero();
 
 extern Result keyExec(Core *const coreptr);
 
+extern bool checkIsTimeOut();
+
 extern bool checkKeyWithBinding(const struct Keybind *const keybind);
 
 extern bool checkIsInputKey();
