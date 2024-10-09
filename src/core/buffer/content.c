@@ -3,8 +3,8 @@
 Content *contentCreate() {
     static Content content; // static because of the editor open single file at time
 
-    content.lines_count = 1;
     content.start_ptr = linesCreate();
+    content.len = 1;
     content.end_ptr = content.start_ptr;
 
     return &content;

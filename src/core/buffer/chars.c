@@ -14,10 +14,13 @@ inline Chars *charsCreate(const char chr) {
 	return ptr;
 }
 
-void charsDestroy(Chars *chars) {
+
+[[gnu::always_inline]]
+inline void charsDestroy(Chars *chars) {
 	if (chars == nullptr) {
 		return;
 	}
+	// TODO check next and perv not a nullptr
 	Chars *tmp_next_ptr = chars->next;
 	tmp_next_ptr->perv = chars->perv;
 	chars->perv->next = tmp_next_ptr;

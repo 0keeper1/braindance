@@ -1,8 +1,5 @@
 #pragma once
 
-#include "str.h"
-#include "../../errors.h"
-
 
 typedef struct Chars {
 	struct Chars *perv;
@@ -13,3 +10,4 @@ typedef struct Chars {
 extern Chars *charsCreate(const char chr);
 
 extern void charsDestroy(Chars *chars);
+

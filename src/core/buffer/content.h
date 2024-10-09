@@ -1,10 +1,12 @@
 #pragma once
 
+#include <stddef.h>
+
 #include "lines.h"
 
 typedef struct Content {
-    long lines_count;
     Lines *start_ptr;
+    size_t len;
     Lines *end_ptr;
 } Content;
 
