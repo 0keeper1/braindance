@@ -52,4 +52,9 @@ add_executable(braindance
         src/macros.h
         src/core/buffer/str.c
         src/core/buffer/str.h
+        src/core/buffer/content.c
+        src/core/buffer/content.h
 )
+
+add_subdirectory(test)
+enable_testing()
