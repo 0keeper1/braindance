@@ -9,40 +9,19 @@
 #include <str.h>
 #include <strings.h>
 
-struct Lines {
+typedef struct Lines {
 	struct Lines *perv; // perv line
 	size_t len; // content size
-	union {
-		char *content;
-		Chars *chars;
-	};
+
+	Chars *start_ptr;
+	Chars *end_ptr;
 
 	size_t cap; // allocated size
 	struct Lines *next; // next line
-};
+} Lines;
 
-typedef struct Lines Lines;
+extern Lines *linesCreate();
 
-extern void linesClear(Lines *lineptr);
+extern void linesDestroy(Lines *line_ptr);
 
-extern void linesClearAndDrop(Lines *lineptr);
-
-extern void linesDelete(Lines *lineptr);
-
-extern char *linesContentCreate(int cap);
-
-extern void linesSetContentPtr(Lines *lineptr, char *contentptr, const size_t cap, const size_t len);
-
-extern void linesNewLine(Lines *lineptr);
-
-extern Lines *linesCreate(char *contentptr, const size_t cap, const size_t len);
-
-extern Lines *linesFileToLines(char *const pathptr);
-
-extern Result linesClearAll(Lines *lineptr);
-
-extern Result linesFree(const Lines *lineptr);
-
-extern Lines *linesReachEnd(Lines *lineptr);
-
-extern Result linesDrop(Lines *lineptr);
+Chars *linesGetCharsByIndex(const Lines *const lines_ptr, const size_t index);

@@ -70,7 +70,7 @@ void coreExit(const Core *const coreptr) {
 
 	infoFree(&coreptr->info);
 
-	linesFree(coreptr->lines);
+	// linesFree(coreptr->lines); TODO replace
 
 	write(STDOUT_FILENO, SCREEN_CLEAR, 4);
 	write(STDOUT_FILENO, CURSOR_AT_START, 3);

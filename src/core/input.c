@@ -83,7 +83,7 @@ const Key *keyRead() {
 					key.mod |= BTN;
 					return &key;
 				default:
-					break;
+					return nullptr;
 			}
 		}
 	} else if (rbytes == 4) {
@@ -97,9 +97,8 @@ const Key *keyRead() {
 					key.button = FN_ARROW_DOWN;
 					key.mod |= BTN;
 					return &key;
-					break;
 				default:
-					break;
+					return nullptr;
 			}
 		}
 	} else if (rbytes == 6) {
@@ -163,7 +162,7 @@ const Key *keyRead() {
 					key.mod |= BTN;
 					return &key;
 				default:
-					break;
+					return nullptr;
 			}
 		}
 	} else {
