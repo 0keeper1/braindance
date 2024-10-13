@@ -17,4 +17,4 @@ typedef struct Info Info;
 
 extern Info infoCreate();
 
-extern void infoFree(const Info *const infoptr);
+extern void infoFree(const Info *const info_infoptr);

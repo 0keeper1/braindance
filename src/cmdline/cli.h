@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../errors.h"
-#include "../settings.h"
 
 typedef struct {
 	char *cwd;
@@ -12,10 +11,8 @@ typedef struct {
 	} flags;
 } Cmds;
 
-extern Result createCmds(Cmds *const commands);
+extern Result createCmds(Cmds *const commands_ptr);
 
-extern Result parseCli(const int argc, char *const argv[], Cmds *const commands);
+extern Result parseCli(const int argc, char *const argv[], Cmds *const commands_ptr);
 
-extern Result checkPath(const char *const pathptr);
-
-void freeCmds(const Cmds *const commands);
+void freeCmds(const Cmds *const commands_ptr);

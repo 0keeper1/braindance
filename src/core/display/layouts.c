@@ -101,6 +101,6 @@ void writePrompt(WindowBuf *const winbufptr, const Prompt *const promptptr, cons
     if (promptptr->len > col - 3) {
         windowbufAppend(winbufptr, "...", 3);
     } else {
-        windowbufAppend(winbufptr, promptAsString(promptptr), promptptr->len > 0 ? promptptr->len + 1 : 0);
+        // windowbufAppend(winbufptr, , promptptr->len > 0 ? promptptr->len + 1 : 0);
     }
 }

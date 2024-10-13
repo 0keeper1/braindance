@@ -7,17 +7,26 @@ Lines *linesCreate() {
 	if (lines_ptr == nullptr) {
 		return nullptr;
 	}
-	lines_ptr->len = 0;
+	lines_ptr->len = 1;
 	lines_ptr->next = nullptr;
-	lines_ptr->end_ptr = nullptr;
-	lines_ptr->start_ptr = nullptr;
+	lines_ptr->start_ptr = lines_ptr->end_ptr = charsCreate('\0');
+	lines_ptr->perv = nullptr;
 	return lines_ptr;
 }
 
-void linesDestroy(Lines *line_ptr) {
-	line_ptr->start_ptr = nullptr;
-	line_ptr->end_ptr = nullptr;
-	line_ptr->len = 0;
+void linesDestroy(Lines *lines_ptr) {
+	lines_ptr->start_ptr = nullptr;
+	lines_ptr->end_ptr = nullptr;
+	lines_ptr->len = 0;
+}
+
+void linesAppend(Lines *lines_ptr) {
+	if ((lines_ptr->end_ptr->next = charsCreate('\0')) == nullptr) {
+		return;
+	};
+	lines_ptr->len++;
+	(lines_ptr->end_ptr->next)->perv = lines_ptr->end_ptr;
+	lines_ptr->end_ptr = lines_ptr->end_ptr->next;
 }
 
 Chars *linesGetCharsByIndex(const Lines *lines_ptr, const size_t index) {
@@ -28,7 +37,15 @@ Chars *linesGetCharsByIndex(const Lines *lines_ptr, const size_t index) {
 	if (index > lines_ptr->len) {
 		return nullptr;
 	}
-	// TODO check index if index is 0 insert to start_ptr->perv and if index is lines_ptr->len insert to end_ptr->next
+
+	if (index == 0) {
+		return lines_ptr->start_ptr;
+	}
+
+	if (index == lines_ptr->len) {
+		return lines_ptr->end_ptr;
+	}
+
 	if (index > lines_ptr->len / 2) {
 		Chars *chars_ptr = lines_ptr->end_ptr;
 		for (size_t ctr = lines_ptr->len; chars_ptr != nullptr, ctr - 1 != -1; chars_ptr = chars_ptr->perv, ctr--) {

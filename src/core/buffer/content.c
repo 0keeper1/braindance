@@ -1,5 +1,7 @@
 #include "content.h"
 
+#include <stdio.h>
+
 Content *contentCreate() {
     static Content content; // static because of the editor open single file at time
 
@@ -11,18 +13,45 @@ Content *contentCreate() {
 }
 
 void contentNewLine(Content *const content_ptr) {
-    Lines *new_line = linesCreate();
-    content_ptr->end_ptr->next = new_line;
-    new_line->perv = content_ptr->end_ptr;
-    content_ptr->end_ptr = new_line;
-    content_ptr->end_ptr;
+    if ((content_ptr->end_ptr->next = linesCreate()) == nullptr) {
+        return;
+    }
+    content_ptr->len++;
+    (content_ptr->end_ptr->next)->perv = content_ptr->end_ptr;
+    content_ptr->end_ptr = content_ptr->end_ptr->next;
 }
 
 void contentReadFromFile(Content *const content_ptr, const char *const file_path) {
-    // TODO
+    FILE *file_ptr = fopen(file_path, "r");
+    if (file_ptr == nullptr) {
+        return;
+    }
+
+    int chr = '\0';
+
+    while ((chr = fgetc(file_ptr)) != EOF) {
+        if (chr == '\n') {
+            contentNewLine(content_ptr);
+        }
+
+        (content_ptr->end_ptr)->end_ptr->chr = (char) chr;
+        linesAppend(content_ptr->end_ptr);
+    }
+    fclose(file_ptr);
 }
 
-void contentWriteToFile(Content *const content_ptr, const char *const file_path) {
-    // TODO
-}
+void contentWriteToFile(const Content *const content_ptr, const char *const file_path) {
+    FILE *file_ptr = fopen(file_path, "w");
+    if (file_ptr == nullptr) {
+        return;
+    }
 
+    for (const Lines *tmp_lines_ptr = content_ptr->start_ptr; tmp_lines_ptr != nullptr;
+         tmp_lines_ptr = tmp_lines_ptr->next) {
+        for (const Chars *tmp_chars_ptr = tmp_lines_ptr->start_ptr; tmp_chars_ptr->chr != '\0';
+             tmp_chars_ptr = tmp_chars_ptr->next) {
+            fputc(tmp_chars_ptr->chr, file_ptr);
+        }
+    }
+    fclose(file_ptr);
+}

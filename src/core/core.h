@@ -33,14 +33,14 @@ typedef struct {
 
 extern Core coreCreate();
 
-extern Result coreInit(Core *const coreptr, const Cmds *const cmdsptr);
+extern Result coreInit(Core *const core_ptr, const Cmds *const cmds_ptr);
 
-extern Result coreTermSizeUpdate(Core *const coreptr);
+extern Result coreTermSizeUpdate(Core *const core_ptr);
 
-extern Result enableRawMode(Core *const coreptr);
+extern Result enableRawMode(Core *const core_ptr);
 
-extern Result disableRawMode(const Core *const coreptr);
+extern Result disableRawMode(const Core *const core_ptr);
 
-extern void coreExit(const Core *const coreptr);
+extern void coreExit(const Core *const core_ptr);
 
-extern Result coreLoop(const Cmds *const cmdsptr);
+extern Result coreLoop(const Cmds *const cmds_ptr);

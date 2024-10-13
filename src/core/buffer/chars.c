@@ -20,9 +20,13 @@ inline void charsDestroy(Chars *chars) {
 	if (chars == nullptr) {
 		return;
 	}
-	// TODO check next and perv not a nullptr
-	Chars *tmp_next_ptr = chars->next;
-	tmp_next_ptr->perv = chars->perv;
-	chars->perv->next = tmp_next_ptr;
+
+	if (chars->next != nullptr) {
+		chars->next->perv = chars->perv;
+	}
+	if (chars->perv != nullptr) {
+		chars->perv->next = chars->next;
+	}
+
 	free(chars);
 }

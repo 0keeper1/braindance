@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stddef.h>
+
 #include "./chars.h"
 
 typedef struct Lines {
@@ -14,7 +16,9 @@ typedef struct Lines {
 
 extern Lines *linesCreate();
 
-extern void linesDestroy(Lines *line_ptr);
+extern void linesDestroy(Lines *lines_ptr);
+
+extern void linesAppend(Lines *lines_ptr);
 
 extern Chars *linesGetCharsByIndex(const Lines *const lines_ptr, size_t index);
 

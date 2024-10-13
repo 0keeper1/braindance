@@ -242,7 +242,7 @@ Result keyExec(Core *const coreptr) {
 	if (checkIsInputKey()) {
 		switch (coreptr->layout) {
 			case PROMPT:
-				return promptAppend(&coreptr->prompt, KeyQueue.key.character);
+				break; // promptAppend(&coreptr->prompt, KeyQueue.key.character);
 			case EDITOR:
 				break;
 			default:
@@ -251,7 +251,7 @@ Result keyExec(Core *const coreptr) {
 	} else if (checkKeyIsBackSpace()) {
 		switch (coreptr->layout) {
 			case PROMPT:
-				return promptDeleteEnd(&coreptr->prompt);
+				break; // promptDeleteEnd(&coreptr->prompt);
 			case EDITOR:
 				break;
 			default:

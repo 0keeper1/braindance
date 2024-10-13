@@ -16,4 +16,6 @@ extern void contentNewLine(Content *const content_ptr);
 
 extern void contentReadFromFile(Content *const content_ptr, const char *const file_path);
 
-extern void contentWriteToFile(Content *const content_ptr, const char *const file_path);
+extern void contentWriteToFile(const Content *const content_ptr, const char *const file_path);
+
+extern void testContentReadFromFile();

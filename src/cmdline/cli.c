@@ -7,50 +7,50 @@
 #include <unistd.h>
 
 
-bool isFlag(const char *const arg) {
-	if (arg[0] == '-' || (arg[0] == '-' && arg[1] == '-')) {
+bool isFlag(const char *const arg_ptr) {
+	if (arg_ptr[0] == '-' || (arg_ptr[0] == '-' && arg_ptr[1] == '-')) {
 		return true;
 	}
 	return false;
 }
 
-bool checkFlag(const char *const argument, const char *const small_flag, const char *const large_flag) {
-	return strncmp(argument, small_flag, strlen(small_flag)) == 0 ||
-	       strncmp(argument, large_flag, strlen(large_flag)) == 0;
+bool checkFlag(const char *const argument, const char *const small_flag_ptr, const char *const large_flag_ptr) {
+	return strncmp(argument, small_flag_ptr, strlen(small_flag_ptr)) == 0 ||
+	       strncmp(argument, large_flag_ptr, strlen(large_flag_ptr)) == 0;
 }
 
-Result createCmds(Cmds *const commands) {
+Result createCmds(Cmds *const commands_ptr) {
 	char *cwdptr = calloc(PATH_MAX, sizeof(char));
 
 	if (cwdptr == nullptr) {
 		return FAILED;
 	}
 
-	commands->cwd = cwdptr;
-	commands->path = nullptr;
-	commands->flags.help = false;
+	commands_ptr->cwd = cwdptr;
+	commands_ptr->path = nullptr;
+	commands_ptr->flags.help = false;
 
 	return SUCCESSFUL;
 }
 
-Result parseCli(const int argc, char *const argv[], Cmds *const commands) {
+Result parseCli(const int argc, char *const argv[], Cmds *const commands_ptr) {
 	for (int c = 1; c != argc; c++) {
 		if (isFlag(argv[c])) {
 			if (checkFlag(argv[c], "-h", "--help")) {
-				commands->flags.help = true;
+				commands_ptr->flags.help = true;
 				return SUCCESSFUL;
 			}
 			return FAILED;
 		}
 		if (c == (argc - 1)) {
-			commands->path = (char *) realpath(argv[c], nullptr);
+			commands_ptr->path = realpath(argv[c], nullptr);
 		}
 	}
-	commands->cwd = getcwd((char *) commands->cwd, PATH_MAX);
+	commands_ptr->cwd = getcwd(commands_ptr->cwd, PATH_MAX);
 	return SUCCESSFUL;
 }
 
 [[gnu::always_inline]]
-inline void freeCmds(const Cmds *const commands) {
-	free(commands->cwd);
+inline void freeCmds(const Cmds *const commands_ptr) {
+	free(commands_ptr->cwd);
 }
