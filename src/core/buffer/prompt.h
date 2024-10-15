@@ -11,3 +11,5 @@ typedef struct Prompt {
 } Prompt;
 
 extern Prompt promptCreate();
+
+extern void promptAppend(const Prompt *prompt_ptr, const char chr);

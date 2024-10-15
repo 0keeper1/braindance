@@ -20,11 +20,12 @@ void linesDestroy(Lines *lines_ptr) {
 	lines_ptr->len = 0;
 }
 
-void linesAppend(Lines *lines_ptr) {
+void linesAppend(Lines *lines_ptr, const char chr) {
 	if ((lines_ptr->end_ptr->next = charsCreate('\0')) == nullptr) {
 		return;
-	};
+	}
 	lines_ptr->len++;
+	lines_ptr->end_ptr->chr = chr;
 	(lines_ptr->end_ptr->next)->perv = lines_ptr->end_ptr;
 	lines_ptr->end_ptr = lines_ptr->end_ptr->next;
 }

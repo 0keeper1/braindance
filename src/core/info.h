@@ -6,15 +6,13 @@
 #include "limits.h"
 #include "stdlib.h"
 
-struct Info {
+typedef struct Info {
 	char *path;
 	char *cwd;
 	char *name;
 	char *ext;
-};
-
-typedef struct Info Info;
+} Info;
 
 extern Info infoCreate();
 
-extern void infoFree(const Info *const info_infoptr);
+extern void infoFree(const Info *const info_ptr);

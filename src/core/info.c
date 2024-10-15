@@ -5,9 +5,9 @@ Info infoCreate() {
 	return info;
 }
 
-void infoFree(const Info *const infoptr) {
-	free(infoptr->cwd);
-	free(infoptr->ext);
-	free(infoptr->name);
-	free(infoptr->path);
+void infoFree(const Info *const info_ptr) {
+	free(info_ptr->cwd);
+	free(info_ptr->ext);
+	free(info_ptr->name);
+	free(info_ptr->path);
 }

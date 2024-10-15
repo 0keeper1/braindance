@@ -33,9 +33,7 @@ void contentReadFromFile(Content *const content_ptr, const char *const file_path
         if (chr == '\n') {
             contentNewLine(content_ptr);
         }
-
-        (content_ptr->end_ptr)->end_ptr->chr = (char) chr;
-        linesAppend(content_ptr->end_ptr);
+        linesAppend(content_ptr->end_ptr, (char) chr);
     }
     fclose(file_ptr);
 }

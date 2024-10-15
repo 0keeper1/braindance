@@ -7,6 +7,7 @@
 
 [[gnu::always_inline]]
 inline Prompt promptCreate() {
-    const Prompt prompt = {.len = 0, .start_ptr = nullptr, .end_ptr = nullptr};
+    Prompt prompt = {.len = 0, .start_ptr = nullptr, .end_ptr = nullptr};
+    prompt.end_ptr = prompt.start_ptr = charsCreate('\0');
     return prompt;
 }

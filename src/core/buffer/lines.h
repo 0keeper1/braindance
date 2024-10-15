@@ -18,7 +18,7 @@ extern Lines *linesCreate();
 
 extern void linesDestroy(Lines *lines_ptr);
 
-extern void linesAppend(Lines *lines_ptr);
+extern void linesAppend(Lines *lines_ptr, char chr);
 
 extern Chars *linesGetCharsByIndex(const Lines *const lines_ptr, size_t index);
 
