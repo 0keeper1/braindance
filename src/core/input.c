@@ -1,8 +1,6 @@
-#include "./input.h"
+#include "core/input.h"
 
 #include <string.h>
-
-#include "./buffer/prompt.h"
 
 const Key *keyRead() {
 	static Key key; {

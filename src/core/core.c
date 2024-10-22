@@ -1,22 +1,16 @@
-#include "./core.h"
-
-#include "../cmdline/cli.h"
-#include "../errors.h"
-#include "./buffer/lines.h"
-#include "./buffer/windowbuf.h"
-#include "./info.h"
-#include "./offset.h"
-#include "./display/update.h"
-
 #include <ctype.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
 
-#include "input.h"
-
+#include "core/core.h"
+#include "cmdline/cli.h"
+#include "errors.h"
+#include "core/info.h"
+#include "core/offset.h"
+#include "core/display/update.h"
+#include "core/buffer/prompt.h"
+#include "core/input.h"
 
 Core coreCreate() {
 	const Core core = {

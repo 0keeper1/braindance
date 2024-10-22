@@ -1,4 +1,4 @@
-#include "./info.h"
+#include "core/info.h"
 
 Info infoCreate() {
 	const Info info = {.path = nullptr, .cwd = nullptr, .name = nullptr, .ext = nullptr};
