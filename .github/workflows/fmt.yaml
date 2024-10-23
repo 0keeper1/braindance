@@ -1,0 +1,21 @@
+name: fmt
+
+on: [push, pull_request]
+
+jobs:
+  fmt:
+    name: fmt Check
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        paths:
+          - 'src'
+          - 'test'
+          - 'include'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run clang-format
+        uses: jidicula/clang-format-action@v4.13.0
+        with:
+          clang-format-version: '18'
+          check-path: ${{ matrix.paths }}

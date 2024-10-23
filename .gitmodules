@@ -1,0 +1,3 @@
+[submodule "lib/nanotest"]
+	path = lib/nanotest
+	url = git@github.com:0keeper1/nanotest.git
