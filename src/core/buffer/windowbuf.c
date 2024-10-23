@@ -1,12 +1,11 @@
-#include "./windowbuf.h"
+#include "core/buffer/windowbuf.h"
 
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <str.h>
 #include <string.h>
 
-#include "core.h"
+#include "core/core.h"
 
 
 WindowBuf windowbufCreate() {

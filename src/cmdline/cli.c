@@ -1,11 +1,10 @@
-#include "cli.h"
-#include "../errors.h"
+#include "cmdline/cli.h"
+#include "errors.h"
 
-#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <linux/limits.h>
 
 bool isFlag(const char *const arg_ptr) {
 	if (arg_ptr[0] == '-' || (arg_ptr[0] == '-' && arg_ptr[1] == '-')) {
@@ -43,7 +42,7 @@ Result parseCli(const int argc, char *const argv[], Cmds *const commands_ptr) {
 			return FAILED;
 		}
 		if (c == (argc - 1)) {
-			commands_ptr->path = realpath(argv[c], nullptr);
+			// commands_ptr->path = realpath(argv[c], nullptr);
 		}
 	}
 	commands_ptr->cwd = getcwd(commands_ptr->cwd, PATH_MAX);

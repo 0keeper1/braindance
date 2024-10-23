@@ -1,6 +1,6 @@
-#include "./layouts.h"
+#include "core/display/layouts.h"
 
-#include "../buffer/prompt.h"
+#include "core/buffer/prompt.h"
 
 #include <string.h>
 #include <stdio.h>

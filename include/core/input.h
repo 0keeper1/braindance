@@ -1,13 +1,7 @@
 #pragma once
 
-#include "../errors.h"
-#include "../settings.h"
-#include "./core.h"
-#include <ctype.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <str.h>
-#include <unistd.h>
+#include "errors.h"
+#include "core.h"
 
 typedef enum {
 	ENTER,

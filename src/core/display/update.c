@@ -1,7 +1,8 @@
-#include "./update.h"
+#include "core/display/update.h"
 
-#include "./layouts.h"
-#include "../offset.h"
+
+#include "core/display/layouts.h"
+#include "core/offset.h"
 
 #include <string.h>
 

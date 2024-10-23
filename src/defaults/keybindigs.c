@@ -1,4 +1,4 @@
-#include "keybindigs.h"
+#include "defaults/keybindigs.h"
 
 
 Result keyactionSWITCH_LAYOUT(Core *const coreptr) {

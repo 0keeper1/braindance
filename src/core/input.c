@@ -1,6 +1,8 @@
 #include "core/input.h"
 
 #include <string.h>
+#include <unistd.h>
+#include <ctype.h>
 
 const Key *keyRead() {
 	static Key key; {
@@ -229,8 +231,8 @@ Result keyQueueHandler() {
 }
 
 Result keyExec(Core *const coreptr) {
-#include "../keybindings.h"
-#include "../defaults/keybindigs.h"
+#include "keybindings.h"
+#include "defaults/keybindigs.h"
 
 	if (checkIsTimeOut()) {
 		coreptr->skip = true;

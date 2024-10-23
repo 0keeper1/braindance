@@ -1,6 +1,8 @@
-#include "str.h"
+#include "core/buffer/str.h"
 
 #include <stdlib.h>
+
+#include "errors.h"
 
 String *stringCreate() {
     String *string_ptr = malloc(sizeof(String));

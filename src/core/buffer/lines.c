@@ -1,4 +1,4 @@
-#include "./lines.h"
+#include "core/buffer/lines.h"
 
 #include <stdlib.h>
 

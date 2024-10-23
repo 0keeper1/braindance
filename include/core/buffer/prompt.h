@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 
-#include "./buffer/chars.h"
+#include "core/buffer/chars.h"
 
 typedef struct Prompt {
     Chars *start_ptr;

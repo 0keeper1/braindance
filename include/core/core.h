@@ -1,11 +1,10 @@
 #pragma once
 
-#include "cli.h"
-#include "lines.h"
 #include "info.h"
 #include "offset.h"
-#include "prompt.h"
 #include "termios.h"
+#include "buffer/prompt.h"
+#include "cmdline/cli.h"
 
 enum Layout {
 	PROMPT,

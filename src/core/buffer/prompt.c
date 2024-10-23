@@ -1,9 +1,5 @@
-#include "prompt.h"
-#include "../errors.h"
-#include "./str.h"
-#include "./buffer/chars.h"
+#include "core/buffer/prompt.h"
 
-#include <stdlib.h>
 
 [[gnu::always_inline]]
 inline Prompt promptCreate() {
