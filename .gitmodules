@@ -1,3 +1,3 @@
-[submodule "lib/nanotest"]
-	path = lib/nanotest
+[submodule "subprojects/nanotest"]
+	path = subprojects/nanotest
 	url = git@github.com:0keeper1/nanotest.git

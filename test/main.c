@@ -1,7 +1,7 @@
 #include <nanotest/lib.h>
 
 NANO_FUNCTION(something_tst, true, {
-	NANO_ASSERT_TRUE("they are all true?", true, true);
+	NANO_ASSERT_TRUE("they are all true?", false, false);
 	NANO_ASSERT_EQ_INT("they are all the same?", 1, 1, true);
 })
 

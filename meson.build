@@ -39,11 +39,13 @@ dep = declare_dependency(
     link_with : braindance_lib
 )
 
+nanotest_dep = dependency('nanotest', fallback : ['nanotest', 'nanotest_dep'])
+
 braindance_test = executable(
     meson.project_name() + '_test',
     sources : run_command('find', 'test', '-depth', '-type', 'f', check : true).stdout().strip().split('\n'),
     c_args : build_args,
-    dependencies : [dep]
+    dependencies : [dep, nanotest_dep]
 )
 
 test('test', braindance_test)
