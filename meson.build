@@ -39,7 +39,7 @@ dep = declare_dependency(
     link_with : braindance_lib
 )
 
-nanotest_dep = dependency('nanotest', fallback : ['nanotest', 'nanotest_dep'])
+nanotest_dep = dependency('nanotest', static : true, required : true, version : '1.0.2', fallback : ['nanotest', 'nanotest_dep'])
 
 braindance_test = executable(
     meson.project_name() + '_test',
