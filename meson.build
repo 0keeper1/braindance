@@ -43,7 +43,7 @@ braindance_test = executable(
     meson.project_name() + '_test',
     sources : run_command('find', 'test', '-depth', '-type', 'f', check : true).stdout().strip().split('\n'),
     c_args : build_args,
-    dependencies : dep
+    dependencies : [dep]
 )
 
 test('test', braindance_test)

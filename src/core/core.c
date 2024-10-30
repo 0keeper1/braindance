@@ -3,32 +3,24 @@
 #include <termios.h>
 #include <unistd.h>
 
-#include "core/core.h"
 #include "cmdline/cli.h"
-#include "errors.h"
-#include "core/info.h"
-#include "core/offset.h"
-#include "core/display/update.h"
 #include "core/buffer/prompt.h"
+#include "core/core.h"
+#include "core/display/update.h"
+#include "core/info.h"
 #include "core/input.h"
+#include "core/offset.h"
+#include "errors.h"
 
 Core coreCreate() {
-	const Core core = {
-		.lines = nullptr,
-		.offset = offsetCreate(),
-		.info = infoCreate(),
-		.exit = false,
-		.prompt = promptCreate(),
-		.skip = false,
-		.layout = PROMPT,
-		.terminal = {
-			.row = 0,
-			.col = 0,
-			.termio = {
-				0
-			}
-		}
-	};
+	const Core core = {.lines = nullptr,
+					   .offset = offsetCreate(),
+					   .info = infoCreate(),
+					   .exit = false,
+					   .prompt = promptCreate(),
+					   .skip = false,
+					   .layout = PROMPT,
+					   .terminal = {.row = 0, .col = 0, .termio = {0}}};
 	return core;
 }
 

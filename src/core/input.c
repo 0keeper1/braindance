@@ -1,11 +1,12 @@
 #include "core/input.h"
 
+#include <ctype.h>
 #include <string.h>
 #include <unistd.h>
-#include <ctype.h>
 
 const Key *keyRead() {
-	static Key key; {
+	static Key key;
+	{
 		key.character = 0;
 		key.mod = NOMOD;
 	}
@@ -172,7 +173,9 @@ const Key *keyRead() {
 	return &key;
 }
 
-void keyQueueZero() { memset(&KeyQueue, 0, sizeof(_KeyQueue)); }
+void keyQueueZero() {
+	memset(&KeyQueue, 0, sizeof(_KeyQueue));
+}
 
 Result keyQueueHandler() {
 	const Key *key = keyRead();
@@ -182,7 +185,7 @@ Result keyQueueHandler() {
 	}
 
 	if ((KeyQueue.key.mod == (BTN | TIMEOUT) || KeyQueue.key.mod == NOMOD) &&
-	    (KeyQueue.key.button == NONE || KeyQueue.key.button == 0)) {
+		(KeyQueue.key.button == NONE || KeyQueue.key.button == 0)) {
 		if (key->mod == NOMOD) {
 			return SUCCESSFUL;
 		}
@@ -204,8 +207,7 @@ Result keyQueueHandler() {
 			KeyQueue.commit = true;
 			return SUCCESSFUL;
 		}
-		if (((key->mod & CTRL) || (key->mod & ALT) || (key->mod & FN)) &&
-		    key->character == KeyQueue.key.character) {
+		if (((key->mod & CTRL) || (key->mod & ALT) || (key->mod & FN)) && key->character == KeyQueue.key.character) {
 			if (KeyQueue.keycounter + 1 == MAX_KEY_COMBINATION) {
 				KeyQueue.commit = true;
 				KeyQueue.keycounter++;
@@ -231,8 +233,8 @@ Result keyQueueHandler() {
 }
 
 Result keyExec(Core *const coreptr) {
-#include "keybindings.h"
 #include "defaults/keybindigs.h"
+#include "keybindings.h"
 
 	if (checkIsTimeOut()) {
 		coreptr->skip = true;
@@ -293,7 +295,7 @@ bool checkKeyIsBackSpace() {
 
 bool checkKeyWithBinding(const struct Keybind *const keybindptr) {
 	if (keybindptr->character == KeyQueue.key.character && keybindptr->modifier == KeyQueue.key.mod &&
-	    keybindptr->repeat == KeyQueue.keycounter && KeyQueue.commit == true) {
+		keybindptr->repeat == KeyQueue.keycounter && KeyQueue.commit == true) {
 		return true;
 	}
 	return false;

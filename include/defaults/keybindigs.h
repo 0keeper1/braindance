@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./core/input.h"
 #include "../macros.h"
+#include "./core/input.h"
 
 #define MOD_CTRL 0b00000010
 #define MOD_ALT 0b00000100

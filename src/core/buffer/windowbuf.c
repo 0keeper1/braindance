@@ -1,12 +1,11 @@
 #include "core/buffer/windowbuf.h"
 
-#include <termios.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include "core/core.h"
-
 
 WindowBuf windowbufCreate() {
 	const WindowBuf winbuf = {.cap = 0, .ptr = nullptr, .len = 0};

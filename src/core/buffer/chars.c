@@ -14,7 +14,6 @@ inline Chars *charsCreate(const char chr) {
 	return ptr;
 }
 
-
 [[gnu::always_inline]]
 inline void charsDestroy(Chars *chars) {
 	if (chars == nullptr) {

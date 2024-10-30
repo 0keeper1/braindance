@@ -19,4 +19,3 @@ typedef struct Offset Offset;
 extern Offset offsetCreate();
 
 extern Result offsetInitialize(Offset *const offsetptr);
-

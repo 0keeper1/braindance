@@ -1,7 +1,7 @@
 #pragma once
 
-#include "errors.h"
 #include "core.h"
+#include "errors.h"
 
 typedef enum {
 	ENTER,
@@ -54,12 +54,12 @@ typedef struct {
 		Buttons button;
 	};
 
-	unsigned int mod: 8;
+	unsigned int mod : 8;
 } Key;
 
 struct Keybind {
 	char character;
-	unsigned int modifier: 8;
+	unsigned int modifier : 8;
 	unsigned char repeat;
 };
 

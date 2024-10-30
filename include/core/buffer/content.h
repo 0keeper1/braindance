@@ -5,9 +5,9 @@
 #include "lines.h"
 
 typedef struct Content {
-    Lines *start_ptr;
-    size_t len;
-    Lines *end_ptr;
+	Lines *start_ptr;
+	size_t len;
+	Lines *end_ptr;
 } Content;
 
 extern Content *contentCreate();

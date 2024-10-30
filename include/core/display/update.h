@@ -16,7 +16,6 @@
 
 extern Result display(const Core *const coreptr);
 
-extern void restoreCursor(WindowBuf *const winbufptr, const Prompt *const promptptr,
-                          const u_int16_t col, const u_int16_t row,
-                          const u_int16_t cursorcolpos, const u_int16_t cursorrowpos,
-                          const enum Layout layout);
+extern void restoreCursor(WindowBuf *const winbufptr, const Prompt *const promptptr, const u_int16_t col,
+						  const u_int16_t row, const u_int16_t cursorcolpos, const u_int16_t cursorrowpos,
+						  const enum Layout layout);

@@ -57,7 +57,7 @@ Chars *linesGetCharsByIndex(const Lines *lines_ptr, const size_t index) {
 	} else if (index < lines_ptr->len / 2) {
 		Chars *chars_ptr = lines_ptr->start_ptr;
 		for (size_t ctr = 0; chars_ptr != nullptr, ctr <= lines_ptr->len, ctr < lines_ptr->len;
-		     chars_ptr = chars_ptr->next, ctr++) {
+			 chars_ptr = chars_ptr->next, ctr++) {
 			if (ctr == index) {
 				return chars_ptr;
 			}
@@ -65,7 +65,6 @@ Chars *linesGetCharsByIndex(const Lines *lines_ptr, const size_t index) {
 	}
 	return nullptr;
 }
-
 
 void linesInsertChars(Lines *lines_ptr, const size_t index, const char chr) {
 	if (lines_ptr == nullptr) {

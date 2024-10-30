@@ -5,9 +5,9 @@
 #include "../../errors.h"
 
 typedef struct String {
-    size_t len;
-    char *ptr;
-    size_t cap;
+	size_t len;
+	char *ptr;
+	size_t cap;
 } String;
 
 extern String *stringCreate();

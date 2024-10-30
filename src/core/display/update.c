@@ -1,6 +1,5 @@
 #include "core/display/update.h"
 
-
 #include "core/display/layouts.h"
 #include "core/offset.h"
 
@@ -22,8 +21,7 @@ Result display(const Core *const coreptr) {
 	writePrompt(&winbuf, &coreptr->prompt, coreptr->terminal.col, coreptr->terminal.row);
 
 	restoreCursor(&winbuf, &coreptr->prompt, coreptr->terminal.col, coreptr->terminal.row,
-	              coreptr->offset.cursor.poscol, coreptr->offset.cursor.posrow,
-	              coreptr->layout);
+				  coreptr->offset.cursor.poscol, coreptr->offset.cursor.posrow, coreptr->layout);
 	windowbufAppend(&winbuf, SHOW_CURSOR, 6);
 
 	windowbufWrite(&winbuf);
@@ -33,10 +31,8 @@ Result display(const Core *const coreptr) {
 	return SUCCESSFUL;
 }
 
-void restoreCursor(WindowBuf *const winbufptr, const Prompt *const promptptr,
-                   const u_int16_t col, const u_int16_t row,
-                   const u_int16_t cursorcolpos, const u_int16_t cursorrowpos,
-                   const enum Layout layout) {
+void restoreCursor(WindowBuf *const winbufptr, const Prompt *const promptptr, const u_int16_t col, const u_int16_t row,
+				   const u_int16_t cursorcolpos, const u_int16_t cursorrowpos, const enum Layout layout) {
 	char movelocation[20] = {'\0'};
 
 	switch (layout) {

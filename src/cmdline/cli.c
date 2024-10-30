@@ -1,10 +1,10 @@
 #include "cmdline/cli.h"
 #include "errors.h"
 
+#include <linux/limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <linux/limits.h>
 
 bool isFlag(const char *const arg_ptr) {
 	if (arg_ptr[0] == '-' || (arg_ptr[0] == '-' && arg_ptr[1] == '-')) {
@@ -15,7 +15,7 @@ bool isFlag(const char *const arg_ptr) {
 
 bool checkFlag(const char *const argument, const char *const small_flag_ptr, const char *const large_flag_ptr) {
 	return strncmp(argument, small_flag_ptr, strlen(small_flag_ptr)) == 0 ||
-	       strncmp(argument, large_flag_ptr, strlen(large_flag_ptr)) == 0;
+		   strncmp(argument, large_flag_ptr, strlen(large_flag_ptr)) == 0;
 }
 
 Result createCmds(Cmds *const commands_ptr) {
