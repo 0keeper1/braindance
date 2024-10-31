@@ -1,0 +1,25 @@
+---
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Always
+AlignConsecutiveAssignments: true
+ColumnLimit: 80
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: Inline
+IndentCaseLabels: true
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlignAfterOpenBracket: Align
+AlignTrailingComments: true
+PointerAlignment: Left
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceAfterCStyleCast: true
+SpaceAfterTemplateKeyword: true
+CommentPragmas: "^ IWYU pragma:"
+ReflowComments: false
+BinPackArguments: false
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
+MaxEmptyLinesToKeep: 1
