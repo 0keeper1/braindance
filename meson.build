@@ -6,7 +6,7 @@ project(
     license : 'Mozilla Public License Version 2.0',
     license_files : 'LICENSE',
     default_options : [
-        'c_std=c23',
+        'c_std=c2x',
     ],
 )
 
@@ -31,7 +31,7 @@ foreach test_file : run_command('find', 'test', '-depth', '-type', 'f', check : 
     test_exe = executable(
         test_name,
         test_file,
-        link_with: lib,
+        link_with : lib,
         include_directories : src_headers
     )
     test(test_name, test_exe)
