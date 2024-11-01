@@ -32,6 +32,8 @@ foreach test_file : run_command('find', 'test', '-depth', '-type', 'f', check : 
         test_name,
         test_file,
         link_with : lib,
+        build_by_default : false,
+        d_unittest : true,
         include_directories : src_headers
     )
     test(test_name, test_exe)
