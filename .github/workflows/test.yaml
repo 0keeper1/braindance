@@ -1,6 +1,6 @@
 name: test
 
-on: [ push ]
+on: [ push, pull_request ]
 
 jobs:
   test:
@@ -9,8 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4.8.0
-      - uses: BSFishy/meson-build@v1.0.3
-        with:
-          action: test
-          options: --verbose
-          meson-version: 1.5
+      - name: Install meson
+        run: pip install meson ninja
+      - name: Run setup
+        run: meson setup build
+      - name: Run build
+        run: meson compile -v -C build
+      - name: Run test
+        run: meson test -v -C build
