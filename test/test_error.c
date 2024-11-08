@@ -56,7 +56,7 @@ void testMultiSetError()
 	constexpr char msg_clone[] = "divide by zero x cannot be zero";
 
 	int res = multiError(4, 0, &error);
-	res     = multiError(0, 0, &error);
+	res		= multiError(0, 0, &error);
 	assert(res == 0);
 	assert(error.code == FAILED);
 	assert(strncmp(error.message.ptr, msg_clone, strlen(msg_clone)) == 0);
