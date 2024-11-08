@@ -6,7 +6,9 @@ project(
     license : 'Mozilla Public License Version 2.0',
     license_files : 'LICENSE',
     default_options : [
-        'c_std=c2x',
+        'c_std=gnu23',
+        'warning_level=3',
+        'b_lto=true',
     ],
 )
 
