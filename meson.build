@@ -14,11 +14,17 @@ project(
 
 src_headers = include_directories('include')
 
+default_build_define = [
+    '-DNAME=' + meson.project_name(),
+    '-DVERSION=' + '"' + meson.project_version() + '"',
+]
+
 executable(
     meson.project_name(),
     run_command('find', 'src', '-depth', '-type', 'f', check : true).stdout().strip().split('\n'),
     install : true,
     native : true,
+    c_args : default_build_define,
     include_directories : src_headers,
 )
 
