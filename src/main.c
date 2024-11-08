@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 
-const char* HELP = "usage: bd [OPTIONS] [FILE PATH]\n"
-				   "-h | --help\tShowed this message.\n"
+const char* HELP = "usage: bd [OPTIONS] [PATH]\n"
+				   "-h | --help\t showed this message.\n"
 				   "-v | --version";
 
 int main(const int argc, const char* const argv[])
