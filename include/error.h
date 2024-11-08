@@ -1,6 +1,6 @@
 #pragma once
 
-#include "buffers/str.h"
+#include "macros.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -23,7 +23,7 @@ typedef enum ErrorCode : char
 typedef struct Error
 {
 	ErrorCode code;
-	Str msg;
+	STRING(message);
 } Error;
 
 #define ERR Error* err
@@ -33,47 +33,54 @@ typedef struct Error
 
 #define UNSET                                                                  \
 	err->code = NOTSET;                                                        \
-	if (err->msg.ptr != nullptr)                                               \
+	if (err->message.ptr != nullptr)                                           \
 	{                                                                          \
-		free(err->msg.ptr);                                                    \
-		err->msg.len = 0, err->msg.cap = 0;                                    \
+		free(err->message.ptr);                                                \
+		err->message.ptr = nullptr;                                            \
+		err->message.len = 0, err->message.cap = 0;                            \
 	}
 
-#define SET_ERROR(_code_arg, _msg_arg)                                         \
+#define SET_ERR(_code_arg, _msg_arg)                                           \
 	{                                                                          \
 		err->code = _code_arg;                                                 \
 		auto len  = strlen(_msg_arg);                                          \
 		if (len)                                                               \
 		{                                                                      \
-			if (len > err->msg.cap)                                            \
+			if (len > err->message.cap)                                        \
 			{                                                                  \
 				char* new_ptr;                                                 \
-				if ((new_ptr = realloc(err->msg.ptr, err->msg.cap + len)) ==   \
+				if ((new_ptr = (char*) realloc(err->message.ptr,               \
+											   err->message.cap + len)) ==     \
 					nullptr)                                                   \
 				{                                                              \
 					err->code = ERR_NULL_POINTER;                              \
-					if (err->msg.ptr != nullptr)                               \
+					if (err->message.ptr != nullptr)                           \
 					{                                                          \
-						free(err->msg.ptr);                                    \
+						free(err->message.ptr);                                \
 					}                                                          \
-					err->msg.len = 0, err->msg.cap = 0;                        \
+					err->message.len = 0, err->message.cap = 0;                \
 				}                                                              \
 				else                                                           \
 				{                                                              \
-					err->msg.ptr = new_ptr;                                    \
-					err->msg.cap += len, err->msg.len = len;                   \
-					strncpy(err->msg.ptr, _msg_arg, len);                      \
+					err->message.ptr = new_ptr;                                \
+					err->message.cap += len, err->message.len = len;           \
+					strncpy(err->message.ptr, _msg_arg, len);                  \
 				}                                                              \
 			}                                                                  \
 			else                                                               \
 			{                                                                  \
-				err->msg.len = len;                                            \
-				strncpy(err->msg.ptr, _msg_arg, len);                          \
+				err->message.len = len;                                        \
+				strncpy(err->message.ptr, _msg_arg, len);                      \
 			}                                                                  \
 		}                                                                      \
 	}
 
-#define FE_ERROR free(error.msg.ptr)
-#define FE_NERROR(name) free(name.msg.ptr)
+#define FE_ERROR                                                               \
+	if (error.message.ptr != nullptr)                                          \
+	{                                                                          \
+		free(error.message.ptr);                                               \
+	}
+
+#define FE_NERROR(name) free(name.message.ptr)
 
 const char* getErrorMessage(ErrorCode code);
