@@ -43,12 +43,12 @@ bool flagCmp(const char* arg, const char* small_flag, const char* large_flag)
 	return false;
 }
 
-Args parseArgs(const int argc, const char** argv, ERR)
+Args parseArgs(const int argc, const char*const argv[], ERR)
 {
 	Args args = {.path	  = {.cap = 0, .len = 0, .ptr = nullptr},
 				 .cwd	  = {.cap = 0, .len = 0, .ptr = nullptr},
 				 .help	  = false,
-				 .verbose = false};
+				 .version = false};
 
 	if (argc > 4)
 	{
@@ -77,9 +77,9 @@ Args parseArgs(const int argc, const char** argv, ERR)
 				args.help = true;
 				continue;
 			}
-			if (flagCmp(argv[i], "-v", "--verbose"))
+			if (flagCmp(argv[i], "-v", "--version"))
 			{
-				args.verbose = true;
+				args.version = true;
 				continue;
 			}
 		}

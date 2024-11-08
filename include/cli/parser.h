@@ -6,7 +6,7 @@ typedef struct Args
 {
 	STRING(cwd);
 	STRING(path);
-	bool verbose;
+	bool version;
 	bool help;
 } Args;
 
@@ -16,4 +16,4 @@ extern bool flagCmp(const char* arg,
 					const char* restrict small_flag,
 					const char* restrict large_flag);
 
-Args parseArgs(const int argc, const char** argv, ERR);
+Args parseArgs(const int argc, const char* const argv[], ERR);
