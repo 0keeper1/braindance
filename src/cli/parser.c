@@ -1,5 +1,6 @@
 #include "cli/parser.h"
 
+#include "error.h"
 #include <linux/limits.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +44,7 @@ bool flagCmp(const char* arg, const char* small_flag, const char* large_flag)
 	return false;
 }
 
-Args parseArgs(const int argc, const char*const argv[], ERR)
+Args parseArgs(const int argc, const char* const argv[])
 {
 	Args args = {.path	  = {.cap = 0, .len = 0, .ptr = nullptr},
 				 .cwd	  = {.cap = 0, .len = 0, .ptr = nullptr},
@@ -52,7 +53,7 @@ Args parseArgs(const int argc, const char*const argv[], ERR)
 
 	if (argc > 4)
 	{
-		SET_ERR(CLI_ERR_TOO_MANY_ARGUMENTS, "Too many arguments");
+		SET_ERROR_CODE(CLI_ERR_TOO_MANY_ARGUMENTS);
 		return args;
 	}
 
@@ -64,7 +65,7 @@ Args parseArgs(const int argc, const char*const argv[], ERR)
 			if ((args.cwd.ptr = (char*) malloc((length + 1) * sizeof(char))) ==
 				nullptr)
 			{
-				SET_ERR(ERR_NULL_POINTER, "CWD allocation failed");
+				SET_ERROR_CODE(ERR_NULL_POINTER);
 				return args;
 			}
 			args.cwd.cap = args.cwd.len = length;
@@ -80,7 +81,6 @@ Args parseArgs(const int argc, const char*const argv[], ERR)
 			if (flagCmp(argv[i], "-v", "--version"))
 			{
 				args.version = true;
-				continue;
 			}
 		}
 		else

@@ -1,7 +1,8 @@
 #include "cli/parser.h"
+#include "error.h"
 
 #include <assert.h>
-#include <stdio.h>
+#include <string.h>
 
 void testIsFlagSuccess()
 {
@@ -65,12 +66,12 @@ void testFlagCmp()
 	assert(ret == false);
 }
 
-void m_main(ERR)
+void testArgParse()
 {
 	int argc				= 1;
 	const char* cwd_argv[5] = {"/bin/sh"};
 
-	Args args = parseArgs(argc, cwd_argv, err);
+	Args args = parseArgs(argc, cwd_argv);
 	assert(args.version == false && args.help == false);
 	assert(strncmp(args.cwd.ptr, cwd_argv[0], strlen(cwd_argv[0])) == 0 &&
 		   strlen(cwd_argv[0]) == args.cwd.len);
@@ -79,7 +80,7 @@ void m_main(ERR)
 	argc					= 2;
 	const char* help_argv[] = {"/bin/sh", "-h"};
 
-	args = parseArgs(argc, help_argv, err);
+	args = parseArgs(argc, help_argv);
 	assert(args.version == false && args.help == true);
 	assert(args.path.ptr == nullptr && args.path.len == 0);
 	assert(strncmp(args.cwd.ptr, cwd_argv[0], strlen(cwd_argv[0])) == 0 &&
@@ -88,7 +89,7 @@ void m_main(ERR)
 	argc					= 3;
 	const char* full_argv[] = {"/bin/sh", "-v", "../folder/something.c"};
 
-	args = parseArgs(argc, full_argv, err);
+	args = parseArgs(argc, full_argv);
 	assert(args.version == true && args.help == false);
 	assert(strncmp(args.cwd.ptr, cwd_argv[0], strlen(cwd_argv[0])) == 0 &&
 		   strlen(cwd_argv[0]) == args.cwd.len);
@@ -100,19 +101,10 @@ void m_main(ERR)
 
 	argc						= 5;
 	const char* too_many_argv[] = {
-		"/bin/sh", "-v", "../folder/something.c", "awd"};
+		"/bin/sh", "-v", "../folder/something.c", "awd", "dawpokdawp"};
 
-	args = parseArgs(argc, too_many_argv, err);
-	assert(err->code == CLI_ERR_TOO_MANY_ARGUMENTS);
-
-	UNSET;
-}
-
-void testArgParse()
-{
-	ERROR;
-	m_main(&error);
-	FE_ERROR;
+	parseArgs(argc, too_many_argv);
+	assert(ERROR.code == CLI_ERR_TOO_MANY_ARGUMENTS);
 }
 
 int main()

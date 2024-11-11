@@ -34,7 +34,7 @@ lib = shared_library(
     include_directories : src_headers,
 )
 
-foreach test_file : run_command('find', 'test', '-depth', '-type', 'f', check : true).stdout().strip().split('\n')
+foreach test_file : run_command('find', 'test', '-depth', '-type', 'f', '-not', '-name', 'SCRATCH', check : true).stdout().strip().split('\n')
     test_name = test_file.split('/')[-1].substring(0, -2)
     test_exe = executable(
         test_name,

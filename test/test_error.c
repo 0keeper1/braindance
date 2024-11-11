@@ -2,71 +2,72 @@
 
 #include <assert.h>
 
-int divide(const int x, const int y, ERR)
+int divide(const int x, const int y)
 {
 	if (x == 0 || y == 0)
 	{
-		SET_ERR(FAILED, "divide by zero");
+		SET_ERROR_CODE(FAILED);
 		return 0;
 	}
-	UNSET;
 	return x / y;
 }
 
 void testError()
 {
-	ERROR;
+	divide(1, 3);
+	assert(ERROR.code == NOTSET);
+	assert(ERROR.message.ptr == nullptr);
+	assert(ERROR.message.len == 0);
+	assert(ERROR.message.cap == 0);
 
-	divide(1, 3, &error);
-	assert(error.code == NOTSET);
-	assert(error.message.ptr == nullptr);
-	assert(error.message.len == 0);
-	assert(error.message.cap == 0);
-
-	divide(4, 0, &error);
-	constexpr char msg_clone[] = "divide by zero";
-	assert(error.code == FAILED);
-	assert(strncmp(error.message.ptr, msg_clone, strlen(msg_clone)) == 0);
-	assert(error.message.len == strlen(msg_clone));
-	assert(error.message.cap == strlen(msg_clone));
-
-	FE_ERROR;
+	divide(4, 0);
+	assert(ERROR.code == FAILED);
 }
 
-int multiError(const int x, const int y, ERR)
+int multiError(const int x, const int y)
 {
 	if (x == 0)
 	{
-		SET_ERR(FAILED, "divide by zero x cannot be zero");
+		SET_ERROR_CODE(FAILED);
 		return 0;
 	}
 	if (y == 0)
 	{
-		SET_ERR(FAILED, "divide by zero y cannot be zero");
+		SET_ERROR_CODE(FAILED);
 		return 0;
 	}
 
-	UNSET;
 	return x / y;
+}
+
+void testSetErrorMessageMacro()
+{
+	const char* message = "Zero Division\0";
+	const size_t len	= strlen(message);
+
+	SET_ERROR_CODE(ERR_NULL_POINTER);
+	SET_ERROR_MESSAGE(message);
+
+	assert(strncmp(ERROR.message.ptr, message, len) == 0);
+	assert(ERROR.message.len == len);
 }
 
 void testMultiSetError()
 {
-	ERROR;
-	constexpr char msg_clone[] = "divide by zero x cannot be zero";
-
-	int res = multiError(4, 0, &error);
-	res		= multiError(0, 0, &error);
+	int res = multiError(4, 0);
 	assert(res == 0);
-	assert(error.code == FAILED);
-	assert(strncmp(error.message.ptr, msg_clone, strlen(msg_clone)) == 0);
+	assert(ERROR.code == FAILED);
 
-	FE_ERROR;
+	res = multiError(0, 0);
+	assert(res == 0);
+	assert(ERROR.code == FAILED);
 }
 
 int main()
 {
 	testError();
 	testMultiSetError();
+	testSetErrorMessageMacro();
+
 	return 0;
 }

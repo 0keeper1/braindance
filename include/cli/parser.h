@@ -1,6 +1,6 @@
 #pragma once
 
-#include "error.h"
+#include "macros.h"
 
 typedef struct Args
 {
@@ -10,10 +10,10 @@ typedef struct Args
 	bool help;
 } Args;
 
-extern bool isFlag(const char* const arg);
+extern bool isFlag(const char* arg);
 
 extern bool flagCmp(const char* arg,
 					const char* restrict small_flag,
 					const char* restrict large_flag);
 
-Args parseArgs(const int argc, const char* const argv[], ERR);
+Args parseArgs(const int argc, const char* const argv[]);
