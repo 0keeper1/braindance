@@ -1,5 +1,7 @@
 #pragma once
 
+#include "stdlib.h"
+#include "string.h"
 #include <stddef.h>
 
 /**
@@ -19,7 +21,7 @@
  * @param ... Run this block in condition
  */
 #define CATCH(...)                                                             \
-	if (ERROR.code != NOTSET)                                                  \
+	if (Error.code != NOTSET)                                                  \
 		__VA_ARGS__;
 
 /**
@@ -27,5 +29,61 @@
  * @param error_code The error code you want to catch
  */
 #define CATCH_ERROR(error_code, ...)                                           \
-	if (ERROR.code == error_code)                                              \
+	if (Error.code == error_code)                                              \
 		__VA_ARGS__;
+
+/**
+ * @brief Reset Error code to NOTSET
+ */
+#define RESET_ERROR Error.code = NOTSET
+
+/**
+ * @brief Set ERROR code
+ * @param error_code ERROR code ErrorCode
+ */
+#define SET_ERROR_CODE(error_code) Error.code = error_code
+
+/**
+ * @brief Set ERROR message
+ * @param msg Message that will set to Global ERROR
+ */
+#define SET_ERROR_MESSAGE(msg)                                                 \
+	{                                                                          \
+		const size_t len = strlen(msg);                                        \
+		if (len)                                                               \
+		{                                                                      \
+			if (len > Error.message.cap)                                       \
+			{                                                                  \
+				char* new_ptr;                                                 \
+				if ((new_ptr = (char*) realloc(Error.message.ptr,              \
+											   Error.message.cap + len)) ==    \
+					nullptr)                                                   \
+				{                                                              \
+					Error.code = ERR_NULL_POINTER;                             \
+					if (Error.message.ptr != nullptr)                          \
+					{                                                          \
+						free(Error.message.ptr);                               \
+					}                                                          \
+					Error.message.len = 0, Error.message.cap = 0;              \
+					Error.code = STD_ERR_REALLOCATION_FAILED;                  \
+				}                                                              \
+				else                                                           \
+				{                                                              \
+					Error.message.ptr = new_ptr;                               \
+					Error.message.cap += len, Error.message.len = len;         \
+					if (strncpy(Error.message.ptr, msg, len) == nullptr)       \
+					{                                                          \
+						Error.code = STD_ERR_COPY_STRING_FAILED;               \
+					}                                                          \
+				}                                                              \
+			}                                                                  \
+			else                                                               \
+			{                                                                  \
+				Error.message.len = len;                                       \
+				if (strncpy(Error.message.ptr, msg, len) == nullptr)           \
+				{                                                              \
+					Error.code = STD_ERR_COPY_STRING_FAILED;                   \
+				}                                                              \
+			}                                                                  \
+		}                                                                      \
+	}
