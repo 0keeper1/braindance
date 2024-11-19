@@ -7,15 +7,15 @@ const char* HELP = "usage: bd [OPTIONS] [PATH]\n"
 				   "-h | --help\t showed this message.\n"
 				   "-v | --version";
 
-int main(const int argc, const char* const argv[])
+int main(const int argc, char* argv[])
 {
 	Args args = {0};
 
-	args = parseArgs(argc, argv);
-	CATCH_ERROR(CLI_ERR_TOO_MANY_ARGUMENTS, {
-		puts(HELP);
+	parseArgs(&args, argc, argv);
+	CATCH({
+		puts(getErrorMessage(Error.code));
 		return EXIT_FAILURE;
-	})
+	});
 
 	if (args.help == true)
 	{
