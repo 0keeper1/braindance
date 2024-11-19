@@ -10,10 +10,12 @@ typedef struct Args
 	bool help;
 } Args;
 
-extern bool isFlag(const char* arg);
+bool isFlag(const char* arg);
 
-extern bool flagCmp(const char* arg,
-					const char* restrict small_flag,
-					const char* restrict large_flag);
+bool flagCmp(const char* arg,
+			 const char* restrict small_flag,
+			 const char* restrict large_flag);
 
-Args parseArgs(const int argc, const char* const argv[]);
+extern void parseArgs(Args* args, int argc, char* argv[]);
+
+extern void dropArgs(const Args* restrict args);

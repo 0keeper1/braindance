@@ -68,28 +68,38 @@ void testFlagCmp()
 
 void testArgParse()
 {
-	int argc				= 1;
-	const char* cwd_argv[5] = {"/bin/sh"};
+	Args args		  = {.version = false,
+						 .help	  = false,
+						 .cwd	  = {.cap = 0, .len = 0, .ptr = nullptr},
+						 .path	  = {.cap = 0, .len = 0, .ptr = nullptr}};
+	int argc		  = 1;
+	char* cwd_argv[5] = {"/bin/sh"};
 
-	Args args = parseArgs(argc, cwd_argv);
+	memset(&args, 0, sizeof(Args));
+	parseArgs(&args, argc, cwd_argv);
+
 	assert(args.version == false && args.help == false);
 	assert(strncmp(args.cwd.ptr, cwd_argv[0], strlen(cwd_argv[0])) == 0 &&
 		   strlen(cwd_argv[0]) == args.cwd.len);
-	assert(args.path.ptr == nullptr && args.path.len == 0);
+	assert((args.path.ptr == nullptr) && (args.path.len == 0));
 
-	argc					= 2;
-	const char* help_argv[] = {"/bin/sh", "-h"};
+	argc			  = 2;
+	char* help_argv[] = {"/bin/sh", "-h"};
 
-	args = parseArgs(argc, help_argv);
+	memset(&args, 0, sizeof(Args));
+	parseArgs(&args, argc, help_argv);
+
 	assert(args.version == false && args.help == true);
 	assert(args.path.ptr == nullptr && args.path.len == 0);
 	assert(strncmp(args.cwd.ptr, cwd_argv[0], strlen(cwd_argv[0])) == 0 &&
 		   strlen(cwd_argv[0]) == args.cwd.len);
 
-	argc					= 3;
-	const char* full_argv[] = {"/bin/sh", "-v", "../folder/something.c"};
+	argc			  = 3;
+	char* full_argv[] = {"/bin/sh", "-v", "../folder/something.c"};
 
-	args = parseArgs(argc, full_argv);
+	memset(&args, 0, sizeof(Args));
+	parseArgs(&args, argc, full_argv);
+
 	assert(args.version == true && args.help == false);
 	assert(strncmp(args.cwd.ptr, cwd_argv[0], strlen(cwd_argv[0])) == 0 &&
 		   strlen(cwd_argv[0]) == args.cwd.len);
@@ -99,12 +109,14 @@ void testArgParse()
 	assert(strncmp(args.path.ptr, real_path, args.path.len) == 0);
 	free(real_path);
 
-	argc						= 5;
-	const char* too_many_argv[] = {
+	argc				  = 5;
+	char* too_many_argv[] = {
 		"/bin/sh", "-v", "../folder/something.c", "awd", "dawpokdawp"};
 
-	parseArgs(argc, too_many_argv);
-	assert(ERROR.code == CLI_ERR_TOO_MANY_ARGUMENTS);
+	memset(&args, 0, sizeof(Args));
+	parseArgs(&args, argc, too_many_argv);
+
+	assert(Error.code == CLI_ERR_TOO_MANY_ARGUMENTS);
 }
 
 int main()
