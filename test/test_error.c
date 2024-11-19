@@ -15,13 +15,13 @@ int divide(const int x, const int y)
 void testError()
 {
 	divide(1, 3);
-	assert(ERROR.code == NOTSET);
-	assert(ERROR.message.ptr == nullptr);
-	assert(ERROR.message.len == 0);
-	assert(ERROR.message.cap == 0);
+	assert(Error.code == NOTSET);
+	assert(Error.message.ptr == nullptr);
+	assert(Error.message.len == 0);
+	assert(Error.message.cap == 0);
 
 	divide(4, 0);
-	assert(ERROR.code == FAILED);
+	assert(Error.code == FAILED);
 }
 
 int multiError(const int x, const int y)
@@ -48,19 +48,19 @@ void testSetErrorMessageMacro()
 	SET_ERROR_CODE(ERR_NULL_POINTER);
 	SET_ERROR_MESSAGE(message);
 
-	assert(strncmp(ERROR.message.ptr, message, len) == 0);
-	assert(ERROR.message.len == len);
+	assert(strncmp(Error.message.ptr, message, len) == 0);
+	assert(Error.message.len == len);
 }
 
 void testMultiSetError()
 {
 	int res = multiError(4, 0);
 	assert(res == 0);
-	assert(ERROR.code == FAILED);
+	assert(Error.code == FAILED);
 
 	res = multiError(0, 0);
 	assert(res == 0);
-	assert(ERROR.code == FAILED);
+	assert(Error.code == FAILED);
 }
 
 int main()
