@@ -7,7 +7,7 @@ const char* HELP = "usage: bd [OPTIONS] [PATH]\n"
 				   "-h | --help\t showed this message.\n"
 				   "-v | --version";
 
-int main(const int argc, char* argv[])
+int main(const int argc, char* argv[argc + 1])
 {
 	Args args = {0};
 
