@@ -17,6 +17,27 @@
 	} name
 
 /**
+ * @brief Casts a `void*` pointer to a specific type and creates a variable with a combined name.
+ * @param type The type to which the `void*` pointer should be cast.
+ * @param variable The `void*` variable to be cast to the specified type.
+ */
+#define CAST(type, variable) type* type##_##variable = (type*) variable;
+
+/**
+ *	@brief Set Char struct perv pointer
+ *	@param self Char object pointer
+ *	@param prev Previous Char pointer
+ */
+#define SET_CHAR_PERV(self, prev) self->prev = prev
+
+/**
+ *	@brief Set Char struct next pointer
+ *	@param self Char object pointer
+ *	@param next Next Char pointer
+ */
+#define SET_CHAR_NEXT(self, next) self->next = next
+
+/**
  * @brief A simple error catcher to reduce repetitive checks like "if (Error.code != NOTSET) {}"
  * @param ... Run this block in condition
  */
