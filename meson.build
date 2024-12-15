@@ -19,18 +19,23 @@ default_build_define = [
     '-DVERSION=' + '"' + meson.project_version() + '"',
 ]
 
+unstdalias = subproject('unstdalias')
+unstdalias_dep = unstdalias.get_variable('unstdalias_dep')
+
 executable(
     meson.project_name(),
     run_command('find', 'src', '-depth', '-type', 'f', check : true).stdout().strip().split('\n'),
     install : true,
     native : true,
     c_args : default_build_define,
+    dependencies : [unstdalias_dep],
     include_directories : src_headers,
 )
 
 lib = shared_library(
     meson.project_name() + 'lib',
     run_command('find', 'src', '-depth', '-type', 'f', '-not', '-name', 'main.c', check : true).stdout().strip().split('\n'),
+    dependencies : [unstdalias_dep],
     include_directories : src_headers,
 )
 
@@ -42,6 +47,7 @@ foreach test_file : run_command('find', 'test', '-depth', '-type', 'f', '-not', 
         link_with : lib,
         build_by_default : false,
         d_unittest : true,
+        dependencies : [unstdalias_dep],
         include_directories : src_headers
     )
     test(test_name, test_exe)
